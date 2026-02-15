@@ -1,90 +1,94 @@
 {
-  "type": "layout.row",
-  "spacing": 12,
-  "crossAxisAlignment": "start",
-  "children": [
-    {
-      "type": "layout.column",
-      "spacing": 0,
-      "onPress": {
-        "intent": "user.viewProfile",
-        "userId": "{{props.message.userId}}"
-      },
+  "component.messageItem": {
+    "definition": {
+      "type": "layout.row",
+      "spacing": 12,
+      "crossAxisAlignment": "start",
       "children": [
         {
-          "type": "avatar",
-          "src": "{{props.message.avatar}}",
-          "size": 40
-        }
-      ]
-    },
-    {
-      "type": "layout.column",
-      "flex": 1,
-      "spacing": 8,
-      "children": [
-        {
-          "type": "layout.row",
-          "spacing": 8,
-          "crossAxisAlignment": "center",
+          "type": "layout.column",
+          "spacing": 0,
+          "onPress": {
+            "intent": "user.viewProfile",
+            "userId": "{{props.message.userId}}"
+          },
           "children": [
             {
-              "type": "text",
-              "content": "{{props.message.author}}",
-              "style": "bodyMedium",
-              "fontWeight": "bold"
-            },
-            {
-              "type": "text",
-              "content": "{{props.message.time}}",
-              "style": "bodySmall",
-              "color": "onSurfaceVariant"
+              "type": "avatar",
+              "src": "{{props.message.avatar}}",
+              "size": 40
             }
           ]
         },
         {
-          "type": "text",
-          "content": "{{props.message.content}}",
-          "style": "bodyMedium",
-          "lineHeight": 1.5
-        },
-        {
-          "type": "layout.row",
-          "spacing": 16,
+          "type": "layout.column",
+          "flex": 1,
+          "spacing": 8,
           "children": [
             {
               "type": "layout.row",
-              "spacing": 6,
+              "spacing": 8,
               "crossAxisAlignment": "center",
               "children": [
                 {
                   "type": "text",
-                  "content": "👍",
-                  "style": "bodySmall"
+                  "content": "{{props.message.author}}",
+                  "style": "bodyMedium",
+                  "fontWeight": "bold"
                 },
                 {
                   "type": "text",
-                  "content": "{{props.message.likes}}",
+                  "content": "{{props.message.time}}",
                   "style": "bodySmall",
                   "color": "onSurfaceVariant"
                 }
               ]
             },
             {
+              "type": "text",
+              "content": "{{props.message.content}}",
+              "style": "bodyMedium",
+              "lineHeight": 1.5
+            },
+            {
               "type": "layout.row",
-              "spacing": 6,
-              "crossAxisAlignment": "center",
+              "spacing": 16,
               "children": [
                 {
-                  "type": "text",
-                  "content": "💬",
-                  "style": "bodySmall"
+                  "type": "layout.row",
+                  "spacing": 6,
+                  "crossAxisAlignment": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "content": "👍",
+                      "style": "bodySmall"
+                    },
+                    {
+                      "type": "text",
+                      "content": "{{props.message.likes}}",
+                      "style": "bodySmall",
+                      "color": "onSurfaceVariant"
+                    }
+                  ]
                 },
                 {
-                  "type": "text",
-                  "content": "{{props.message.replies}} replies",
-                  "style": "bodySmall",
-                  "color": "onSurfaceVariant"
+                  "type": "layout.row",
+                  "spacing": 6,
+                  "crossAxisAlignment": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "content": "💬",
+                      "style": "bodySmall"
+                    },
+                    {
+                      "type": "text",
+                      "content": "{{props.message.replies}} replies",
+                      "style": "bodySmall",
+                      "color": "onSurfaceVariant"
+                    }
+                  ]
                 }
               ]
             }
@@ -92,5 +96,5 @@
         }
       ]
     }
-  ]
+  }
 }

@@ -1,211 +1,145 @@
 {
-  "type": "layout.column",
-  "padding": 16,
-  "spacing": 16,
-  "children": [
-    {
-      "type": "text",
-      "content": "Profile",
-      "style": "titleMedium",
-      "fontWeight": "bold"
-    },
-    {
+  "component.profilePanel": {
+    "definition": {
       "type": "layout.column",
-      "spacing": 12,
-      "crossAxisAlignment": "center",
+      "padding": 16,
+      "spacing": 16,
       "children": [
         {
-          "type": "avatar",
-          "src": "{{props.profile.avatar}}",
-          "size": 96
-        },
-        {
           "type": "text",
-          "content": "{{props.profile.name}}",
+          "content": "Profile",
           "style": "titleMedium",
           "fontWeight": "bold"
         },
         {
-          "type": "text",
-          "content": "{{props.profile.role}}",
-          "style": "bodyMedium",
-          "color": "onSurfaceVariant"
-        }
-      ]
-    },
-    {
-      "type": "divider"
-    },
-    {
-      "type": "layout.column",
-      "spacing": 12,
-      "children": [
-        {
-          "type": "text",
-          "content": "About",
-          "style": "bodyMedium",
-          "fontWeight": "bold"
-        },
-        {
-          "type": "layout.row",
-          "spacing": 16,
+          "type": "layout.column",
+          "spacing": 12,
+          "crossAxisAlignment": "center",
           "children": [
             {
+              "type": "avatar",
+              "src": "{{props.profile.avatar}}",
+              "size": 96
+            },
+            {
               "type": "text",
-              "content": "Posts",
-              "style": "bodySmall",
-              "color": "primary",
+              "content": "{{props.profile.name}}",
+              "style": "titleMedium",
               "fontWeight": "bold"
             },
             {
               "type": "text",
-              "content": "Comments",
-              "style": "bodySmall",
-              "color": "onSurfaceVariant"
-            },
-            {
-              "type": "text",
-              "content": "Spaces",
-              "style": "bodySmall",
-              "color": "onSurfaceVariant"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "divider"
-    },
-    {
-      "type": "layout.column",
-      "spacing": 8,
-      "children": [
-        {
-          "type": "layout.row",
-          "spacing": 8,
-          "crossAxisAlignment": "center",
-          "children": [
-            {
-              "type": "text",
-              "content": "✉️",
-              "style": "bodyMedium"
-            },
-            {
-              "type": "text",
-              "content": "{{props.profile.email}}",
-              "style": "bodySmall",
+              "content": "{{props.profile.role}}",
+              "style": "bodyMedium",
               "color": "onSurfaceVariant"
             }
           ]
         },
         {
-          "type": "layout.row",
-          "spacing": 8,
-          "crossAxisAlignment": "center",
+          "type": "divider"
+        },
+        {
+          "type": "layout.column",
+          "spacing": 12,
           "children": [
             {
               "type": "text",
-              "content": "📍",
-              "style": "bodyMedium"
+              "content": "About",
+              "style": "bodyMedium",
+              "fontWeight": "bold"
             },
             {
-              "type": "text",
-              "content": "{{props.profile.location}}",
-              "style": "bodySmall",
-              "color": "onSurfaceVariant"
+              "type": "layout.row",
+              "spacing": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "content": "Posts",
+                  "style": "bodySmall",
+                  "color": "primary",
+                  "fontWeight": "bold"
+                },
+                {
+                  "type": "text",
+                  "content": "Comments",
+                  "style": "bodySmall",
+                  "color": "onSurfaceVariant"
+                },
+                {
+                  "type": "text",
+                  "content": "Spaces",
+                  "style": "bodySmall",
+                  "color": "onSurfaceVariant"
+                }
+              ]
             }
           ]
         },
         {
-          "type": "layout.row",
-          "spacing": 8,
-          "crossAxisAlignment": "center",
-          "children": [
-            {
-              "type": "text",
-              "content": "📅",
-              "style": "bodyMedium"
-            },
-            {
-              "type": "text",
-              "content": "{{props.profile.memberSince}}",
-              "style": "bodySmall",
-              "color": "onSurfaceVariant"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "divider"
-    },
-    {
-      "type": "layout.column",
-      "spacing": 8,
-      "children": [
-        {
-          "type": "text",
-          "content": "Tags",
-          "style": "bodyMedium",
-          "fontWeight": "bold"
+          "type": "divider"
         },
         {
-          "type": "layout.row",
+          "type": "layout.column",
           "spacing": 8,
           "children": [
             {
-              "type": "chip",
-              "label": "Exiter",
-              "selected": false
+              "type": "layout.row",
+              "spacing": 8,
+              "crossAxisAlignment": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "content": "✉️",
+                  "style": "bodyMedium"
+                },
+                {
+                  "type": "text",
+                  "content": "{{props.profile.email}}",
+                  "style": "bodySmall",
+                  "color": "onSurfaceVariant"
+                }
+              ]
             },
             {
-              "type": "chip",
-              "label": "Pro",
-              "selected": false
+              "type": "layout.row",
+              "spacing": 8,
+              "crossAxisAlignment": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "content": "📍",
+                  "style": "bodyMedium"
+                },
+                {
+                  "type": "text",
+                  "content": "{{props.profile.location}}",
+                  "style": "bodySmall",
+                  "color": "onSurfaceVariant"
+                }
+              ]
             },
             {
-              "type": "chip",
-              "label": "Creator",
-              "selected": false
+              "type": "layout.row",
+              "spacing": 8,
+              "crossAxisAlignment": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "content": "📅",
+                  "style": "bodyMedium"
+                },
+                {
+                  "type": "text",
+                  "content": "{{props.profile.memberSince}}",
+                  "style": "bodySmall",
+                  "color": "onSurfaceVariant"
+                }
+              ]
             }
           ]
-        }
-      ]
-    },
-    {
-      "type": "divider"
-    },
-    {
-      "type": "layout.column",
-      "spacing": 8,
-      "children": [
-        {
-          "type": "text",
-          "content": "Bio",
-          "style": "bodyMedium",
-          "fontWeight": "bold"
         },
         {
-          "type": "text",
-          "content": "{{props.profile.bio}}",
-          "style": "bodySmall",
-          "color": "onSurfaceVariant",
-          "lineHeight": 1.6
-        }
-      ]
-    },
-    {
-      "type": "divider"
-    },
-    {
-      "type": "layout.column",
-      "spacing": 8,
-      "children": [
-        {
-          "type": "text",
-          "content": "Links",
-          "style": "bodyMedium",
-          "fontWeight": "bold"
+          "type": "divider"
         },
         {
           "type": "layout.column",
@@ -213,28 +147,98 @@
           "children": [
             {
               "type": "text",
-              "content": "{{props.profile.links.website}}",
-              "style": "bodySmall",
-              "color": "primary",
-              "textDecoration": "underline"
+              "content": "Tags",
+              "style": "bodyMedium",
+              "fontWeight": "bold"
+            },
+            {
+              "type": "layout.row",
+              "spacing": 8,
+              "children": [
+                {
+                  "type": "chip",
+                  "label": "Exiter",
+                  "selected": false
+                },
+                {
+                  "type": "chip",
+                  "label": "Pro",
+                  "selected": false
+                },
+                {
+                  "type": "chip",
+                  "label": "Creator",
+                  "selected": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "layout.column",
+          "spacing": 8,
+          "children": [
+            {
+              "type": "text",
+              "content": "Bio",
+              "style": "bodyMedium",
+              "fontWeight": "bold"
             },
             {
               "type": "text",
-              "content": "{{props.profile.links.twitter}}",
+              "content": "{{props.profile.bio}}",
               "style": "bodySmall",
-              "color": "primary",
-              "textDecoration": "underline"
-            },
+              "color": "onSurfaceVariant",
+              "lineHeight": 1.6
+            }
+          ]
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "layout.column",
+          "spacing": 8,
+          "children": [
             {
               "type": "text",
-              "content": "{{props.profile.links.linkedin}}",
-              "style": "bodySmall",
-              "color": "primary",
-              "textDecoration": "underline"
+              "content": "Links",
+              "style": "bodyMedium",
+              "fontWeight": "bold"
+            },
+            {
+              "type": "layout.column",
+              "spacing": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "content": "{{props.profile.links.website}}",
+                  "style": "bodySmall",
+                  "color": "primary",
+                  "textDecoration": "underline"
+                },
+                {
+                  "type": "text",
+                  "content": "{{props.profile.links.twitter}}",
+                  "style": "bodySmall",
+                  "color": "primary",
+                  "textDecoration": "underline"
+                },
+                {
+                  "type": "text",
+                  "content": "{{props.profile.links.linkedin}}",
+                  "style": "bodySmall",
+                  "color": "primary",
+                  "textDecoration": "underline"
+                }
+              ]
             }
           ]
         }
       ]
     }
-  ]
+  }
 }

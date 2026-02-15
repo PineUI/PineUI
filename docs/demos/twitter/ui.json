@@ -116,25 +116,16 @@
             {
               "when": "{{state.showRetweetSuccess}}",
               "render": {
-                "type": "layout.row",
-                "mainAxisAlignment": "center",
+                "type": "card",
+                "elevation": 0,
                 "padding": 16,
-                "children": [
-                  {
-                    "type": "layout.column",
-                    "maxWidth": 800,
-                    "flex": 1,
-                    "children": [
-                      {
-                        "type": "component.alert.success",
-                        "props": {
-                          "title": "Retweeted!",
-                          "description": "The post has been shared with your followers."
-                        }
-                      }
-                    ]
+                "child": {
+                  "type": "component.alert.success",
+                  "props": {
+                    "title": "Retweeted!",
+                    "description": "The post has been shared with your followers."
                   }
-                ]
+                }
               }
             }
           ]

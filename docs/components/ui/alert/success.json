@@ -9,6 +9,7 @@
       "border": "1px solid #A5D6A7",
       "elevation": 2,
       "crossAxisAlignment": "start",
+      "width": "100%",
       "children": [
         {
           "type": "text",

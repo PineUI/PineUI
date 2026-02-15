@@ -1,49 +1,53 @@
 {
-  "type": "layout.row",
-  "padding": 8,
-  "spacing": 12,
-  "crossAxisAlignment": "center",
-  "onPress": {
-    "intent": "conversation.select",
-    "conversationId": "{{props.conversation.id}}"
-  },
-  "children": [
-    {
-      "type": "avatar",
-      "src": "{{props.conversation.avatar}}",
-      "size": 40
-    },
-    {
-      "type": "layout.column",
-      "flex": 1,
-      "spacing": 4,
+  "component.conversationItem": {
+    "definition": {
+      "type": "layout.row",
+      "padding": 8,
+      "spacing": 12,
+      "crossAxisAlignment": "center",
+      "onPress": {
+        "intent": "conversation.select",
+        "conversationId": "{{props.conversation.id}}"
+      },
       "children": [
         {
-          "type": "layout.row",
-          "mainAxisAlignment": "spaceBetween",
+          "type": "avatar",
+          "src": "{{props.conversation.avatar}}",
+          "size": 40
+        },
+        {
+          "type": "layout.column",
+          "flex": 1,
+          "spacing": 4,
           "children": [
             {
-              "type": "text",
-              "content": "{{props.conversation.name}}",
-              "style": "bodyLarge",
-              "fontWeight": "bold"
+              "type": "layout.row",
+              "mainAxisAlignment": "spaceBetween",
+              "children": [
+                {
+                  "type": "text",
+                  "content": "{{props.conversation.name}}",
+                  "style": "bodyLarge",
+                  "fontWeight": "bold"
+                },
+                {
+                  "type": "text",
+                  "content": "{{props.conversation.time}}",
+                  "style": "bodySmall",
+                  "color": "onSurfaceVariant",
+                  "fontSize": 12
+                }
+              ]
             },
             {
               "type": "text",
-              "content": "{{props.conversation.time}}",
+              "content": "{{props.conversation.message}}",
               "style": "bodySmall",
-              "color": "onSurfaceVariant",
-              "fontSize": 12
+              "color": "onSurfaceVariant"
             }
           ]
-        },
-        {
-          "type": "text",
-          "content": "{{props.conversation.message}}",
-          "style": "bodySmall",
-          "color": "onSurfaceVariant"
         }
       ]
     }
-  ]
+  }
 }
