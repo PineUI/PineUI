@@ -2,16 +2,24 @@
   "schemaVersion": "1.0.0",
   "screen": {
     "type": "layout.scaffold",
-    "appBar": {
-      "type": "layout.appBar",
-      "title": {
-        "type": "text",
-        "content": "Twitter",
-        "style": "titleLarge"
-      }
-    },
     "body": {
-      "type": "collection",
+      "type": "layout.column",
+      "spacing": 0,
+      "children": [
+        {
+          "type": "layout.column",
+          "padding": 16,
+          "spacing": 16,
+          "children": [
+            {
+              "type": "text",
+              "content": "Twitter",
+              "style": "titleLarge"
+            }
+          ]
+        },
+        {
+          "type": "collection",
       "id": "feed_posts",
       "layout": "list",
       "virtualized": true,
@@ -53,6 +61,8 @@
           }
         ]
       }
+        }
+      ]
     },
     "floatingActionButton": {
       "type": "button.fab",

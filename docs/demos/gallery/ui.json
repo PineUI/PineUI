@@ -14,19 +14,16 @@
   },
   "screen": {
     "type": "layout.scaffold",
-    "appBar": {
-      "type": "layout.appBar",
-      "title": {
-        "type": "text",
-        "content": "Gallery",
-        "style": "titleLarge"
-      }
-    },
     "body": {
       "type": "layout.column",
       "spacing": 16,
       "padding": 16,
       "children": [
+        {
+          "type": "text",
+          "content": "Gallery",
+          "style": "titleLarge"
+        },
         {
           "type": "layout.row",
           "spacing": 8,
