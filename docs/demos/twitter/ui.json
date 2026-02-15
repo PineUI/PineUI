@@ -111,6 +111,27 @@
       "spacing": 0,
       "children": [
         {
+          "type": "conditionalRender",
+          "conditions": [
+            {
+              "when": "{{state.showRetweetSuccess}}",
+              "render": {
+                "type": "layout.column",
+                "padding": 16,
+                "children": [
+                  {
+                    "type": "component.alert.success",
+                    "props": {
+                      "title": "Retweeted!",
+                      "description": "The post has been shared with your followers."
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
           "type": "layout.column",
           "padding": 16,
           "spacing": 16,
@@ -165,27 +186,6 @@
           }
         ]
       }
-        },
-        {
-          "type": "conditionalRender",
-          "conditions": [
-            {
-              "when": "{{state.showRetweetSuccess}}",
-              "render": {
-                "type": "layout.column",
-                "padding": 16,
-                "children": [
-                  {
-                    "type": "component.alert.success",
-                    "props": {
-                      "title": "Retweeted!",
-                      "description": "The post has been shared with your followers."
-                    }
-                  }
-                ]
-              }
-            }
-          ]
         }
       ]
     },
