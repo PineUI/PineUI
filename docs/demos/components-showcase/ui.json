@@ -1,0 +1,226 @@
+{
+  "schemaVersion": "1.0.0",
+  "imports": {
+    "components": [
+      "../../components/ui/alert/default.json",
+      "../../components/ui/alert/destructive.json",
+      "../../components/ui/alert/success.json",
+      "../../components/ui/alert/warning.json",
+      "../../components/ui/badge/default.json",
+      "../../components/ui/badge/destructive.json",
+      "../../components/ui/badge/success.json",
+      "../../components/ui/badge/outline.json",
+      "../../components/ui/card/default.json",
+      "../../components/ui/card/elevated.json",
+      "../../components/ui/card/with-footer.json",
+      "../../components/ui/alert-dialog/default.json",
+      "../../components/ui/alert-dialog/destructive.json"
+    ]
+  },
+  "state": {
+    "showDialog": false
+  },
+  "intents": {
+    "dialog.show": {
+      "handler": {
+        "type": "action.state.patch",
+        "path": "showDialog",
+        "value": true
+      }
+    },
+    "dialog.close": {
+      "handler": {
+        "type": "action.state.patch",
+        "path": "showDialog",
+        "value": false
+      }
+    }
+  },
+  "screen": {
+    "type": "layout.column",
+    "padding": 24,
+    "spacing": 32,
+    "overflow": "auto",
+    "backgroundColor": "#F8F9FA",
+    "children": [
+      {
+        "type": "text",
+        "content": "PineUI Components Showcase",
+        "style": "displaySmall",
+        "fontWeight": "bold",
+        "color": "#1D1B20"
+      },
+      {
+        "type": "layout.column",
+        "spacing": 16,
+        "children": [
+          {
+            "type": "text",
+            "content": "Alerts",
+            "style": "headlineMedium",
+            "fontWeight": "bold",
+            "color": "#1D1B20"
+          },
+          {
+            "type": "component.alert.default",
+            "props": {
+              "title": "Information",
+              "description": "You can add components to your app using the PineUI component registry."
+            }
+          },
+          {
+            "type": "component.alert.success",
+            "props": {
+              "title": "Success",
+              "description": "Your changes have been saved successfully."
+            }
+          },
+          {
+            "type": "component.alert.warning",
+            "props": {
+              "title": "Warning",
+              "description": "This action requires additional permissions."
+            }
+          },
+          {
+            "type": "component.alert.destructive",
+            "props": {
+              "title": "Error",
+              "description": "Your session has expired. Please log in again."
+            }
+          }
+        ]
+      },
+      {
+        "type": "layout.column",
+        "spacing": 16,
+        "children": [
+          {
+            "type": "text",
+            "content": "Badges",
+            "style": "headlineMedium",
+            "fontWeight": "bold",
+            "color": "#1D1B20"
+          },
+          {
+            "type": "layout.row",
+            "spacing": 8,
+            "children": [
+              {
+                "type": "component.badge.default",
+                "props": {
+                  "label": "New"
+                }
+              },
+              {
+                "type": "component.badge.success",
+                "props": {
+                  "label": "Active"
+                }
+              },
+              {
+                "type": "component.badge.destructive",
+                "props": {
+                  "label": "Error"
+                }
+              },
+              {
+                "type": "component.badge.outline",
+                "props": {
+                  "label": "Draft"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "layout.column",
+        "spacing": 16,
+        "children": [
+          {
+            "type": "text",
+            "content": "Cards",
+            "style": "headlineMedium",
+            "fontWeight": "bold",
+            "color": "#1D1B20"
+          },
+          {
+            "type": "layout.row",
+            "spacing": 16,
+            "children": [
+              {
+                "type": "component.card.default",
+                "flex": 1,
+                "props": {
+                  "title": "Default Card",
+                  "description": "This is a simple card with a border. Great for displaying information in a contained format."
+                }
+              },
+              {
+                "type": "component.card.elevated",
+                "flex": 1,
+                "props": {
+                  "title": "Elevated Card",
+                  "description": "This card has elevation for a lifted appearance. Perfect for highlighting important content."
+                }
+              }
+            ]
+          },
+          {
+            "type": "component.card.with-footer",
+            "props": {
+              "title": "Card with Actions",
+              "description": "This card includes footer actions. Useful for forms or confirmation dialogs within a card format.",
+              "cancelLabel": "Cancel",
+              "actionLabel": "Save",
+              "onCancel": "dialog.close",
+              "onAction": "dialog.close"
+            }
+          }
+        ]
+      },
+      {
+        "type": "layout.column",
+        "spacing": 16,
+        "children": [
+          {
+            "type": "text",
+            "content": "Alert Dialogs",
+            "style": "headlineMedium",
+            "fontWeight": "bold",
+            "color": "#1D1B20"
+          },
+          {
+            "type": "text",
+            "content": "Alert dialogs are modal components that interrupt the user with important content. They're typically used for confirmations or critical decisions.",
+            "style": "bodyLarge",
+            "color": "#49454F",
+            "lineHeight": 1.5
+          },
+          {
+            "type": "layout.row",
+            "spacing": 12,
+            "children": [
+              {
+                "type": "button.filled",
+                "label": "Show Default Dialog",
+                "onPress": {
+                  "intent": "dialog.show"
+                }
+              },
+              {
+                "type": "button.filled",
+                "label": "Show Destructive Dialog",
+                "backgroundColor": "#B3261E",
+                "onPress": {
+                  "intent": "dialog.show"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,478 @@
+{
+  "schemaVersion": "1.0.0",
+  "imports": {
+    "components": [
+      "../../components/ui/alert/default.json",
+      "../../components/ui/alert/destructive.json",
+      "../../components/ui/alert/success.json",
+      "../../components/ui/alert/warning.json",
+      "../../components/ui/badge/default.json",
+      "../../components/ui/badge/destructive.json",
+      "../../components/ui/badge/success.json",
+      "../../components/ui/badge/outline.json",
+      "../../components/ui/card/default.json",
+      "../../components/ui/card/elevated.json",
+      "../../components/ui/card/with-footer.json"
+    ]
+  },
+  "state": {
+    "selectedComponent": null,
+    "selectedVariant": null
+  },
+  "intents": {
+    "component.select": {
+      "handler": {
+        "type": "action.state.patch",
+        "path": "selectedComponent",
+        "value": "{{componentName}}"
+      }
+    }
+  },
+  "screen": {
+    "type": "layout.column",
+    "spacing": 0,
+    "backgroundColor": "#F8F9FA",
+    "children": [
+      {
+        "type": "layout.column",
+        "padding": 32,
+        "spacing": 16,
+        "backgroundColor": "#6750A4",
+        "children": [
+          {
+            "type": "text",
+            "content": "🍍 PineUI Component Catalog",
+            "style": "displaySmall",
+            "fontWeight": "bold",
+            "color": "#FFFFFF"
+          },
+          {
+            "type": "text",
+            "content": "Browse and explore reusable components. Inspired by shadcn/ui, following Material Design 3.",
+            "style": "bodyLarge",
+            "color": "#E8DEF8",
+            "lineHeight": 1.5
+          }
+        ]
+      },
+      {
+        "type": "layout.column",
+        "padding": 32,
+        "spacing": 48,
+        "overflow": "auto",
+        "children": [
+          {
+            "type": "layout.column",
+            "spacing": 24,
+            "children": [
+              {
+                "type": "layout.row",
+                "spacing": 12,
+                "crossAxisAlignment": "center",
+                "children": [
+                  {
+                    "type": "text",
+                    "content": "💬",
+                    "style": "headlineMedium"
+                  },
+                  {
+                    "type": "layout.column",
+                    "flex": 1,
+                    "spacing": 4,
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Alert",
+                        "style": "headlineMedium",
+                        "fontWeight": "bold",
+                        "color": "#1D1B20"
+                      },
+                      {
+                        "type": "text",
+                        "content": "Displays a callout for user attention with variants for different severity levels",
+                        "style": "bodyMedium",
+                        "color": "#49454F",
+                        "lineHeight": 1.5
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "layout.column",
+                "spacing": 16,
+                "children": [
+                  {
+                    "type": "layout.column",
+                    "spacing": 8,
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Default",
+                        "style": "labelLarge",
+                        "fontWeight": "bold",
+                        "color": "#49454F"
+                      },
+                      {
+                        "type": "component.alert.default",
+                        "props": {
+                          "title": "Heads up!",
+                          "description": "You can add components to your app using the PineUI component registry."
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "layout.column",
+                    "spacing": 8,
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Success",
+                        "style": "labelLarge",
+                        "fontWeight": "bold",
+                        "color": "#49454F"
+                      },
+                      {
+                        "type": "component.alert.success",
+                        "props": {
+                          "title": "Success",
+                          "description": "Your changes have been saved successfully."
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "layout.column",
+                    "spacing": 8,
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Warning",
+                        "style": "labelLarge",
+                        "fontWeight": "bold",
+                        "color": "#49454F"
+                      },
+                      {
+                        "type": "component.alert.warning",
+                        "props": {
+                          "title": "Warning",
+                          "description": "This action requires additional permissions."
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "layout.column",
+                    "spacing": 8,
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Destructive",
+                        "style": "labelLarge",
+                        "fontWeight": "bold",
+                        "color": "#49454F"
+                      },
+                      {
+                        "type": "component.alert.destructive",
+                        "props": {
+                          "title": "Error",
+                          "description": "Your session has expired. Please log in again."
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "layout.column",
+            "spacing": 24,
+            "children": [
+              {
+                "type": "layout.row",
+                "spacing": 12,
+                "crossAxisAlignment": "center",
+                "children": [
+                  {
+                    "type": "text",
+                    "content": "🏷️",
+                    "style": "headlineMedium"
+                  },
+                  {
+                    "type": "layout.column",
+                    "flex": 1,
+                    "spacing": 4,
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Badge",
+                        "style": "headlineMedium",
+                        "fontWeight": "bold",
+                        "color": "#1D1B20"
+                      },
+                      {
+                        "type": "text",
+                        "content": "Displays a badge or tag to highlight an item or status",
+                        "style": "bodyMedium",
+                        "color": "#49454F",
+                        "lineHeight": 1.5
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "layout.row",
+                "spacing": 12,
+                "children": [
+                  {
+                    "type": "layout.column",
+                    "spacing": 8,
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Default",
+                        "style": "labelSmall",
+                        "fontWeight": "bold",
+                        "color": "#49454F"
+                      },
+                      {
+                        "type": "component.badge.default",
+                        "props": {
+                          "label": "New"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "layout.column",
+                    "spacing": 8,
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Success",
+                        "style": "labelSmall",
+                        "fontWeight": "bold",
+                        "color": "#49454F"
+                      },
+                      {
+                        "type": "component.badge.success",
+                        "props": {
+                          "label": "Active"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "layout.column",
+                    "spacing": 8,
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Destructive",
+                        "style": "labelSmall",
+                        "fontWeight": "bold",
+                        "color": "#49454F"
+                      },
+                      {
+                        "type": "component.badge.destructive",
+                        "props": {
+                          "label": "Error"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "layout.column",
+                    "spacing": 8,
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Outline",
+                        "style": "labelSmall",
+                        "fontWeight": "bold",
+                        "color": "#49454F"
+                      },
+                      {
+                        "type": "component.badge.outline",
+                        "props": {
+                          "label": "Draft"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "layout.column",
+            "spacing": 24,
+            "children": [
+              {
+                "type": "layout.row",
+                "spacing": 12,
+                "crossAxisAlignment": "center",
+                "children": [
+                  {
+                    "type": "text",
+                    "content": "🃏",
+                    "style": "headlineMedium"
+                  },
+                  {
+                    "type": "layout.column",
+                    "flex": 1,
+                    "spacing": 4,
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Card",
+                        "style": "headlineMedium",
+                        "fontWeight": "bold",
+                        "color": "#1D1B20"
+                      },
+                      {
+                        "type": "text",
+                        "content": "Displays a card with optional header, content, and footer sections",
+                        "style": "bodyMedium",
+                        "color": "#49454F",
+                        "lineHeight": 1.5
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "layout.row",
+                "spacing": 16,
+                "children": [
+                  {
+                    "type": "layout.column",
+                    "flex": 1,
+                    "spacing": 8,
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Default",
+                        "style": "labelLarge",
+                        "fontWeight": "bold",
+                        "color": "#49454F"
+                      },
+                      {
+                        "type": "component.card.default",
+                        "props": {
+                          "title": "Default Card",
+                          "description": "This is a simple card with a border. Great for displaying information."
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "layout.column",
+                    "flex": 1,
+                    "spacing": 8,
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Elevated",
+                        "style": "labelLarge",
+                        "fontWeight": "bold",
+                        "color": "#49454F"
+                      },
+                      {
+                        "type": "component.card.elevated",
+                        "props": {
+                          "title": "Elevated Card",
+                          "description": "This card has elevation for a lifted appearance."
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "layout.column",
+                "spacing": 8,
+                "children": [
+                  {
+                    "type": "text",
+                    "content": "With Footer",
+                    "style": "labelLarge",
+                    "fontWeight": "bold",
+                    "color": "#49454F"
+                  },
+                  {
+                    "type": "component.card.with-footer",
+                    "props": {
+                      "title": "Card with Actions",
+                      "description": "This card includes footer actions. Useful for forms or confirmations.",
+                      "cancelLabel": "Cancel",
+                      "actionLabel": "Save",
+                      "onCancel": "component.select",
+                      "onAction": "component.select"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "layout.column",
+            "padding": 24,
+            "spacing": 16,
+            "backgroundColor": "#E8DEF8",
+            "borderRadius": 16,
+            "children": [
+              {
+                "type": "text",
+                "content": "📚 Want to use these components?",
+                "style": "titleLarge",
+                "fontWeight": "bold",
+                "color": "#21005D"
+              },
+              {
+                "type": "text",
+                "content": "All components are available in the PineUI component library. Simply import them in your ui.json file and start using!",
+                "style": "bodyLarge",
+                "color": "#49454F",
+                "lineHeight": 1.5
+              },
+              {
+                "type": "layout.row",
+                "spacing": 12,
+                "children": [
+                  {
+                    "type": "button.filled",
+                    "label": "View Documentation",
+                    "onPress": {
+                      "type": "action.snackbar.show",
+                      "message": "Check docs/components/README.md for full documentation",
+                      "duration": 5000
+                    }
+                  },
+                  {
+                    "type": "button.text",
+                    "label": "GitHub",
+                    "onPress": {
+                      "type": "action.snackbar.show",
+                      "message": "github.com/pineui/components",
+                      "duration": 3000
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

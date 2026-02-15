@@ -1,5 +1,14 @@
 {
   "schemaVersion": "1.0.0",
+  "imports": {
+    "components": [
+      "../../components/ui/alert/default.json",
+      "../../components/ui/alert/success.json",
+      "../../components/ui/badge/default.json",
+      "../../components/ui/badge/success.json",
+      "../../components/ui/card/elevated.json"
+    ]
+  },
   "screen": {
     "type": "layout.scaffold",
     "body": {
@@ -17,6 +26,49 @@
           "content": "Server-Driven UI funcionando!",
           "style": "bodyMedium",
           "color": "onSurfaceVariant"
+        },
+        {
+          "type": "divider",
+          "thickness": 1,
+          "color": "surfaceVariant"
+        },
+        {
+          "type": "text",
+          "content": "Custom Components Library",
+          "style": "titleMedium",
+          "fontWeight": "bold"
+        },
+        {
+          "type": "component.alert.success",
+          "props": {
+            "title": "Bem-vindo!",
+            "description": "Estes são componentes reutilizáveis da biblioteca PineUI. Inspirados no shadcn/ui e seguindo Material Design 3."
+          }
+        },
+        {
+          "type": "layout.row",
+          "spacing": 8,
+          "children": [
+            {
+              "type": "component.badge.default",
+              "props": {
+                "label": "Nova Feature"
+              }
+            },
+            {
+              "type": "component.badge.success",
+              "props": {
+                "label": "Stable"
+              }
+            }
+          ]
+        },
+        {
+          "type": "component.card.elevated",
+          "props": {
+            "title": "Card Componente",
+            "description": "Este é um card reutilizável com elevação. Perfeito para destacar conteúdo importante."
+          }
         },
         {
           "type": "divider",

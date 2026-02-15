@@ -1,0 +1,68 @@
+{
+  "component.alert-dialog.destructive": {
+    "definition": {
+      "type": "layout.column",
+      "padding": 24,
+      "spacing": 16,
+      "backgroundColor": "#FFFBFE",
+      "borderRadius": 28,
+      "maxWidth": 400,
+      "children": [
+        {
+          "type": "layout.column",
+          "spacing": 8,
+          "children": [
+            {
+              "type": "layout.row",
+              "spacing": 8,
+              "crossAxisAlignment": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "content": "\u26a0\ufe0f",
+                  "style": "headlineSmall"
+                },
+                {
+                  "type": "text",
+                  "content": "{{props.title}}",
+                  "style": "headlineSmall",
+                  "fontWeight": "bold",
+                  "color": "#B3261E"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "content": "{{props.description}}",
+              "style": "bodyMedium",
+              "color": "#49454F",
+              "lineHeight": 1.5
+            }
+          ]
+        },
+        {
+          "type": "layout.row",
+          "spacing": 8,
+          "mainAxisAlignment": "end",
+          "children": [
+            {
+              "type": "button.text",
+              "label": "{{props.cancelLabel}}",
+              "onPress": {
+                "intent": "{{props.onCancel}}"
+              }
+            },
+            {
+              "type": "button.filled",
+              "label": "{{props.confirmLabel}}",
+              "backgroundColor": "#B3261E",
+              "onPress": {
+                "intent": "{{props.onConfirm}}"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

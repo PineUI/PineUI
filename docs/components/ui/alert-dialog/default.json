@@ -1,0 +1,55 @@
+{
+  "component.alert-dialog.default": {
+    "definition": {
+      "type": "layout.column",
+      "padding": 24,
+      "spacing": 16,
+      "backgroundColor": "#FFFBFE",
+      "borderRadius": 28,
+      "maxWidth": 400,
+      "children": [
+        {
+          "type": "layout.column",
+          "spacing": 8,
+          "children": [
+            {
+              "type": "text",
+              "content": "{{props.title}}",
+              "style": "headlineSmall",
+              "fontWeight": "bold",
+              "color": "#1D1B20"
+            },
+            {
+              "type": "text",
+              "content": "{{props.description}}",
+              "style": "bodyMedium",
+              "color": "#49454F",
+              "lineHeight": 1.5
+            }
+          ]
+        },
+        {
+          "type": "layout.row",
+          "spacing": 8,
+          "mainAxisAlignment": "end",
+          "children": [
+            {
+              "type": "button.text",
+              "label": "{{props.cancelLabel}}",
+              "onPress": {
+                "intent": "{{props.onCancel}}"
+              }
+            },
+            {
+              "type": "button.filled",
+              "label": "{{props.confirmLabel}}",
+              "onPress": {
+                "intent": "{{props.onConfirm}}"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

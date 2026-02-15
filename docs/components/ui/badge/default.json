@@ -1,0 +1,22 @@
+{
+  "component.badge.default": {
+    "definition": {
+      "type": "layout.row",
+      "paddingHorizontal": 12,
+      "paddingVertical": 4,
+      "backgroundColor": "#E8DEF8",
+      "borderRadius": 16,
+      "spacing": 4,
+      "crossAxisAlignment": "center",
+      "children": [
+        {
+          "type": "text",
+          "content": "{{props.label}}",
+          "style": "labelSmall",
+          "fontWeight": "bold",
+          "color": "#21005D"
+        }
+      ]
+    }
+  }
+}

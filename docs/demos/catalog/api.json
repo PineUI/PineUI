@@ -1,0 +1,37 @@
+{
+  "components": [
+    {
+      "name": "Alert",
+      "description": "Displays a callout for user attention with variants for different severity levels",
+      "icon": "💬",
+      "variants": ["default", "destructive", "success", "warning"],
+      "props": {
+        "title": "string",
+        "description": "string"
+      }
+    },
+    {
+      "name": "Badge",
+      "description": "Displays a badge or tag to highlight an item or status",
+      "icon": "🏷️",
+      "variants": ["default", "destructive", "success", "outline"],
+      "props": {
+        "label": "string"
+      }
+    },
+    {
+      "name": "Card",
+      "description": "Displays a card with optional header, content, and footer sections",
+      "icon": "🃏",
+      "variants": ["default", "elevated", "with-footer"],
+      "props": {
+        "title": "string",
+        "description": "string",
+        "cancelLabel": "string (optional)",
+        "actionLabel": "string (optional)",
+        "onCancel": "intent (optional)",
+        "onAction": "intent (optional)"
+      }
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "type": "layout.row",
+  "spacing": 12,
+  "crossAxisAlignment": "start",
+  "children": [
+    {
+      "type": "layout.column",
+      "spacing": 0,
+      "onPress": {
+        "intent": "user.viewProfile",
+        "userId": "{{props.message.userId}}"
+      },
+      "children": [
+        {
+          "type": "avatar",
+          "src": "{{props.message.avatar}}",
+          "size": 40
+        }
+      ]
+    },
+    {
+      "type": "layout.column",
+      "flex": 1,
+      "spacing": 8,
+      "children": [
+        {
+          "type": "layout.row",
+          "spacing": 8,
+          "crossAxisAlignment": "center",
+          "children": [
+            {
+              "type": "text",
+              "content": "{{props.message.author}}",
+              "style": "bodyMedium",
+              "fontWeight": "bold"
+            },
+            {
+              "type": "text",
+              "content": "{{props.message.time}}",
+              "style": "bodySmall",
+              "color": "onSurfaceVariant"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "content": "{{props.message.content}}",
+          "style": "bodyMedium",
+          "lineHeight": 1.5
+        },
+        {
+          "type": "layout.row",
+          "spacing": 16,
+          "children": [
+            {
+              "type": "layout.row",
+              "spacing": 6,
+              "crossAxisAlignment": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "content": "👍",
+                  "style": "bodySmall"
+                },
+                {
+                  "type": "text",
+                  "content": "{{props.message.likes}}",
+                  "style": "bodySmall",
+                  "color": "onSurfaceVariant"
+                }
+              ]
+            },
+            {
+              "type": "layout.row",
+              "spacing": 6,
+              "crossAxisAlignment": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "content": "💬",
+                  "style": "bodySmall"
+                },
+                {
+                  "type": "text",
+                  "content": "{{props.message.replies}} replies",
+                  "style": "bodySmall",
+                  "color": "onSurfaceVariant"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

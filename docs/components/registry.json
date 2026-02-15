@@ -1,0 +1,363 @@
+{
+  "version": "1.0.0",
+  "components": {
+    "alert": {
+      "name": "Alert",
+      "description": "Displays a callout for user attention with variants for different severity levels",
+      "variants": {
+        "default": {
+          "path": "./ui/alert/default.json",
+          "props": {
+            "title": {
+              "type": "string",
+              "required": true,
+              "description": "Alert title"
+            },
+            "description": {
+              "type": "string",
+              "required": true,
+              "description": "Alert message"
+            }
+          },
+          "example": {
+            "type": "component.alert.default",
+            "props": {
+              "title": "Heads up!",
+              "description": "You can add components to your app using the cli."
+            }
+          }
+        },
+        "destructive": {
+          "path": "./ui/alert/destructive.json",
+          "props": {
+            "title": {
+              "type": "string",
+              "required": true,
+              "description": "Alert title"
+            },
+            "description": {
+              "type": "string",
+              "required": true,
+              "description": "Alert message"
+            }
+          },
+          "example": {
+            "type": "component.alert.destructive",
+            "props": {
+              "title": "Error",
+              "description": "Your session has expired. Please log in again."
+            }
+          }
+        },
+        "success": {
+          "path": "./ui/alert/success.json",
+          "props": {
+            "title": {
+              "type": "string",
+              "required": true,
+              "description": "Alert title"
+            },
+            "description": {
+              "type": "string",
+              "required": true,
+              "description": "Alert message"
+            }
+          },
+          "example": {
+            "type": "component.alert.success",
+            "props": {
+              "title": "Success",
+              "description": "Your changes have been saved successfully."
+            }
+          }
+        },
+        "warning": {
+          "path": "./ui/alert/warning.json",
+          "props": {
+            "title": {
+              "type": "string",
+              "required": true,
+              "description": "Alert title"
+            },
+            "description": {
+              "type": "string",
+              "required": true,
+              "description": "Alert message"
+            }
+          },
+          "example": {
+            "type": "component.alert.warning",
+            "props": {
+              "title": "Warning",
+              "description": "This action cannot be undone."
+            }
+          }
+        }
+      }
+    },
+    "alert-dialog": {
+      "name": "Alert Dialog",
+      "description": "A modal dialog that interrupts the user with important content and expects a response",
+      "variants": {
+        "default": {
+          "path": "./ui/alert-dialog/default.json",
+          "props": {
+            "title": {
+              "type": "string",
+              "required": true,
+              "description": "Dialog title"
+            },
+            "description": {
+              "type": "string",
+              "required": true,
+              "description": "Dialog message"
+            },
+            "cancelLabel": {
+              "type": "string",
+              "required": true,
+              "description": "Cancel button label"
+            },
+            "confirmLabel": {
+              "type": "string",
+              "required": true,
+              "description": "Confirm button label"
+            },
+            "onCancel": {
+              "type": "intent",
+              "required": true,
+              "description": "Intent to trigger on cancel"
+            },
+            "onConfirm": {
+              "type": "intent",
+              "required": true,
+              "description": "Intent to trigger on confirm"
+            }
+          },
+          "example": {
+            "type": "component.alert-dialog.default",
+            "props": {
+              "title": "Are you absolutely sure?",
+              "description": "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
+              "cancelLabel": "Cancel",
+              "confirmLabel": "Continue",
+              "onCancel": "dialog.close",
+              "onConfirm": "account.delete"
+            }
+          }
+        },
+        "destructive": {
+          "path": "./ui/alert-dialog/destructive.json",
+          "props": {
+            "title": {
+              "type": "string",
+              "required": true,
+              "description": "Dialog title"
+            },
+            "description": {
+              "type": "string",
+              "required": true,
+              "description": "Dialog message"
+            },
+            "cancelLabel": {
+              "type": "string",
+              "required": true,
+              "description": "Cancel button label"
+            },
+            "confirmLabel": {
+              "type": "string",
+              "required": true,
+              "description": "Confirm button label"
+            },
+            "onCancel": {
+              "type": "intent",
+              "required": true,
+              "description": "Intent to trigger on cancel"
+            },
+            "onConfirm": {
+              "type": "intent",
+              "required": true,
+              "description": "Intent to trigger on confirm"
+            }
+          },
+          "example": {
+            "type": "component.alert-dialog.destructive",
+            "props": {
+              "title": "Delete account",
+              "description": "This will permanently delete your account and all associated data. This action cannot be undone.",
+              "cancelLabel": "Cancel",
+              "confirmLabel": "Delete",
+              "onCancel": "dialog.close",
+              "onConfirm": "account.delete"
+            }
+          }
+        }
+      }
+    },
+    "badge": {
+      "name": "Badge",
+      "description": "Displays a badge or tag to highlight an item or status",
+      "variants": {
+        "default": {
+          "path": "./ui/badge/default.json",
+          "props": {
+            "label": {
+              "type": "string",
+              "required": true,
+              "description": "Badge text"
+            }
+          },
+          "example": {
+            "type": "component.badge.default",
+            "props": {
+              "label": "New"
+            }
+          }
+        },
+        "destructive": {
+          "path": "./ui/badge/destructive.json",
+          "props": {
+            "label": {
+              "type": "string",
+              "required": true,
+              "description": "Badge text"
+            }
+          },
+          "example": {
+            "type": "component.badge.destructive",
+            "props": {
+              "label": "Error"
+            }
+          }
+        },
+        "success": {
+          "path": "./ui/badge/success.json",
+          "props": {
+            "label": {
+              "type": "string",
+              "required": true,
+              "description": "Badge text"
+            }
+          },
+          "example": {
+            "type": "component.badge.success",
+            "props": {
+              "label": "Active"
+            }
+          }
+        },
+        "outline": {
+          "path": "./ui/badge/outline.json",
+          "props": {
+            "label": {
+              "type": "string",
+              "required": true,
+              "description": "Badge text"
+            }
+          },
+          "example": {
+            "type": "component.badge.outline",
+            "props": {
+              "label": "Draft"
+            }
+          }
+        }
+      }
+    },
+    "card": {
+      "name": "Card",
+      "description": "Displays a card with optional header, content, and footer sections",
+      "variants": {
+        "default": {
+          "path": "./ui/card/default.json",
+          "props": {
+            "title": {
+              "type": "string",
+              "required": true,
+              "description": "Card title"
+            },
+            "description": {
+              "type": "string",
+              "required": true,
+              "description": "Card content"
+            }
+          },
+          "example": {
+            "type": "component.card.default",
+            "props": {
+              "title": "Card Title",
+              "description": "Card description goes here. This is a simple card component."
+            }
+          }
+        },
+        "elevated": {
+          "path": "./ui/card/elevated.json",
+          "props": {
+            "title": {
+              "type": "string",
+              "required": true,
+              "description": "Card title"
+            },
+            "description": {
+              "type": "string",
+              "required": true,
+              "description": "Card content"
+            }
+          },
+          "example": {
+            "type": "component.card.elevated",
+            "props": {
+              "title": "Elevated Card",
+              "description": "This card has elevation for a lifted appearance."
+            }
+          }
+        },
+        "with-footer": {
+          "path": "./ui/card/with-footer.json",
+          "props": {
+            "title": {
+              "type": "string",
+              "required": true,
+              "description": "Card title"
+            },
+            "description": {
+              "type": "string",
+              "required": true,
+              "description": "Card content"
+            },
+            "cancelLabel": {
+              "type": "string",
+              "required": true,
+              "description": "Cancel button label"
+            },
+            "actionLabel": {
+              "type": "string",
+              "required": true,
+              "description": "Action button label"
+            },
+            "onCancel": {
+              "type": "intent",
+              "required": true,
+              "description": "Intent to trigger on cancel"
+            },
+            "onAction": {
+              "type": "intent",
+              "required": true,
+              "description": "Intent to trigger on action"
+            }
+          },
+          "example": {
+            "type": "component.card.with-footer",
+            "props": {
+              "title": "Confirm Action",
+              "description": "Are you sure you want to proceed with this action?",
+              "cancelLabel": "Cancel",
+              "actionLabel": "Confirm",
+              "onCancel": "action.cancel",
+              "onAction": "action.confirm"
+            }
+          }
+        }
+      }
+    }
+  }
+}

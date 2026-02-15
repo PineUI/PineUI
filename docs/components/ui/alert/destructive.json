@@ -1,0 +1,40 @@
+{
+  "component.alert.destructive": {
+    "definition": {
+      "type": "layout.row",
+      "padding": 16,
+      "spacing": 12,
+      "backgroundColor": "#F9DEDC",
+      "borderRadius": 12,
+      "crossAxisAlignment": "start",
+      "children": [
+        {
+          "type": "text",
+          "content": "\u26a0\ufe0f",
+          "style": "titleMedium"
+        },
+        {
+          "type": "layout.column",
+          "flex": 1,
+          "spacing": 4,
+          "children": [
+            {
+              "type": "text",
+              "content": "{{props.title}}",
+              "style": "bodyLarge",
+              "fontWeight": "bold",
+              "color": "#410E0B"
+            },
+            {
+              "type": "text",
+              "content": "{{props.description}}",
+              "style": "bodyMedium",
+              "color": "#8C1D18",
+              "lineHeight": 1.5
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
