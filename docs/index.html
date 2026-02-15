@@ -81,6 +81,12 @@
       max-width: 1400px;
     }
 
+    /* Demos full-width (sem limite) */
+    .container--fullwidth {
+      max-width: none;
+      padding: 0;
+    }
+
     .demo-controls {
       display: flex;
       justify-content: flex-end;
@@ -115,6 +121,14 @@
       overflow: hidden;
       box-shadow: 0 20px 60px rgba(0,0,0,0.3);
       min-height: 600px;
+    }
+
+    /* Full-height demo (inbox) */
+    .container--fullwidth .demo-container {
+      border-radius: 0;
+      box-shadow: none;
+      min-height: calc(100vh - 140px);
+      height: calc(100vh - 140px);
     }
 
     #pineui-root {
@@ -287,7 +301,9 @@
 
     // Adjust container width for demos that need more space
     const container = document.querySelector('.container');
-    if (demo === 'inbox' || demo === 'admin') {
+    if (demo === 'inbox') {
+      container.classList.add('container--fullwidth');
+    } else if (demo === 'admin') {
       container.classList.add('container--wide');
     }
 
