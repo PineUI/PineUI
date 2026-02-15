@@ -24,7 +24,9 @@
   "author": "Luma Ventures Ltda <CNPJ: 21.951.820/0001-39>",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@types/node": "^20.11.0",
+    "playwright": "^1.58.2",
     "typescript": "^5.3.3"
   }
 }
