@@ -84,7 +84,7 @@
                         "url": "/api/inbox/conversations"
                       },
                       "itemTemplate": {
-                        "type": "pattern.conversationItem",
+                        "type": "component.conversationItem",
                         "props": {
                           "conversation": "{{item}}"
                         }
@@ -104,7 +104,7 @@
                         "url": "/api/inbox/conversations/unread"
                       },
                       "itemTemplate": {
-                        "type": "pattern.conversationItem",
+                        "type": "component.conversationItem",
                         "props": {
                           "conversation": "{{item}}"
                         }
@@ -123,7 +123,7 @@
                         "url": "/api/inbox/conversations/agents"
                       },
                       "itemTemplate": {
-                        "type": "pattern.conversationItem",
+                        "type": "component.conversationItem",
                         "props": {
                           "conversation": "{{item}}"
                         }
@@ -208,7 +208,7 @@
                   "url": "/api/inbox/messages?conversationId={{state.selectedConversationId}}"
                 },
                 "itemTemplate": {
-                  "type": "pattern.messageItem",
+                  "type": "component.messageItem",
                   "props": {
                     "message": "{{item}}"
                   }
@@ -266,7 +266,7 @@
               "url": "/api/inbox/profile?userId={{state.selectedUserId}}"
             },
             "itemTemplate": {
-              "type": "pattern.profilePanel",
+              "type": "component.profilePanel",
               "props": {
                 "profile": "{{item}}"
               }
@@ -276,7 +276,7 @@
       }
     ]
   },
-  "patterns": {
+  "components": {
     "pattern.conversationItem": {
       "definition": {
         "type": "layout.row",

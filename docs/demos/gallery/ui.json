@@ -86,7 +86,7 @@
             "url": "/api/gallery/courses?category={{state.selectedCategory}}"
           },
           "itemTemplate": {
-            "type": "pattern.courseCard",
+            "type": "component.courseCard",
             "props": {
               "course": "{{item}}"
             }
@@ -95,9 +95,9 @@
       ]
     }
   },
-  "patterns": {
-    "pattern.courseCard": {
-      "type": "pattern.courseCard",
+  "components": {
+    "component.courseCard": {
+      "type": "component.courseCard",
       "definition": {
         "type": "card",
         "elevation": 1,

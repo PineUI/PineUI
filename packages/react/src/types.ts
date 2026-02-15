@@ -4,7 +4,7 @@ export interface PineUISchema {
   schemaVersion: string;
   state?: Record<string, any>;
   screen: ComponentNode;
-  patterns?: Record<string, PatternDefinition>;
+  components?: Record<string, ComponentDefinition>;
   overlays?: Record<string, OverlayDefinition>;
   intents?: Record<string, IntentDefinition>;
   telemetry?: TelemetryConfig;
@@ -16,7 +16,7 @@ export interface ComponentNode {
   [key: string]: any;
 }
 
-export interface PatternDefinition {
+export interface ComponentDefinition {
   type: string;
   definition: ComponentNode;
 }
@@ -47,7 +47,7 @@ export interface TelemetryConfig {
 export interface RenderContext {
   state: Record<string, any>;
   data: Record<string, any>;
-  patterns: Record<string, PatternDefinition>;
+  components: Record<string, ComponentDefinition>;
   intents: Record<string, IntentDefinition>;
   executeAction: (action: ActionNode, context?: any) => Promise<void>;
   executeIntent: (intentName: string, params?: any) => Promise<void>;

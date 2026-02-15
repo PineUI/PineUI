@@ -20,7 +20,7 @@ PineUI é um protocolo completo e SDK multi-plataforma para construir interfaces
 - [Arquitetura](#-arquitetura)
 - [Conceitos Fundamentais](#-conceitos-fundamentais)
 - [Componentes (Primitives)](#-componentes-primitives)
-- [Patterns](#-patterns)
+- [Components](#-components)
 - [Actions vs Intents](#-actions-vs-intents)
 - [State Management](#-state-management)
 - [Data Binding](#-data-binding)
@@ -161,7 +161,7 @@ Exemplo de estrutura:
 ```
 demos/
   inbox/
-    ui.json    ← Componentes, layouts, patterns
+    ui.json    ← Componentes, layouts, custom components
     api.json   ← Endpoints, responses, mock data
 ```
 
@@ -539,16 +539,16 @@ Tabela de dados com ordenação.
 
 ---
 
-## 🎨 Patterns
+## 🎨 Components
 
-Patterns são **componentes compostos reutilizáveis** definidos no schema.
+Components são **componentes compostos reutilizáveis** definidos no schema.
 
-### Como Definir um Pattern
+### Como Definir um Component
 
 ```json
 {
-  "patterns": {
-    "pattern.postCard": {
+  "components": {
+    "component.postCard": {
       "definition": {
         "type": "card",
         "padding": 16,
@@ -598,11 +598,11 @@ Patterns são **componentes compostos reutilizáveis** definidos no schema.
 }
 ```
 
-### Como Usar um Pattern
+### Como Usar um Component
 
 ```json
 {
-  "type": "pattern.postCard",
+  "type": "component.postCard",
   "props": {
     "post": {
       "id": "123",
@@ -613,7 +613,7 @@ Patterns são **componentes compostos reutilizáveis** definidos no schema.
 }
 ```
 
-### Vantagens dos Patterns
+### Vantagens dos Components
 
 ✅ **Reusabilidade** - Define uma vez, usa em múltiplos lugares
 ✅ **Consistência** - Mantém UI uniforme automaticamente
@@ -888,14 +888,14 @@ Dentro de `itemTemplate` de collections:
 }
 ```
 
-**2. Patterns (`props`)**
+**2. Components (`props`)**
 
-Dentro da `definition` de patterns:
+Dentro da `definition` de components:
 
 ```json
 {
-  "patterns": {
-    "pattern.userCard": {
+  "components": {
+    "component.userCard": {
       "definition": {
         "type": "text",
         "content": "{{props.user.name}}"  // ← 'props' passado externamente
@@ -906,7 +906,7 @@ Dentro da `definition` de patterns:
 
 // Uso:
 {
-  "type": "pattern.userCard",
+  "type": "component.userCard",
   "props": {
     "user": {"name": "John"}
   }
@@ -998,7 +998,7 @@ Collections renderizam listas com virtualização automática.
     "url": "/api/posts"
   },
   "itemTemplate": {
-    "type": "pattern.postCard",
+    "type": "component.postCard",
     "props": {
       "post": "{{item}}"
     }
@@ -1476,13 +1476,13 @@ PineUI é mobile-first por padrão. Use media queries CSS para customizar:
 - ✅ Posts com avatars, texto, imagens
 - ✅ Like/comment/retweet buttons
 - ✅ Composer modal (FAB)
-- ✅ Pattern.postCard reusável
+- ✅ component.postCard reusável
 - ✅ State management para composer
 - ✅ Intents para actions
 
 **Conceitos demonstrados:**
 - Collections com HTTP + pagination
-- Patterns complexos
+- Components complexos
 - Overlays/Modals
 - State binding em inputs
 - Intents (post.like, post.create)
@@ -1522,7 +1522,7 @@ PineUI é mobile-first por padrão. Use media queries CSS para customizar:
 - State management avançado
 - Multiple collections com state binding
 - Intents para navigation
-- Patterns para conversationItem, messageItem, profilePanel
+- Components para conversationItem, messageItem, profilePanel
 
 ### Admin Demo
 
@@ -1576,7 +1576,7 @@ interface PineUISchema {
   schemaVersion: "1.0.0"
   state?: Record<string, any>
   screen: ComponentNode
-  patterns?: Record<string, PatternDefinition>
+  components?: Record<string, ComponentDefinition>
   overlays?: Record<string, OverlayDefinition>
   intents?: Record<string, IntentDefinition>
   telemetry?: TelemetryConfig
@@ -1639,7 +1639,7 @@ interface ActionNode {
 }
 ```
 
-### 2. Crie Patterns para UI Repetida
+### 2. Crie Components para UI Repetida
 
 ❌ **Errado:** Repetir estrutura em cada item
 ```json
@@ -1656,11 +1656,11 @@ interface ActionNode {
 // ... repetido 100x
 ```
 
-✅ **Certo:** Defina pattern uma vez
+✅ **Certo:** Defina component uma vez
 ```json
 {
-  "patterns": {
-    "pattern.userCard": {
+  "components": {
+    "component.userCard": {
       "definition": {
         "type": "card",
         "child": {
@@ -1676,7 +1676,7 @@ interface ActionNode {
 }
 
 // Uso:
-{"type": "pattern.userCard", "props": {"user": {...}}}
+{"type": "component.userCard", "props": {"user": {...}}}
 ```
 
 ### 3. Separe UI de Dados
@@ -1758,7 +1758,7 @@ Use CDN com resize automático:
 
 - ✅ SDK React completo
 - ✅ 15+ componentes Material Design 3
-- ✅ System de Patterns
+- ✅ System de Components
 - ✅ Intents + Actions
 - ✅ State management reativo
 - ✅ Collections com virtualização

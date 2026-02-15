@@ -220,7 +220,7 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
   const context: RenderContext = {
     state,
     data: {},
-    patterns: schema?.patterns || {},
+    components: schema?.components || {},
     intents: schema?.intents || {},
     executeAction,
     executeIntent,

@@ -30,7 +30,7 @@
         "url": "/api/twitter/feed"
       },
       "itemTemplate": {
-        "type": "pattern.postCard",
+        "type": "component.postCard",
         "props": {
           "post": "{{item}}"
         }
@@ -73,9 +73,9 @@
       }
     }
   },
-  "patterns": {
-    "pattern.postCard": {
-      "type": "pattern.postCard",
+  "components": {
+    "component.postCard": {
+      "type": "component.postCard",
       "definition": {
         "type": "card",
         "elevation": 0,

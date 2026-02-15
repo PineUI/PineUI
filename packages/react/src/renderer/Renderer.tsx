@@ -75,24 +75,24 @@ export const Renderer: React.FC<RendererProps> = ({ node, context, parentData })
     ? resolveBindings(node, bindingContext)
     : node;
 
-  // Check if it's a pattern reference
-  if (resolvedNode.type.startsWith('pattern.')) {
-    const patternName = resolvedNode.type;
-    const pattern = context.patterns[patternName];
+  // Check if it's a component reference
+  if (resolvedNode.type.startsWith('component.')) {
+    const componentName = resolvedNode.type;
+    const component = context.components[componentName];
 
-    if (!pattern) {
-      console.warn(`Pattern not found: ${patternName}`);
+    if (!component) {
+      console.warn(`Component not found: ${componentName}`);
       return null;
     }
 
-    // Render pattern definition with enhanced context
+    // Render component definition with enhanced context
     // IMPORTANT: Use bindingContext (which has item) instead of context
-    const patternContext = {
+    const componentContext = {
       ...bindingContext,
       props: resolvedNode.props,
     };
 
-    return <Renderer node={pattern.definition} context={patternContext} parentData={parentData} />;
+    return <Renderer node={component.definition} context={componentContext} parentData={parentData} />;
   }
 
   // Get component from registry
