@@ -1,5 +1,58 @@
 {
   "schemaVersion": "1.0.0",
+  "imports": {
+    "components": [
+      "../../components/ui/alert-dialog/default.json"
+    ]
+  },
+  "state": {
+    "showRetweetDialog": false,
+    "retweetPostId": null
+  },
+  "intents": {
+    "retweet.showDialog": {
+      "handler": {
+        "type": "action.sequence",
+        "actions": [
+          {
+            "type": "action.state.patch",
+            "path": "retweetPostId",
+            "value": "{{postId}}"
+          },
+          {
+            "type": "action.state.patch",
+            "path": "showRetweetDialog",
+            "value": true
+          }
+        ]
+      }
+    },
+    "retweet.cancel": {
+      "handler": {
+        "type": "action.state.patch",
+        "path": "showRetweetDialog",
+        "value": false
+      }
+    },
+    "retweet.confirm": {
+      "handler": [
+        {
+          "type": "action.state.patch",
+          "path": "showRetweetDialog",
+          "value": false
+        },
+        {
+          "type": "action.snackbar.show",
+          "message": "🔁 Retweeted successfully!",
+          "duration": 3000
+        },
+        {
+          "type": "action.collection.refresh",
+          "collectionId": "feed_posts"
+        }
+      ]
+    }
+  },
   "screen": {
     "type": "layout.scaffold",
     "body": {
@@ -61,6 +114,25 @@
           }
         ]
       }
+        },
+        {
+          "type": "conditionalRender",
+          "conditions": [
+            {
+              "when": "{{state.showRetweetDialog}}",
+              "render": {
+                "type": "component.alert-dialog.default",
+                "props": {
+                  "title": "Retweet this post?",
+                  "description": "This will share the post with your followers.",
+                  "cancelLabel": "Cancel",
+                  "confirmLabel": "Retweet",
+                  "onCancel": "retweet.cancel",
+                  "onConfirm": "retweet.confirm"
+                }
+              }
+            }
+          ]
         }
       ]
     },
@@ -179,7 +251,11 @@
                           "icon": "🔁",
                           "size": "small",
                           "color": "onSurfaceVariant",
-                          "label": "{{props.post.metrics.retweets}}"
+                          "label": "{{props.post.metrics.retweets}}",
+                          "onPress": {
+                            "intent": "retweet.showDialog",
+                            "postId": "{{props.post.id}}"
+                          }
                         },
                         {
                           "type": "button.icon",
