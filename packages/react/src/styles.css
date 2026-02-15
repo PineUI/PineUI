@@ -266,8 +266,12 @@ html, body {
   flex-direction: column;
 }
 
-.pineui-collection__item {
+.pineui-collection__list .pineui-collection__item {
   border-bottom: 1px solid var(--md-sys-color-surfaceVariant);
+}
+
+.pineui-collection__list .pineui-collection__item:last-child {
+  border-bottom: none;
 }
 
 /* Loading & Error */
