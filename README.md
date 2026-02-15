@@ -21,6 +21,8 @@ PineUI é um protocolo completo e SDK multi-plataforma para construir interfaces
 - [Conceitos Fundamentais](#-conceitos-fundamentais)
 - [Componentes (Primitives)](#-componentes-primitives)
 - [Components](#-components)
+- [Imports System](#-imports-system)
+- [Views System](#️-views-system)
 - [Actions vs Intents](#-actions-vs-intents)
 - [State Management](#-state-management)
 - [Data Binding](#-data-binding)
@@ -619,6 +621,150 @@ Components são **componentes compostos reutilizáveis** definidos no schema.
 ✅ **Consistência** - Mantém UI uniforme automaticamente
 ✅ **Manutenibilidade** - Atualiza em um só lugar
 ✅ **AI-Friendly** - LLMs aprendem patterns rapidamente
+
+---
+
+## 📦 Imports System
+
+O sistema de imports permite carregar components e views de arquivos externos, facilitando a organização e reutilização de código.
+
+### Como Usar Imports
+
+```json
+{
+  "schemaVersion": "1.0.0",
+  "imports": {
+    "components": [
+      "./components/userCard.json",
+      "./components/postCard.json"
+    ],
+    "views": [
+      "./views/sidebar.json",
+      "./views/main.json"
+    ]
+  },
+  "screen": {
+    "type": "layout.row",
+    "children": [
+      {"type": "view", "name": "sidebar"},
+      {"type": "view", "name": "main"}
+    ]
+  }
+}
+```
+
+### Estrutura de Arquivos
+
+```
+app/
+  ui.json              ← Schema principal
+  components/
+    userCard.json      ← Component definition
+    postCard.json
+  views/
+    sidebar.json       ← View definition
+    main.json
+```
+
+### Vantagens dos Imports
+
+✅ **Organização** - 1 arquivo = 1 component/view
+✅ **Colaboração** - Múltiplos devs podem trabalhar em paralelo
+✅ **Reutilização** - Compartilhar components entre schemas
+✅ **Manutenibilidade** - Mudanças isoladas por arquivo
+✅ **Git-Friendly** - Diffs claros e merge simples
+
+---
+
+## 🗂️ Views System
+
+Views são seções nomeadas da UI que podem ser compostas para criar layouts complexos.
+
+### Definindo Views
+
+```json
+{
+  "views": {
+    "sidebar": {
+      "screen": {
+        "type": "layout.column",
+        "padding": 16,
+        "children": [
+          {"type": "text", "content": "Sidebar Content"}
+        ]
+      }
+    },
+    "main": {
+      "screen": {
+        "type": "layout.column",
+        "flex": 1,
+        "children": [
+          {"type": "text", "content": "Main Content"}
+        ]
+      }
+    }
+  }
+}
+```
+
+### Usando Views
+
+```json
+{
+  "screen": {
+    "type": "layout.row",
+    "children": [
+      {
+        "type": "view",
+        "name": "sidebar",
+        "width": 280
+      },
+      {
+        "type": "view",
+        "name": "main",
+        "flex": 1
+      }
+    ]
+  }
+}
+```
+
+### Views com Imports
+
+Carregue views de arquivos externos:
+
+```json
+{
+  "imports": {
+    "views": ["./views/conversationsList.json"]
+  },
+  "screen": {
+    "type": "view",
+    "name": "conversationsList"
+  }
+}
+```
+
+**Arquivo: views/conversationsList.json**
+```json
+{
+  "conversationsList": {
+    "screen": {
+      "type": "collection",
+      "data": {"type": "action.http", "url": "/api/conversations"},
+      "itemTemplate": {...}
+    }
+  }
+}
+```
+
+### Vantagens das Views
+
+✅ **Composição** - Combine views para criar layouts complexos
+✅ **Navegação** - Ideal para apps multi-tela (futuro)
+✅ **Lazy Loading** - Carregue views sob demanda (futuro)
+✅ **Isolação** - Estado isolado por view (futuro)
+✅ **Multi-Column** - Perfeito para layouts de 2-3 colunas
 
 ---
 
@@ -1759,6 +1905,8 @@ Use CDN com resize automático:
 - ✅ SDK React completo
 - ✅ 15+ componentes Material Design 3
 - ✅ System de Components
+- ✅ Imports System (external components/views)
+- ✅ Views System (composable UI sections)
 - ✅ Intents + Actions
 - ✅ State management reativo
 - ✅ Collections com virtualização
