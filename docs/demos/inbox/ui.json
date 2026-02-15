@@ -28,33 +28,16 @@
     }
   },
   "screen": {
-    "type": "layout.scaffold",
-    "body": {
-      "type": "layout.column",
-      "spacing": 0,
-      "children": [
-        {
-          "type": "layout.column",
-          "padding": 16,
-          "spacing": 16,
-          "children": [
-            {
-              "type": "text",
-              "content": "Inbox",
-              "style": "titleLarge"
-            }
-          ]
-        },
-        {
-          "type": "layout.row",
-          "spacing": 0,
-          "flex": 1,
-          "children": [
+    "type": "layout.row",
+    "spacing": 0,
+    "children": [
       {
         "type": "layout.column",
         "spacing": 0,
         "flex": 28,
         "overflow": "auto",
+        "backgroundColor": "#ffffff",
+        "borderRight": "1px solid #e7e0ec",
         "children": [
           {
             "type": "layout.column",
@@ -155,6 +138,8 @@
         "type": "layout.column",
         "flex": 47,
         "spacing": 0,
+        "backgroundColor": "#ffffff",
+        "borderRight": "1px solid #e7e0ec",
         "children": [
           {
             "type": "layout.row",
@@ -254,6 +239,7 @@
         "spacing": 0,
         "flex": 25,
         "overflow": "auto",
+        "backgroundColor": "#ffffff",
         "children": [
           {
             "type": "collection",
@@ -272,10 +258,7 @@
           }
         ]
       }
-          ]
-        }
-      ]
-    }
+    ]
   },
   "patterns": {
     "pattern.conversationItem": {

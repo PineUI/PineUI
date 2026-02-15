@@ -14,6 +14,11 @@ interface LayoutProps {
   width?: number | string;
   height?: number | string;
   overflow?: 'visible' | 'hidden' | 'scroll' | 'auto';
+  backgroundColor?: string;
+  borderRight?: string;
+  borderLeft?: string;
+  borderTop?: string;
+  borderBottom?: string;
   onPress?: ActionNode;
   context?: RenderContext;
   renderer?: React.ComponentType<any>;
@@ -30,6 +35,11 @@ export const Layout: React.FC<LayoutProps> = ({
   width,
   height,
   overflow,
+  backgroundColor,
+  borderRight,
+  borderLeft,
+  borderTop,
+  borderBottom,
   onPress,
   context,
   renderer: Renderer,
@@ -65,6 +75,11 @@ export const Layout: React.FC<LayoutProps> = ({
       ? (typeof height === 'number' ? `${height}px` : height)
       : undefined,
     overflow: overflow,
+    backgroundColor: backgroundColor,
+    borderRight: borderRight,
+    borderLeft: borderLeft,
+    borderTop: borderTop,
+    borderBottom: borderBottom,
     minWidth: 0, // Permite que flex shrink funcione corretamente
     cursor: onPress ? 'pointer' : undefined,
   };
