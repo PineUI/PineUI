@@ -198,6 +198,12 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
         break;
       }
 
+      case 'action.delay': {
+        const duration = resolvedAction.duration || 1000;
+        await new Promise(resolve => setTimeout(resolve, duration));
+        break;
+      }
+
       default:
         console.warn('Unknown action type:', resolvedAction.type);
     }

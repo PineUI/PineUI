@@ -2,12 +2,14 @@
   "schemaVersion": "1.0.0",
   "imports": {
     "components": [
-      "../../components/ui/alert-dialog/default.json"
+      "../../components/ui/alert-dialog/default.json",
+      "../../components/ui/alert/success.json"
     ]
   },
   "state": {
     "showRetweetDialog": false,
-    "retweetPostId": null
+    "retweetPostId": null,
+    "showRetweetSuccess": false
   },
   "intents": {
     "retweet.showDialog": {
@@ -42,9 +44,18 @@
           "value": false
         },
         {
-          "type": "action.snackbar.show",
-          "message": "🔁 Retweeted successfully!",
+          "type": "action.state.patch",
+          "path": "showRetweetSuccess",
+          "value": true
+        },
+        {
+          "type": "action.delay",
           "duration": 3000
+        },
+        {
+          "type": "action.state.patch",
+          "path": "showRetweetSuccess",
+          "value": false
         },
         {
           "type": "action.collection.refresh",
@@ -130,6 +141,27 @@
                   "onCancel": "retweet.cancel",
                   "onConfirm": "retweet.confirm"
                 }
+              }
+            }
+          ]
+        },
+        {
+          "type": "conditionalRender",
+          "conditions": [
+            {
+              "when": "{{state.showRetweetSuccess}}",
+              "render": {
+                "type": "layout.column",
+                "padding": 16,
+                "children": [
+                  {
+                    "type": "component.alert.success",
+                    "props": {
+                      "title": "Retweeted!",
+                      "description": "The post has been shared with your followers."
+                    }
+                  }
+                ]
               }
             }
           ]
