@@ -36,18 +36,9 @@
           "overlayId": "retweetDialog"
         },
         {
-          "type": "action.state.patch",
-          "path": "showRetweetSuccess",
-          "value": true
-        },
-        {
-          "type": "action.delay",
+          "type": "action.snackbar.show",
+          "message": "🔁 Retweeted successfully!",
           "duration": 3000
-        },
-        {
-          "type": "action.state.patch",
-          "path": "showRetweetSuccess",
-          "value": false
         }
       ]
     },
