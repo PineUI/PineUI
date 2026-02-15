@@ -81,6 +81,11 @@
       max-width: 1400px;
     }
 
+    /* Inbox precisa de muito mais espaço (3 colunas largas) */
+    .container--inbox {
+      max-width: 1800px;
+    }
+
     .demo-controls {
       display: flex;
       justify-content: flex-end;
@@ -288,7 +293,9 @@
 
     // Adjust container width for demos that need more space
     const container = document.querySelector('.container');
-    if (demo === 'inbox' || demo === 'admin') {
+    if (demo === 'inbox') {
+      container.classList.add('container--inbox');
+    } else if (demo === 'admin' || demo === 'gallery') {
       container.classList.add('container--wide');
     }
 
