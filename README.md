@@ -202,17 +202,31 @@ Renderiza texto com estilos Material Design 3.
 ```typescript
 {
   type: "text"
-  content: string              // Texto ou binding {{...}}
+  content: string                   // Texto ou binding {{...}}
+
+  // Typography
   style?: "titleLarge" | "titleMedium" | "titleSmall" |
           "bodyLarge" | "bodyMedium" | "bodySmall" |
+          "labelLarge" | "labelMedium" | "labelSmall" |
           "headlineSmall"
-  fontWeight?: "normal" | "bold" | "500" | "600" | "700"
+  fontWeight?: "normal" | "bold"
+
+  // Color
   color?: "primary" | "onPrimary" | "surface" | "onSurface" |
           "onSurfaceVariant" | "error" | "success"
+
+  // Layout
+  maxLines?: number                 // Truncate após N linhas
+  linkify?: boolean                 // Auto-converte URLs em links
+
+  // Advanced
+  fontSize?: number                 // Override de font size (ex: 12)
+  lineHeight?: number               // Line height multiplier (ex: 1.5)
+  textDecoration?: string           // "underline", "line-through"
 }
 ```
 
-**Exemplo:**
+**Exemplo Básico:**
 ```json
 {
   "type": "text",
@@ -222,6 +236,32 @@ Renderiza texto com estilos Material Design 3.
   "color": "primary"
 }
 ```
+
+**Exemplo Avançado - Message Content (Inbox Demo):**
+```json
+{
+  "type": "text",
+  "content": "{{props.message.content}}",
+  "style": "bodyMedium",
+  "lineHeight": 1.5
+}
+```
+
+**Exemplo - Links (Inbox Demo linha 649):**
+```json
+{
+  "type": "text",
+  "content": "{{props.profile.links.website}}",
+  "style": "bodySmall",
+  "color": "primary",
+  "textDecoration": "underline"
+}
+```
+
+**Usado em:**
+- Inbox Demo (linha 381): `lineHeight: 1.5` para legibilidade de mensagens
+- Inbox Demo (linha 317): `fontSize: 12` para timestamps pequenos
+- Inbox Demo (linha 649): `textDecoration: "underline"` para links clicáveis
 
 ### Button
 
@@ -288,26 +328,76 @@ Campos de texto para entrada de dados.
 ```typescript
 {
   type: "input.text"
-  placeholder?: string         // Texto placeholder
-  value?: string              // Binding para state: {{state.fieldName}}
-  multiline?: boolean         // Textarea vs input
-  onChange?: ActionNode       // Disparado ao digitar
+
+  // Identity
+  id?: string                       // ID do input
+
+  // Content
+  placeholder?: string              // Texto placeholder
+  value?: string                    // Binding para state: {{state.fieldName}}
+
+  // Type
+  multiline?: boolean               // Textarea vs input (padrão: false)
+  maxLines?: number                 // Linhas (multiline apenas, padrão: 1)
+  maxLength?: number                // Máximo de caracteres
+
+  // Behavior
+  autofocus?: boolean               // Auto-focus (padrão: false)
+  onChanged?: ActionNode            // Disparado ao digitar
+
+  // Layout
+  flex?: number                     // Flex grow
+  borderRadius?: number             // Border radius em pixels
 }
 ```
 
-**Exemplo com State Binding:**
+**Exemplo Básico com State Binding:**
 ```json
 {
   "type": "input.text",
   "placeholder": "Digite sua mensagem...",
   "value": "{{state.messageText}}",
-  "onChange": {
+  "onChanged": {
     "type": "action.state.patch",
     "path": "messageText",
     "value": "{{value}}"
   }
 }
 ```
+
+**Exemplo Avançado - Composer (Twitter Demo linha 268):**
+```json
+{
+  "type": "input.text",
+  "id": "composer_input",
+  "placeholder": "O que está acontecendo?",
+  "multiline": true,
+  "maxLines": 10,
+  "maxLength": 280,
+  "autofocus": true,
+  "value": "{{state.composer.text}}",
+  "onChanged": {
+    "type": "action.state.patch",
+    "path": "state.composer.text",
+    "value": "{{value}}"
+  }
+}
+```
+
+**Exemplo - Input com Flex (Inbox Demo linha 238):**
+```json
+{
+  "type": "input.text",
+  "placeholder": "Send a message...",
+  "flex": 1,
+  "borderRadius": 12
+}
+```
+
+**Usado em:**
+- Twitter Demo (linha 268): Composer multiline com maxLength
+- Inbox Demo (linha 238): Input flexível com borderRadius
+- Inbox Demo (linha 70): Search input simples
 
 ### Avatar
 
@@ -371,12 +461,62 @@ Renderiza imagens com carregamento otimizado.
 ```typescript
 {
   type: "image"
-  src: string                 // URL da imagem
-  width?: number | string     // Largura
-  height?: number | string    // Altura
+  src: string                       // URL da imagem
+
+  // Sizing
+  width?: number | string           // Largura
+  height?: number | string          // Altura
+  aspectRatio?: number              // Aspect ratio (ex: 1.33 = 4:3)
+
+  // Fit
   fit?: "cover" | "contain" | "fill"
+
+  // Style
+  borderRadius?: number             // Border radius em pixels
 }
 ```
+
+**Exemplo Básico:**
+```json
+{
+  "type": "image",
+  "src": "https://example.com/photo.jpg",
+  "width": "100%",
+  "fit": "cover"
+}
+```
+
+**Exemplo Avançado - Course Thumbnail (Gallery Demo linha 112):**
+```json
+{
+  "type": "image",
+  "src": "{{props.course.image}}",
+  "borderRadius": 12,
+  "aspectRatio": 1.33
+}
+```
+
+**Exemplo - Post Media (Twitter Demo linha 159):**
+```json
+{
+  "type": "conditionalRender",
+  "conditions": [
+    {
+      "when": "{{props.post.media != null}}",
+      "render": {
+        "type": "image",
+        "src": "{{props.post.media[0].url}}",
+        "borderRadius": 12
+      }
+    }
+  ]
+}
+```
+
+**Usado em:**
+- Gallery Demo (linha 112): `aspectRatio: 1.33` mantém proporção 4:3
+- Twitter Demo (linha 159): `borderRadius: 12` para cantos arredondados
+- Ambos os demos: Binding condicional para exibir apenas se existir
 
 ### Divider
 
@@ -1081,6 +1221,41 @@ Global, acessível em qualquer lugar:
 
 // Verificação de nulo
 "{{item.badge != null}}"
+
+// Ternário (if/else inline)
+"{{props.post.userActions.liked ? '❤️' : '🤍'}}"
+"{{props.post.userActions.liked ? 'error' : 'onSurfaceVariant'}}"
+```
+
+**Exemplo Real - Like Button (Twitter Demo linha 186):**
+```json
+{
+  "type": "button.icon",
+  "icon": "{{props.post.userActions.liked ? '❤️' : '🤍'}}",
+  "color": "{{props.post.userActions.liked ? 'error' : 'onSurfaceVariant'}}",
+  "label": "{{props.post.metrics.likes}}"
+}
+```
+
+### Expressões Matemáticas
+
+```json
+// Aritmética básica
+"{{state.counter + 1}}"
+"{{item.price * 1.1}}"
+
+// String length
+"{{state.composer.text.length || 0}}/280"
+```
+
+**Exemplo Real - Character Counter (Twitter Demo linha 301):**
+```json
+{
+  "type": "text",
+  "content": "{{state.composer.text.length || 0}}/280",
+  "style": "bodySmall",
+  "color": "onSurfaceVariant"
+}
 ```
 
 ### Filters
@@ -1094,6 +1269,42 @@ Transformações de dados:
 // Futuros: capitalize, truncate, currency, etc.
 ```
 
+**Exemplo Real - Timestamp (Twitter Demo linha 133):**
+```json
+{
+  "type": "text",
+  "content": "{{props.post.createdAt | timeAgo}}",
+  "style": "bodySmall",
+  "color": "onSurfaceVariant"
+}
+```
+
+### Array Access
+
+```json
+// Primeiro elemento
+"{{props.post.media[0].url}}"
+
+// Condicional + array
+"{{props.post.media != null}}" → "{{props.post.media[0].url}}"
+```
+
+**Exemplo Real - Image from Array (Twitter Demo linha 158):**
+```json
+{
+  "type": "conditionalRender",
+  "conditions": [
+    {
+      "when": "{{props.post.media != null}}",
+      "render": {
+        "type": "image",
+        "src": "{{props.post.media[0].url}}"
+      }
+    }
+  ]
+}
+```
+
 ---
 
 ## 📋 Collections & Pagination
@@ -1105,15 +1316,35 @@ Collections renderizam listas com virtualização automática.
 ```typescript
 {
   type: "collection"
+  id: string                        // Identificador único
+
+  // Layout
   layout: "list" | "grid"           // Layout da coleção
-  columns?: number                  // Colunas (grid apenas)
-  spacing?: number                  // Espaçamento entre itens
+  columns?: number                  // Colunas (grid apenas, padrão: 3)
+  spacing?: number                  // Espaçamento do container grid
+  itemSpacing?: number              // Gap entre itens na lista (diferente de spacing)
+
+  // Data
   data: any[] | ActionNode          // Dados estáticos ou HTTP
   itemTemplate: ComponentNode       // Template para cada item
+
+  // States
   emptyState?: ComponentNode        // Exibido se vazio
   loadingState?: ComponentNode      // Exibido durante load
+  errorState?: ComponentNode        // Exibido em erro
+
+  // Performance
+  virtualized?: boolean             // Virtualização automática
+
+  // Interaction
+  refreshable?: boolean             // Pull-to-refresh
+  onRefresh?: ActionNode            // Ação de refresh
 }
 ```
+
+**IMPORTANTE:** Diferença entre `spacing` e `itemSpacing`:
+- `spacing`: Gap do container grid/flex (usado em grid)
+- `itemSpacing`: Gap vertical específico entre itens (usado em list)
 
 ### Collection com Array Estático
 
@@ -1170,6 +1401,54 @@ Collections renderizam listas com virtualização automática.
   }
 }
 ```
+
+**Exemplo Real - Gallery Demo (linha 79):**
+```json
+{
+  "type": "collection",
+  "layout": "grid",
+  "columns": 3,
+  "spacing": 16,
+  "data": {
+    "type": "action.http",
+    "method": "GET",
+    "url": "/api/gallery/courses?category={{state.selectedCategory}}"
+  },
+  "itemTemplate": {
+    "type": "component.courseCard",
+    "props": {
+      "course": "{{item}}"
+    }
+  }
+}
+```
+
+### List Layout com itemSpacing
+
+**Exemplo Real - Messages List (Inbox Demo linha 203):**
+```json
+{
+  "type": "collection",
+  "layout": "list",
+  "itemSpacing": 32,
+  "data": {
+    "type": "action.http",
+    "method": "GET",
+    "url": "/api/inbox/messages?conversationId={{state.selectedConversationId}}"
+  },
+  "itemTemplate": {
+    "type": "component.messageItem",
+    "props": {
+      "message": "{{item}}"
+    }
+  }
+}
+```
+
+**Usado em:**
+- Inbox Demo (linha 205): `itemSpacing: 32` para espaço generoso entre mensagens
+- Twitter Demo (linha 26): `itemSpacing: 0` para feed contínuo sem gaps
+- Gallery Demo (linha 82): `spacing: 16` para grid uniforme
 
 ### Paginação Infinita
 
@@ -1245,19 +1524,32 @@ Layout vertical (flexbox column).
 {
   type: "layout.column"
   children: ComponentNode[]
-  spacing?: number                  // Gap entre children
-  padding?: number                  // Padding interno
+
+  // Spacing & Sizing
+  spacing?: number                  // Gap entre children (padrão: 0)
+  padding?: number                  // Padding interno (padrão: 0)
   flex?: number                     // Flex grow
-  width?: number | string           // Largura fixa
-  height?: number | string          // Altura fixa
-  overflow?: "visible" | "hidden" | "scroll" | "auto"
+  width?: number | string           // Largura (280, "50%", "100vw")
+  height?: number | string          // Altura (600, "100vh")
+
+  // Alignment
   mainAxisAlignment?: "start" | "center" | "end" | "spaceBetween" | "spaceAround"
   crossAxisAlignment?: "start" | "center" | "end" | "stretch"
-  onPress?: ActionNode              // Clicável
+
+  // Visual
+  overflow?: "visible" | "hidden" | "scroll" | "auto"
+  backgroundColor?: string          // Cor de fundo (ex: "#ffffff")
+  borderRight?: string              // Borda direita (ex: "1px solid #e0e0e0")
+  borderLeft?: string               // Borda esquerda
+  borderTop?: string                // Borda superior
+  borderBottom?: string             // Borda inferior
+
+  // Interactivity
+  onPress?: ActionNode              // Torna layout clicável
 }
 ```
 
-**Exemplo:**
+**Exemplo Básico:**
 ```json
 {
   "type": "layout.column",
@@ -1271,13 +1563,24 @@ Layout vertical (flexbox column).
 }
 ```
 
+**Exemplo Avançado - Sidebar com Border (Inbox Demo linha 35):**
+```json
+{
+  "type": "layout.column",
+  "spacing": 0,
+  "flex": 28,
+  "overflow": "auto",
+  "backgroundColor": "#ffffff",
+  "borderRight": "1px solid #d0d0d0",
+  "children": [...]
+}
+```
+
 ### layout.row
 
-Layout horizontal (flexbox row).
+Layout horizontal (flexbox row). Mesmas props que `layout.column`, mas direção horizontal.
 
-Mesmas props que `layout.column`, mas direção horizontal.
-
-**Exemplo:**
+**Exemplo Básico:**
 ```json
 {
   "type": "layout.row",
@@ -1290,6 +1593,44 @@ Mesmas props que `layout.column`, mas direção horizontal.
   ]
 }
 ```
+
+**Exemplo Avançado - 3-Column Layout (Inbox Demo linha 31):**
+```json
+{
+  "type": "layout.row",
+  "spacing": 0,
+  "children": [
+    {
+      "type": "layout.column",
+      "flex": 28,
+      "backgroundColor": "#ffffff",
+      "borderRight": "1px solid #d0d0d0",
+      "overflow": "auto",
+      "children": [...]
+    },
+    {
+      "type": "layout.column",
+      "flex": 47,
+      "backgroundColor": "#ffffff",
+      "borderRight": "1px solid #d0d0d0",
+      "children": [...]
+    },
+    {
+      "type": "layout.column",
+      "flex": 25,
+      "backgroundColor": "#ffffff",
+      "overflow": "auto",
+      "children": [...]
+    }
+  ]
+}
+```
+
+**Usado em:**
+- Inbox Demo (linha 31): Layout 3-colunas com proporções flex 28:47:25
+- Inbox Demo (linha 40): `borderRight` para separadores verticais
+- Inbox Demo (linha 39): `backgroundColor: "#ffffff"` para fundo branco
+- Twitter Demo (linha 88): Header com spacing e alignment
 
 ### layout.scaffold
 
@@ -1615,7 +1956,9 @@ PineUI é mobile-first por padrão. Use media queries CSS para customizar:
 
 ### Twitter Demo
 
-**Arquivo:** `demos/twitter/ui.json`
+**Arquivo:** `docs/demos/twitter/ui.json`
+
+**Demonstra:** Feed social completo com composer, likes, intents e action chaining
 
 **Features:**
 - ✅ Feed infinito com paginação
@@ -1626,16 +1969,82 @@ PineUI é mobile-first por padrão. Use media queries CSS para customizar:
 - ✅ State management para composer
 - ✅ Intents para actions
 
-**Conceitos demonstrados:**
-- Collections com HTTP + pagination
-- Components complexos
-- Overlays/Modals
-- State binding em inputs
-- Intents (post.like, post.create)
+**Arquitetura:**
+- Collection virtualizada com `itemSpacing: 0`
+- Custom component: `component.postCard`
+- State: `composer.text`, `currentUser`
+- Intents: `post.compose`, `post.create`, `post.like`
+- Overlay: `composer` (bottomSheet)
+
+**Features Destacadas:**
+
+**1. Conditional Icon + Color (linha 186):**
+```json
+{
+  "type": "button.icon",
+  "icon": "{{props.post.userActions.liked ? '❤️' : '🤍'}}",
+  "color": "{{props.post.userActions.liked ? 'error' : 'onSurfaceVariant'}}"
+}
+```
+
+**2. Composer Multiline Input (linha 268):**
+```json
+{
+  "type": "input.text",
+  "multiline": true,
+  "maxLines": 10,
+  "maxLength": 280,
+  "autofocus": true
+}
+```
+
+**3. Character Counter (linha 301):**
+```json
+{
+  "type": "text",
+  "content": "{{state.composer.text.length || 0}}/280"
+}
+```
+
+**4. Action Chaining (linha 322):**
+```json
+{
+  "intents": {
+    "post.create": {
+      "handler": [
+        {"type": "action.http", "url": "/api/twitter/posts"},
+        {"type": "action.overlay.close"},
+        {"type": "action.state.patch"},
+        {"type": "action.snackbar.show"},
+        {"type": "action.collection.refresh"}
+      ]
+    }
+  }
+}
+```
+
+**5. Conditional Image Rendering (linha 155):**
+```json
+{
+  "type": "conditionalRender",
+  "conditions": [{
+    "when": "{{props.post.media != null}}",
+    "render": {
+      "type": "image",
+      "src": "{{props.post.media[0].url}}",
+      "borderRadius": 12
+    }
+  }]
+}
+```
+
+**Ver código:** `/docs/demos/twitter/ui.json`
 
 ### Gallery Demo
 
-**Arquivo:** `demos/gallery/ui.json`
+**Arquivo:** `docs/demos/gallery/ui.json`
+
+**Demonstra:** Grid de cursos com filtros interativos e state-driven reload
 
 **Features:**
 - ✅ Grid 3-column de cursos
@@ -1644,46 +2053,281 @@ PineUI é mobile-first por padrão. Use media queries CSS para customizar:
 - ✅ Badges (New, Completed)
 - ✅ State-driven filtering
 
-**Conceitos demonstrados:**
-- Collection com grid layout
-- State em URLs (category filter)
-- Chips selecionáveis
-- Reload automático ao mudar state
+**Arquitetura:**
+- Collection grid com `columns: 3`, `spacing: 16`
+- Custom component: `component.courseCard`
+- State: `selectedCategory`
+- Intent: `category.select`
+
+**Features Destacadas:**
+
+**1. Selectable Chips (linha 34):**
+```json
+{
+  "type": "chip",
+  "label": "Design",
+  "selected": "{{state.selectedCategory == 'Design'}}",
+  "onPress": {
+    "intent": "category.select",
+    "category": "Design"
+  }
+}
+```
+
+**2. State-Driven URL (linha 86):**
+```json
+{
+  "type": "collection",
+  "data": {
+    "type": "action.http",
+    "url": "/api/gallery/courses?category={{state.selectedCategory}}"
+  }
+}
+```
+
+**3. Image with AspectRatio (linha 112):**
+```json
+{
+  "type": "image",
+  "src": "{{props.course.image}}",
+  "borderRadius": 12,
+  "aspectRatio": 1.33
+}
+```
+
+**4. Conditional Progress (linha 129):**
+```json
+{
+  "type": "conditionalRender",
+  "conditions": [{
+    "when": "{{props.course.progress > 0}}",
+    "render": {
+      "type": "progress",
+      "value": "{{props.course.progress}}",
+      "label": "{{props.course.progress}}% complete"
+    }
+  }]
+}
+```
+
+**Fluxo de Filtro:**
+1. User clica chip "Design"
+2. Intent `category.select` dispara
+3. `state.selectedCategory` → "Design"
+4. URL resolve: `/api/courses?category=Design`
+5. Collection recarrega automaticamente
+
+**Ver código:** `/docs/demos/gallery/ui.json`
 
 ### Inbox Demo
 
-**Arquivo:** `demos/inbox/ui.json`
+**Arquivo:** `docs/demos/inbox/ui.json`
+
+**Demonstra:** Messenger multi-coluna com borders, intents e state-driven navigation
 
 **Features:**
-- ✅ 3-column layout (280px | flex | 320px)
+- ✅ 3-column layout com proporções flex (28:47:25)
+- ✅ Borders verticais entre colunas
 - ✅ Conversation list com tabs
 - ✅ Message thread no meio
 - ✅ Profile panel na direita
 - ✅ Click em conversa → carrega mensagens
 - ✅ Click em avatar → mostra profile
-- ✅ Intents (conversation.select, user.viewProfile)
+- ✅ Intents para navigation
 
-**Conceitos demonstrados:**
-- Layouts complexos com flex
-- State management avançado
-- Multiple collections com state binding
-- Intents para navigation
-- Components para conversationItem, messageItem, profilePanel
+**Arquitetura:**
+- Layout row com `flex: 28, 47, 25`
+- `backgroundColor: "#ffffff"` + `borderRight: "1px solid #d0d0d0"`
+- Custom components: `conversationItem`, `messageItem`, `profilePanel`
+- State: `selectedConversationId`, `selectedUserId`
+- Intents: `conversation.select`, `user.viewProfile`
+
+**Features Destacadas:**
+
+**1. Multi-Column com Borders (linha 31):**
+```json
+{
+  "type": "layout.row",
+  "spacing": 0,
+  "children": [
+    {
+      "flex": 28,
+      "backgroundColor": "#ffffff",
+      "borderRight": "1px solid #d0d0d0",
+      "overflow": "auto"
+    },
+    {
+      "flex": 47,
+      "backgroundColor": "#ffffff",
+      "borderRight": "1px solid #d0d0d0"
+    },
+    {
+      "flex": 25,
+      "backgroundColor": "#ffffff",
+      "overflow": "auto"
+    }
+  ]
+}
+```
+
+**2. Messages com itemSpacing (linha 205):**
+```json
+{
+  "type": "collection",
+  "layout": "list",
+  "itemSpacing": 32,
+  "data": {
+    "url": "/api/messages?conversationId={{state.selectedConversationId}}"
+  }
+}
+```
+
+**3. Text com LineHeight (linha 381):**
+```json
+{
+  "type": "text",
+  "content": "{{props.message.content}}",
+  "style": "bodyMedium",
+  "lineHeight": 1.5
+}
+```
+
+**4. Input com Flex (linha 238):**
+```json
+{
+  "type": "input.text",
+  "placeholder": "Send a message...",
+  "flex": 1,
+  "borderRadius": 12
+}
+```
+
+**5. Link com TextDecoration (linha 649):**
+```json
+{
+  "type": "text",
+  "content": "{{props.profile.links.website}}",
+  "color": "primary",
+  "textDecoration": "underline"
+}
+```
+
+**6. Clickable Avatar Intent (linha 342):**
+```json
+{
+  "type": "layout.column",
+  "onPress": {
+    "intent": "user.viewProfile",
+    "userId": "{{props.message.userId}}"
+  },
+  "children": [
+    {"type": "avatar", "src": "{{props.message.avatar}}"}
+  ]
+}
+```
+
+**7. Tabs com Badge (linha 97):**
+```json
+{
+  "id": "unread",
+  "label": "Unread",
+  "badge": 3
+}
+```
+
+**Fluxo de Navegação:**
+1. User clica conversation → `conversation.select` intent
+2. `state.selectedConversationId` atualiza
+3. Messages collection URL resolve com novo ID
+4. Messages recarregam automaticamente
+
+**Ver código:** `/docs/demos/inbox/ui.json`
 
 ### Admin Demo
 
-**Arquivo:** `demos/admin/ui.json`
+**Arquivo:** `docs/demos/admin/ui.json`
+
+**Demonstra:** Dashboard admin com table, custom templates e badges dinâmicos
 
 **Features:**
-- ✅ Tabs (Users, Settings, Analytics)
-- ✅ Table component com sorting
+- ✅ Tabs com badges de contagem
+- ✅ Table component com custom templates
 - ✅ HTTP data loading
-- ✅ Badges para status
+- ✅ Avatar + text column pattern
+- ✅ Dynamic badge variants
 
-**Conceitos demonstrados:**
-- Table component
-- Tabs navigation
-- HTTP data in tables
+**Arquitetura:**
+- Tabs com `badge: 720`
+- Table com custom column templates
+- Badge com binding dinâmico de variant
+
+**Features Destacadas:**
+
+**1. Tab com Badge (linha 28):**
+```json
+{
+  "id": "all",
+  "label": "All",
+  "badge": 720
+}
+```
+
+**2. Table Column Template (linha 42):**
+```json
+{
+  "key": "name",
+  "label": "NAME",
+  "width": "35%",
+  "template": {
+    "type": "layout.row",
+    "spacing": 12,
+    "children": [
+      {
+        "type": "avatar",
+        "src": "{{item.avatar}}",
+        "size": 48
+      },
+      {
+        "type": "layout.column",
+        "spacing": 4,
+        "children": [
+          {
+            "type": "text",
+            "content": "{{item.name}}",
+            "fontWeight": "bold"
+          },
+          {
+            "type": "text",
+            "content": "{{item.email}}",
+            "color": "onSurfaceVariant"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**3. Dynamic Badge (linha 79):**
+```json
+{
+  "key": "score",
+  "template": {
+    "type": "badge",
+    "label": "{{item.score}}",
+    "variant": "{{item.scoreVariant}}",
+    "size": "medium"
+  }
+}
+```
+
+**Padrões Usados:**
+- Avatar + Text Column (usuário com avatar e info)
+- Table com HTTP data source
+- Custom templates por coluna
+- Dynamic styling com bindings
+
+**Ver código:** `/docs/demos/admin/ui.json`
 
 ---
 
@@ -1746,6 +2390,349 @@ interface ActionNode {
   [key: string]: any
 }
 ```
+
+---
+
+## 🎯 Common Patterns
+
+Padrões arquiteturais extraídos dos demos reais.
+
+### 1. Multi-Column Layout Pattern
+
+Layout de 3 colunas com proporções flex e borders verticais.
+
+**Usado em:** Inbox Demo (linha 31)
+
+```json
+{
+  "type": "layout.row",
+  "spacing": 0,
+  "children": [
+    {
+      "type": "layout.column",
+      "flex": 28,
+      "backgroundColor": "#ffffff",
+      "borderRight": "1px solid #d0d0d0",
+      "overflow": "auto",
+      "children": [...]
+    },
+    {
+      "type": "layout.column",
+      "flex": 47,
+      "backgroundColor": "#ffffff",
+      "borderRight": "1px solid #d0d0d0",
+      "children": [...]
+    },
+    {
+      "type": "layout.column",
+      "flex": 25,
+      "backgroundColor": "#ffffff",
+      "overflow": "auto",
+      "children": [...]
+    }
+  ]
+}
+```
+
+**Proporções:** 28:47:25 = sidebar:main:aside (totaliza 100)
+
+---
+
+### 2. State-Driven Filtering Pattern
+
+Chips selecionáveis que filtram collection via state binding em URL.
+
+**Usado em:** Gallery Demo (linha 32)
+
+```json
+{
+  "state": {
+    "selectedCategory": "All"
+  },
+  "intents": {
+    "category.select": {
+      "handler": {
+        "type": "action.state.patch",
+        "path": "selectedCategory",
+        "value": "{{category}}"
+      }
+    }
+  },
+  "screen": {
+    "children": [
+      {
+        "type": "chip",
+        "label": "Design",
+        "selected": "{{state.selectedCategory == 'Design'}}",
+        "onPress": {
+          "intent": "category.select",
+          "category": "Design"
+        }
+      },
+      {
+        "type": "collection",
+        "data": {
+          "type": "action.http",
+          "url": "/api/courses?category={{state.selectedCategory}}"
+        }
+      }
+    ]
+  }
+}
+```
+
+**Fluxo:**
+1. User clica chip → Intent dispara
+2. State.selectedCategory atualiza
+3. URL da collection resolve binding
+4. Collection recarrega automaticamente
+
+---
+
+### 3. Selectable Item Pattern
+
+Itens que mudam aparência baseado em state.
+
+**Usado em:** Gallery Demo (linha 34), Inbox Demo (linha 589)
+
+```json
+{
+  "type": "chip",
+  "label": "All",
+  "selected": "{{state.selectedCategory == 'All'}}"
+}
+```
+
+**Pattern:** Compare state com valor do item atual para highlighting.
+
+---
+
+### 4. Conditional Icon & Color Pattern
+
+Ícone e cor mudam baseado em estado (ex: like button).
+
+**Usado em:** Twitter Demo (linha 186)
+
+```json
+{
+  "type": "button.icon",
+  "icon": "{{props.post.userActions.liked ? '❤️' : '🤍'}}",
+  "color": "{{props.post.userActions.liked ? 'error' : 'onSurfaceVariant'}}",
+  "label": "{{props.post.metrics.likes}}",
+  "onPress": {
+    "intent": "post.like",
+    "postId": "{{props.post.id}}"
+  }
+}
+```
+
+**Pattern:** Ternário `{{condition ? valueTrue : valueFalse}}` em props.
+
+---
+
+### 5. Custom Component Composition Pattern
+
+Card wrapper com layout interno para itens complexos.
+
+**Usado em:** Twitter, Gallery, Admin
+
+```json
+{
+  "components": {
+    "component.postCard": {
+      "definition": {
+        "type": "card",
+        "elevation": 0,
+        "padding": 16,
+        "child": {
+          "type": "layout.column",
+          "spacing": 12,
+          "children": [
+            {
+              "type": "layout.row",
+              "spacing": 12,
+              "children": [
+                {"type": "avatar", "src": "{{props.post.author.avatar}}"},
+                {
+                  "type": "layout.column",
+                  "flex": 1,
+                  "children": [...]
+                }
+              ]
+            },
+            {"type": "text", "content": "{{props.post.content.text}}"}
+          ]
+        }
+      }
+    }
+  }
+}
+```
+
+**Pattern:** Card → Layout Column → (Row + Content)
+
+---
+
+### 6. Avatar + Text Column Pattern
+
+Layout comum para user info: avatar à esquerda, nome/details à direita.
+
+**Usado em:** Twitter (linha 92), Admin (linha 42), Inbox (linha 292)
+
+```json
+{
+  "type": "layout.row",
+  "spacing": 12,
+  "crossAxisAlignment": "center",
+  "children": [
+    {
+      "type": "avatar",
+      "src": "{{item.avatar}}",
+      "size": 48
+    },
+    {
+      "type": "layout.column",
+      "flex": 1,
+      "spacing": 4,
+      "children": [
+        {
+          "type": "text",
+          "content": "{{item.name}}",
+          "fontWeight": "bold"
+        },
+        {
+          "type": "text",
+          "content": "{{item.email}}",
+          "color": "onSurfaceVariant"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Pattern:** Row (Avatar + Flex Column)
+
+---
+
+### 7. Conditional Rendering Pattern
+
+Renderiza componente apenas se condição for verdadeira.
+
+**Usado em:** Twitter (linha 155), Gallery (linha 129)
+
+```json
+{
+  "type": "conditionalRender",
+  "conditions": [
+    {
+      "when": "{{props.post.media != null}}",
+      "render": {
+        "type": "image",
+        "src": "{{props.post.media[0].url}}",
+        "borderRadius": 12
+      }
+    }
+  ]
+}
+```
+
+**Pattern:** Verifica existência antes de renderizar (evita erros).
+
+---
+
+### 8. Action Chaining Pattern
+
+Intent executa múltiplas actions sequencialmente.
+
+**Usado em:** Twitter Demo (linha 322)
+
+```json
+{
+  "intents": {
+    "post.create": {
+      "handler": [
+        {
+          "type": "action.http",
+          "method": "POST",
+          "url": "/api/twitter/posts",
+          "body": {"content": {"text": "{{state.composer.text}}"}}
+        },
+        {
+          "type": "action.overlay.close",
+          "overlayId": "composer"
+        },
+        {
+          "type": "action.state.patch",
+          "path": "state.composer.text",
+          "value": ""
+        },
+        {
+          "type": "action.snackbar.show",
+          "message": "Post criado com sucesso! 🎉"
+        },
+        {
+          "type": "action.collection.refresh",
+          "collectionId": "feed_posts"
+        }
+      ]
+    }
+  }
+}
+```
+
+**Fluxo:** POST → Close Modal → Clear State → Show Toast → Refresh Feed
+
+---
+
+### 9. State in URL Pattern
+
+State binding em URL para filtros/parâmetros dinâmicos.
+
+**Usado em:** Inbox (linha 209), Gallery (linha 86)
+
+```json
+{
+  "type": "collection",
+  "data": {
+    "type": "action.http",
+    "url": "/api/messages?conversationId={{state.selectedConversationId}}"
+  }
+}
+```
+
+**Pattern:** Quando `state.selectedConversationId` muda, collection recarrega automaticamente.
+
+---
+
+### 10. Empty State Pattern
+
+Feedback visual quando lista está vazia.
+
+**Usado em:** Twitter Demo (linha 51)
+
+```json
+{
+  "type": "collection",
+  "data": {...},
+  "itemTemplate": {...},
+  "emptyState": {
+    "type": "layout.column",
+    "mainAxisAlignment": "center",
+    "crossAxisAlignment": "center",
+    "padding": 32,
+    "children": [
+      {
+        "type": "text",
+        "content": "Nenhum post ainda",
+        "style": "headlineSmall"
+      }
+    ]
+  }
+}
+```
+
+**Pattern:** Sempre forneça emptyState para melhor UX.
 
 ---
 
