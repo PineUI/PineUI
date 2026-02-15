@@ -13,6 +13,7 @@ import { PineUISchema, RenderContext, ActionNode } from './types';
 import { Renderer } from './renderer/Renderer';
 import { SnackbarContainer, SnackbarMessage } from './components/Snackbar';
 import { ModalContainer } from './components/Modal';
+import { loadImports } from './loader/imports';
 
 // Helper function to get nested values from objects
 function getNestedValue(obj: any, path: string): any {
@@ -66,7 +67,13 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
     try {
       setLoading(true);
       const response = await fetch(schemaUrl!);
-      const data = await response.json();
+      let data = await response.json();
+
+      // Load imports if present
+      if (data.imports && baseUrl) {
+        data = await loadImports(data, baseUrl);
+      }
+
       setSchema(data);
       // Update state with schema's initial state if provided
       if (data.state) {
@@ -221,7 +228,9 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
     state,
     data: {},
     components: schema?.components || {},
+    views: schema?.views || {},
     intents: schema?.intents || {},
+    schema: schema!,
     executeAction,
     executeIntent,
   };

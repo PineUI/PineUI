@@ -2,9 +2,14 @@
 
 export interface PineUISchema {
   schemaVersion: string;
+  imports?: {
+    components?: string[];
+    views?: string[];
+  };
   state?: Record<string, any>;
   screen: ComponentNode;
   components?: Record<string, ComponentDefinition>;
+  views?: Record<string, ViewDefinition>;
   overlays?: Record<string, OverlayDefinition>;
   intents?: Record<string, IntentDefinition>;
   telemetry?: TelemetryConfig;
@@ -19,6 +24,12 @@ export interface ComponentNode {
 export interface ComponentDefinition {
   type: string;
   definition: ComponentNode;
+}
+
+export interface ViewDefinition {
+  source?: string;
+  screen: ComponentNode;
+  state?: Record<string, any>;
 }
 
 export interface OverlayDefinition {
@@ -48,7 +59,9 @@ export interface RenderContext {
   state: Record<string, any>;
   data: Record<string, any>;
   components: Record<string, ComponentDefinition>;
+  views: Record<string, ViewDefinition>;
   intents: Record<string, IntentDefinition>;
+  schema: PineUISchema;
   executeAction: (action: ActionNode, context?: any) => Promise<void>;
   executeIntent: (intentName: string, params?: any) => Promise<void>;
 }

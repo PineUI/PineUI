@@ -23,6 +23,7 @@ import { Chip } from '../components/Chip';
 import { Grid } from '../components/Grid';
 import { Progress } from '../components/Progress';
 import { Table } from '../components/Table';
+import { View } from '../components/View';
 
 const COMPONENT_MAP: Record<string, React.ComponentType<any>> = {
   'text': Text,
@@ -49,6 +50,7 @@ const COMPONENT_MAP: Record<string, React.ComponentType<any>> = {
   'grid': Grid,
   'progress': Progress,
   'table': Table,
+  'view': View,
 };
 
 export interface RendererProps {
