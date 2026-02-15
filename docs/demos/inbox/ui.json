@@ -63,6 +63,10 @@
                 ]
               },
               {
+                "type": "input.text",
+                "placeholder": "🔍 Search for a name"
+              },
+              {
                 "type": "tabs",
                 "tabs": [
                   {
@@ -125,10 +129,6 @@
                   }
                 ],
                 "defaultTab": "inbox"
-              },
-              {
-                "type": "input.text",
-                "placeholder": "🔍 Search for a name"
               }
             ]
           }
