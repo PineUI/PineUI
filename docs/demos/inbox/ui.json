@@ -182,7 +182,7 @@
             "type": "layout.column",
             "flex": 1,
             "padding": 16,
-            "spacing": 16,
+            "spacing": 24,
             "overflow": "auto",
             "children": [
               {
@@ -202,6 +202,7 @@
               {
                 "type": "collection",
                 "layout": "list",
+                "itemSpacing": 32,
                 "data": {
                   "type": "action.http",
                   "method": "GET",
