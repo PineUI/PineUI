@@ -1,0 +1,150 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": {
+    "selectedCategory": "All"
+  },
+  "intents": {
+    "category.select": {
+      "handler": {
+        "type": "action.state.patch",
+        "path": "selectedCategory",
+        "value": "{{category}}"
+      }
+    }
+  },
+  "screen": {
+    "type": "layout.scaffold",
+    "appBar": {
+      "type": "layout.appBar",
+      "title": {
+        "type": "text",
+        "content": "Courses",
+        "style": "titleLarge",
+        "fontWeight": "bold"
+      }
+    },
+    "body": {
+      "type": "layout.column",
+      "spacing": 16,
+      "padding": 16,
+      "children": [
+        {
+          "type": "layout.row",
+          "spacing": 8,
+          "children": [
+            {
+              "type": "chip",
+              "label": "All",
+              "selected": "{{state.selectedCategory == 'All'}}",
+              "onPress": {
+                "intent": "category.select",
+                "category": "All"
+              }
+            },
+            {
+              "type": "chip",
+              "label": "Design",
+              "selected": "{{state.selectedCategory == 'Design'}}",
+              "onPress": {
+                "intent": "category.select",
+                "category": "Design"
+              }
+            },
+            {
+              "type": "chip",
+              "label": "Development",
+              "selected": "{{state.selectedCategory == 'Development'}}",
+              "onPress": {
+                "intent": "category.select",
+                "category": "Development"
+              }
+            },
+            {
+              "type": "chip",
+              "label": "Business",
+              "selected": "{{state.selectedCategory == 'Business'}}",
+              "onPress": {
+                "intent": "category.select",
+                "category": "Business"
+              }
+            },
+            {
+              "type": "chip",
+              "label": "Marketing",
+              "selected": "{{state.selectedCategory == 'Marketing'}}",
+              "onPress": {
+                "intent": "category.select",
+                "category": "Marketing"
+              }
+            }
+          ]
+        },
+        {
+          "type": "collection",
+          "layout": "grid",
+          "columns": 3,
+          "spacing": 16,
+          "data": {
+            "type": "action.http",
+            "method": "GET",
+            "url": "/api/gallery/courses?category={{state.selectedCategory}}"
+          },
+          "itemTemplate": {
+            "type": "pattern.courseCard",
+            "props": {
+              "course": "{{item}}"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "patterns": {
+    "pattern.courseCard": {
+      "type": "pattern.courseCard",
+      "definition": {
+        "type": "card",
+        "elevation": 1,
+        "child": {
+          "type": "layout.column",
+          "spacing": 0,
+          "children": [
+            {
+              "type": "image",
+              "src": "{{props.course.image}}",
+              "borderRadius": 12,
+              "aspectRatio": 1.33
+            },
+            {
+              "type": "layout.column",
+              "padding": 12,
+              "spacing": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "content": "{{props.course.title}}",
+                  "style": "titleSmall",
+                  "fontWeight": "bold"
+                },
+                {
+                  "type": "conditionalRender",
+                  "conditions": [
+                    {
+                      "when": "{{props.course.progress > 0}}",
+                      "render": {
+                        "type": "progress",
+                        "value": "{{props.course.progress}}",
+                        "label": "{{props.course.progress}}% complete",
+                        "color": "primary"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

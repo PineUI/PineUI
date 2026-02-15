@@ -116,6 +116,34 @@ Implementar sempre:
 - [ ] Suporta cache e virtualização?
 - [ ] É compreensível por LLMs?
 
+## 🧪 Workflow de Desenvolvimento
+
+**SEMPRE teste localmente antes de dizer que está pronto:**
+
+1. Build do pacote:
+```bash
+cd packages/react && npm run build
+```
+
+2. Copiar para docs:
+```bash
+cp packages/react/dist/pineui.standalone.js docs/
+cp packages/react/dist/style.css docs/pineui.css
+```
+
+3. Iniciar servidor local:
+```bash
+cd docs && python3 -m http.server 8080
+```
+
+4. Testar no browser:
+- Abrir http://localhost:8080/?demo=inbox
+- Testar interações (cliques, mudanças de estado)
+- Verificar console do browser para erros
+- Validar que JSON está sendo carregado corretamente
+
+**NUNCA** diga que algo está pronto sem testar localmente primeiro.
+
 ## 🚫 Evitar
 
 - Lógica de negócio no cliente

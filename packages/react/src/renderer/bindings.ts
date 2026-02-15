@@ -27,7 +27,18 @@ function resolveString(str: string, context: any): any {
   // Check if entire string is a binding
   const fullMatch = str.match(/^\{\{(.+)\}\}$/);
   if (fullMatch) {
-    return evaluateExpression(fullMatch[1].trim(), context);
+    const expr = fullMatch[1].trim();
+
+    // IMPORTANT: If binding references 'item' but item is not in context, keep the binding
+    // This allows itemTemplate to be resolved later when item is available
+    if (expr === 'item' || expr.startsWith('item.')) {
+      if (!('item' in context) || context.item === undefined) {
+        return str; // Keep the original binding string
+      }
+    }
+
+    const result = evaluateExpression(expr, context);
+    return result;
   }
 
   // Replace inline bindings
@@ -113,7 +124,11 @@ function evaluateFilter(expr: string, context: any): any {
 }
 
 function formatTimeAgo(dateString: string): string {
+  if (!dateString) return '';
+
   const date = new Date(dateString);
+  if (isNaN(date.getTime())) return dateString; // Return original if invalid
+
   const now = new Date();
   const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 

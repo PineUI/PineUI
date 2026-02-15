@@ -20,7 +20,7 @@
       "data": {
         "type": "action.http",
         "method": "GET",
-        "url": "/api/feed"
+        "url": "/api/twitter/feed"
       },
       "itemTemplate": {
         "type": "pattern.postCard",
@@ -60,7 +60,7 @@
       "icon": "➕",
       "label": "Novo post",
       "onPress": {
-        "type": "intent.post.compose"
+        "intent": "post.compose"
       }
     }
   },
@@ -92,11 +92,14 @@
                   "children": [
                     {
                       "type": "layout.row",
+                      "flex": 1,
                       "mainAxisAlignment": "spaceBetween",
+                      "crossAxisAlignment": "start",
                       "children": [
                         {
                           "type": "layout.row",
                           "spacing": 8,
+                          "crossAxisAlignment": "center",
                           "children": [
                             {
                               "type": "text",
@@ -152,6 +155,7 @@
                     {
                       "type": "layout.row",
                       "mainAxisAlignment": "spaceBetween",
+                      "crossAxisAlignment": "center",
                       "spacing": 16,
                       "children": [
                         {
@@ -159,11 +163,7 @@
                           "icon": "💬",
                           "size": "small",
                           "color": "onSurfaceVariant",
-                          "label": "{{props.post.metrics.comments}}",
-                          "onPress": {
-                            "type": "intent.post.viewComments",
-                            "postId": "{{props.post.id}}"
-                          }
+                          "label": "{{props.post.metrics.comments}}"
                         },
                         {
                           "type": "button.icon",
@@ -179,7 +179,7 @@
                           "color": "{{props.post.userActions.liked ? 'error' : 'onSurfaceVariant'}}",
                           "label": "{{props.post.metrics.likes}}",
                           "onPress": {
-                            "type": "intent.post.like",
+                            "intent": "post.like",
                             "postId": "{{props.post.id}}"
                           }
                         },
@@ -194,11 +194,6 @@
                   ]
                 }
               ]
-            },
-            {
-              "type": "divider",
-              "thickness": 1,
-              "color": "surfaceVariant"
             }
           ]
         }
@@ -237,7 +232,7 @@
                 "type": "button.filled",
                 "label": "Postar",
                 "onPress": {
-                  "type": "intent.post.create"
+                  "intent": "post.create"
                 }
               }
             ]
@@ -306,55 +301,6 @@
           }
         ]
       }
-    },
-    "comments": {
-      "type": "overlay.modal",
-      "presentation": "bottomSheet",
-      "dismissible": true,
-      "child": {
-        "type": "layout.column",
-        "padding": 16,
-        "spacing": 16,
-        "children": [
-          {
-            "type": "layout.row",
-            "mainAxisAlignment": "spaceBetween",
-            "children": [
-              {
-                "type": "button.icon",
-                "icon": "←",
-                "onPress": {
-                  "type": "action.overlay.close",
-                  "overlayId": "comments"
-                }
-              },
-              {
-                "type": "text",
-                "content": "Comentários",
-                "style": "titleMedium",
-                "fontWeight": "bold"
-              },
-              {
-                "type": "text",
-                "content": "",
-                "style": "bodySmall"
-              }
-            ]
-          },
-          {
-            "type": "text",
-            "content": "Sistema de comentários será implementado aqui! 💬",
-            "style": "bodyMedium",
-            "color": "onSurfaceVariant"
-          },
-          {
-            "type": "text",
-            "content": "Por enquanto, estamos mostrando que o modal funciona perfeitamente.",
-            "style": "bodySmall",
-            "color": "onSurfaceVariant"
-          }
-        ]
-      }
     }
   },
   "intents": {
@@ -369,7 +315,7 @@
         {
           "type": "action.http",
           "method": "POST",
-          "url": "/api/posts",
+          "url": "/api/twitter/posts",
           "body": {
             "content": {
               "text": "{{state.composer.text}}"
@@ -401,7 +347,7 @@
         {
           "type": "action.http",
           "method": "POST",
-          "url": "/api/posts/{{postId}}/like"
+          "url": "/api/twitter/posts/{{postId}}/like"
         },
         {
           "type": "action.snackbar.show",
@@ -409,12 +355,6 @@
           "duration": 2000
         }
       ]
-    },
-    "post.viewComments": {
-      "handler": {
-        "type": "action.overlay.open",
-        "overlayId": "comments"
-      }
     }
   }
 }

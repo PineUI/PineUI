@@ -1,0 +1,121 @@
+{
+  "endpoints": {
+    "/api/gallery/courses": {
+      "method": "GET",
+      "response": {
+        "data": [
+          {
+            "id": "1",
+            "title": "UI/UX Design Fundamentals",
+            "category": "Design",
+            "image": "https://picsum.photos/400/300?random=1",
+            "isNew": true,
+            "completed": false,
+            "progress": 0
+          },
+          {
+            "id": "2",
+            "title": "Advanced Figma Techniques",
+            "category": "Design",
+            "image": "https://picsum.photos/400/300?random=2",
+            "isNew": false,
+            "completed": false,
+            "progress": 45
+          },
+          {
+            "id": "3",
+            "title": "Typography Masterclass",
+            "category": "Design",
+            "image": "https://picsum.photos/400/300?random=3",
+            "isNew": false,
+            "completed": true,
+            "completedDate": "Feb 10, 2026",
+            "progress": 100
+          },
+          {
+            "id": "4",
+            "title": "JavaScript for Beginners",
+            "category": "Development",
+            "image": "https://picsum.photos/400/300?random=4",
+            "isNew": false,
+            "completed": false,
+            "progress": 60
+          },
+          {
+            "id": "5",
+            "title": "React Complete Guide",
+            "category": "Development",
+            "image": "https://picsum.photos/400/300?random=5",
+            "isNew": true,
+            "completed": false,
+            "progress": 30
+          },
+          {
+            "id": "6",
+            "title": "Node.js Backend Development",
+            "category": "Development",
+            "image": "https://picsum.photos/400/300?random=6",
+            "isNew": false,
+            "completed": false,
+            "progress": 15
+          },
+          {
+            "id": "7",
+            "title": "Strategic Business Planning",
+            "category": "Business",
+            "image": "https://picsum.photos/400/300?random=7",
+            "isNew": false,
+            "completed": true,
+            "completedDate": "Jan 20, 2026",
+            "progress": 100
+          },
+          {
+            "id": "8",
+            "title": "Leadership and Management",
+            "category": "Business",
+            "image": "https://picsum.photos/400/300?random=8",
+            "isNew": false,
+            "completed": false,
+            "progress": 80
+          },
+          {
+            "id": "9",
+            "title": "Financial Analysis Essentials",
+            "category": "Business",
+            "image": "https://picsum.photos/400/300?random=9",
+            "isNew": true,
+            "completed": false,
+            "progress": 0
+          },
+          {
+            "id": "10",
+            "title": "Digital Marketing Strategy",
+            "category": "Marketing",
+            "image": "https://picsum.photos/400/300?random=10",
+            "isNew": false,
+            "completed": false,
+            "progress": 50
+          },
+          {
+            "id": "11",
+            "title": "Social Media Marketing",
+            "category": "Marketing",
+            "image": "https://picsum.photos/400/300?random=11",
+            "isNew": true,
+            "completed": false,
+            "progress": 25
+          },
+          {
+            "id": "12",
+            "title": "Content Marketing Mastery",
+            "category": "Marketing",
+            "image": "https://picsum.photos/400/300?random=12",
+            "isNew": false,
+            "completed": false,
+            "progress": 70
+          }
+        ]
+      }
+    }
+  }
+}

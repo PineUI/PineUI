@@ -1,0 +1,149 @@
+{
+  "endpoints": {
+    "/api/twitter/feed": {
+      "method": "GET",
+      "response": {
+        "data": [
+          {
+            "id": "post_1",
+            "author": {
+              "id": "user_1",
+              "username": "user1",
+              "displayName": "User 1",
+              "avatar": "https://i.pravatar.cc/150?img=1",
+              "verified": false
+            },
+            "createdAt": "2026-02-15T10:00:00Z",
+            "content": {
+              "text": "Este é o post número 1! 🍍 Testando o PineUI com Server-Driven UI. #PineUI #ServerDrivenUI",
+              "mentions": [],
+              "hashtags": ["#PineUI", "#ServerDrivenUI"]
+            },
+            "media": null,
+            "metrics": {
+              "likes": 42,
+              "comments": 5,
+              "retweets": 12,
+              "views": 234
+            },
+            "userActions": {
+              "liked": false,
+              "retweeted": false,
+              "bookmarked": false
+            }
+          },
+          {
+            "id": "post_2",
+            "author": {
+              "id": "user_2",
+              "username": "user2",
+              "displayName": "User 2",
+              "avatar": "https://i.pravatar.cc/150?img=2",
+              "verified": false
+            },
+            "createdAt": "2026-02-15T09:30:00Z",
+            "content": {
+              "text": "Este é o post número 2! 🍍 Testando o PineUI com Server-Driven UI. #PineUI #ServerDrivenUI",
+              "mentions": [],
+              "hashtags": ["#PineUI", "#ServerDrivenUI"]
+            },
+            "media": null,
+            "metrics": {
+              "likes": 89,
+              "comments": 12,
+              "retweets": 23,
+              "views": 456
+            },
+            "userActions": {
+              "liked": false,
+              "retweeted": false,
+              "bookmarked": false
+            }
+          },
+          {
+            "id": "post_3",
+            "author": {
+              "id": "user_3",
+              "username": "user3",
+              "displayName": "User 3",
+              "avatar": "https://i.pravatar.cc/150?img=3",
+              "verified": true
+            },
+            "createdAt": "2026-02-15T09:00:00Z",
+            "content": {
+              "text": "Este é o post número 3! 🍍 Testando o PineUI com Server-Driven UI. #PineUI #ServerDrivenUI",
+              "mentions": [],
+              "hashtags": ["#PineUI", "#ServerDrivenUI"]
+            },
+            "media": [
+              {
+                "type": "image",
+                "url": "https://picsum.photos/800/600?random=3",
+                "thumbnail": "https://picsum.photos/200/150?random=3",
+                "width": 800,
+                "height": 600,
+                "alt": "Image for post 3"
+              }
+            ],
+            "metrics": {
+              "likes": 156,
+              "comments": 34,
+              "retweets": 45,
+              "views": 1234
+            },
+            "userActions": {
+              "liked": false,
+              "retweeted": false,
+              "bookmarked": false
+            }
+          }
+        ],
+        "pagination": {
+          "hasMore": true,
+          "cursor": "post_3"
+        }
+      }
+    },
+    "/api/twitter/posts/:postId/like": {
+      "method": "POST",
+      "response": {
+        "success": true,
+        "liked": true
+      }
+    },
+    "/api/twitter/posts": {
+      "method": "POST",
+      "response": {
+        "success": true,
+        "post": {
+          "id": "post_new",
+          "author": {
+            "id": "user_current",
+            "username": "currentuser",
+            "displayName": "Current User",
+            "avatar": "https://i.pravatar.cc/150?img=1",
+            "verified": false
+          },
+          "createdAt": "2026-02-15T11:00:00Z",
+          "content": {
+            "text": "{{body.content.text}}",
+            "mentions": [],
+            "hashtags": []
+          },
+          "media": null,
+          "metrics": {
+            "likes": 0,
+            "comments": 0,
+            "retweets": 0,
+            "views": 0
+          },
+          "userActions": {
+            "liked": false,
+            "retweeted": false,
+            "bookmarked": false
+          }
+        }
+      }
+    }
+  }
+}

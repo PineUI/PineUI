@@ -1,0 +1,41 @@
+{
+  "endpoints": {
+    "/api/admin/users": {
+      "method": "GET",
+      "response": {
+        "data": [
+          {
+            "id": "1",
+            "name": "Kwame Adebayo",
+            "email": "adebayo@gmail.com",
+            "avatar": "https://i.pravatar.cc/150?img=11",
+            "score": "9.2",
+            "scoreVariant": "success",
+            "role": "Member",
+            "joined": "Apr 12, 2024"
+          },
+          {
+            "id": "2",
+            "name": "Robert Fox",
+            "email": "robertfox@saas.com",
+            "avatar": "https://i.pravatar.cc/150?img=12",
+            "score": "9.4",
+            "scoreVariant": "success",
+            "role": "Member",
+            "joined": "Mar 5, 2024"
+          },
+          {
+            "id": "3",
+            "name": "Mei Wong",
+            "email": "wongmei@gmail.com",
+            "avatar": "https://i.pravatar.cc/150?img=45",
+            "score": "6.0",
+            "scoreVariant": "warning",
+            "role": "Member",
+            "joined": "Jun 22, 2024"
+          }
+        ]
+      }
+    }
+  }
+}

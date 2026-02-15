@@ -17,6 +17,12 @@ import { BottomNav } from '../components/BottomNav';
 import { Input } from '../components/Input';
 import { Divider } from '../components/Divider';
 import { ConditionalRender } from '../components/ConditionalRender';
+import { Tabs } from '../components/Tabs';
+import { Badge } from '../components/Badge';
+import { Chip } from '../components/Chip';
+import { Grid } from '../components/Grid';
+import { Progress } from '../components/Progress';
+import { Table } from '../components/Table';
 
 const COMPONENT_MAP: Record<string, React.ComponentType<any>> = {
   'text': Text,
@@ -37,6 +43,12 @@ const COMPONENT_MAP: Record<string, React.ComponentType<any>> = {
   'input.text': Input,
   'divider': Divider,
   'conditionalRender': ConditionalRender,
+  'tabs': Tabs,
+  'badge': Badge,
+  'chip': Chip,
+  'grid': Grid,
+  'progress': Progress,
+  'table': Table,
 };
 
 export interface RendererProps {
@@ -50,12 +62,18 @@ export const Renderer: React.FC<RendererProps> = ({ node, context, parentData })
     return null;
   }
 
-  // Resolve bindings in the node
-  const resolvedNode = resolveBindings(node, {
-    ...context,
-    item: parentData,
-    props: { ...node.props, ...parentData },
-  });
+  // Build binding context with item from parentData
+  const bindingContext: any = parentData !== undefined
+    ? Object.assign({}, context, { item: parentData })
+    : context;
+
+  // IMPORTANT: For Collection component, don't resolve bindings in itemTemplate
+  // The Collection will handle item data directly
+  const shouldResolveBindings = node.type !== 'collection';
+
+  const resolvedNode = shouldResolveBindings
+    ? resolveBindings(node, bindingContext)
+    : node;
 
   // Check if it's a pattern reference
   if (resolvedNode.type.startsWith('pattern.')) {
@@ -67,10 +85,11 @@ export const Renderer: React.FC<RendererProps> = ({ node, context, parentData })
       return null;
     }
 
-    // Render pattern definition with props
+    // Render pattern definition with enhanced context
+    // IMPORTANT: Use bindingContext (which has item) instead of context
     const patternContext = {
-      ...context,
-      props: { ...resolvedNode.props, ...parentData },
+      ...bindingContext,
+      props: resolvedNode.props,
     };
 
     return <Renderer node={pattern.definition} context={patternContext} parentData={parentData} />;

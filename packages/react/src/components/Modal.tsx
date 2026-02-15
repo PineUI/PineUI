@@ -46,8 +46,12 @@ export const Modal: React.FC<ModalProps> = ({
     return () => window.removeEventListener('keydown', handleEscape);
   }, [dismissible]);
 
+  const backdropClass = presentation === 'bottomSheet'
+    ? 'pineui-modal-backdrop pineui-modal-backdrop--bottomSheet'
+    : 'pineui-modal-backdrop';
+
   return (
-    <div className="pineui-modal-backdrop" onClick={handleBackdropClick}>
+    <div className={backdropClass} onClick={handleBackdropClick}>
       <div className={`pineui-modal pineui-modal--${presentation}`}>
         <Renderer node={child} context={context} />
       </div>

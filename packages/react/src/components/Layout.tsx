@@ -1,5 +1,6 @@
 import React from 'react';
-import { ComponentNode, RenderContext } from '../types';
+import { ComponentNode, RenderContext, ActionNode } from '../types';
+import { resolveBindings } from '../renderer/bindings';
 import clsx from 'clsx';
 
 interface LayoutProps {
@@ -10,6 +11,10 @@ interface LayoutProps {
   mainAxisAlignment?: 'start' | 'center' | 'end' | 'spaceBetween' | 'spaceAround';
   crossAxisAlignment?: 'start' | 'center' | 'end' | 'stretch';
   flex?: number;
+  width?: number | string;
+  height?: number | string;
+  overflow?: 'visible' | 'hidden' | 'scroll' | 'auto';
+  onPress?: ActionNode;
   context?: RenderContext;
   renderer?: React.ComponentType<any>;
 }
@@ -22,10 +27,22 @@ export const Layout: React.FC<LayoutProps> = ({
   mainAxisAlignment = 'start',
   crossAxisAlignment = 'start',
   flex,
+  width,
+  height,
+  overflow,
+  onPress,
   context,
   renderer: Renderer,
 }) => {
   if (!Renderer || !context) return null;
+
+  const handleClick = async () => {
+    if (onPress && context) {
+      // Resolve bindings in the action before executing
+      const resolvedAction = resolveBindings(onPress, context);
+      await context.executeAction(resolvedAction);
+    }
+  };
 
   const isColumn = type === 'layout.column';
   const className = clsx('pineui-layout', {
@@ -41,10 +58,19 @@ export const Layout: React.FC<LayoutProps> = ({
     justifyContent: mapAlignment(mainAxisAlignment),
     alignItems: mapCrossAlignment(crossAxisAlignment),
     flex: flex,
+    width: width !== undefined
+      ? (typeof width === 'number' ? `${width}px` : width)
+      : undefined,
+    height: height !== undefined
+      ? (typeof height === 'number' ? `${height}px` : height)
+      : undefined,
+    overflow: overflow,
+    minWidth: 0, // Permite que flex shrink funcione corretamente
+    cursor: onPress ? 'pointer' : undefined,
   };
 
   return (
-    <div className={className} style={styles}>
+    <div className={className} style={styles} onClick={onPress ? handleClick : undefined}>
       {children.map((child, index) => (
         <Renderer key={index} node={child} context={context} />
       ))}

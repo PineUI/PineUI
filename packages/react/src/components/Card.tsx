@@ -1,5 +1,6 @@
 import React from 'react';
 import { ComponentNode, RenderContext, ActionNode } from '../types';
+import { resolveBindings } from '../renderer/bindings';
 import clsx from 'clsx';
 
 interface CardProps {
@@ -23,7 +24,8 @@ export const Card: React.FC<CardProps> = ({
 
   const handleClick = async () => {
     if (onTap && context) {
-      await context.executeAction(onTap);
+      const resolvedAction = resolveBindings(onTap, context);
+      await context.executeAction(resolvedAction);
     }
   };
 

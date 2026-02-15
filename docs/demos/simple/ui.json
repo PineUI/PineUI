@@ -1,0 +1,161 @@
+{
+  "schemaVersion": "1.0.0",
+  "screen": {
+    "type": "layout.scaffold",
+    "body": {
+      "type": "layout.column",
+      "padding": 16,
+      "spacing": 16,
+      "children": [
+        {
+          "type": "text",
+          "content": "🍍 PineUI Demo",
+          "style": "titleLarge"
+        },
+        {
+          "type": "text",
+          "content": "Server-Driven UI funcionando!",
+          "style": "bodyMedium",
+          "color": "onSurfaceVariant"
+        },
+        {
+          "type": "divider",
+          "thickness": 1,
+          "color": "surfaceVariant"
+        },
+        {
+          "type": "text",
+          "content": "Teste o componente de Input:",
+          "style": "titleSmall"
+        },
+        {
+          "type": "input.text",
+          "placeholder": "Digite algo aqui...",
+          "multiline": false,
+          "onChanged": {
+            "type": "action.state.patch",
+            "path": "state.testInput",
+            "value": "{{value}}"
+          }
+        },
+        {
+          "type": "button.text",
+          "label": "Mostrar o que digitei",
+          "onPress": {
+            "type": "action.snackbar.show",
+            "message": "Você digitou: {{state.testInput}}",
+            "duration": 5000
+          }
+        },
+        {
+          "type": "divider",
+          "thickness": 1,
+          "color": "surfaceVariant"
+        },
+        {
+          "type": "card",
+          "elevation": 1,
+          "padding": 16,
+          "child": {
+            "type": "layout.column",
+            "spacing": 12,
+            "children": [
+              {
+                "type": "layout.row",
+                "spacing": 12,
+                "children": [
+                  {
+                    "type": "avatar",
+                    "src": "https://i.pravatar.cc/150?img=1",
+                    "size": 48
+                  },
+                  {
+                    "type": "layout.column",
+                    "spacing": 4,
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "Maria Silva",
+                        "style": "titleSmall",
+                        "fontWeight": "bold"
+                      },
+                      {
+                        "type": "text",
+                        "content": "@mariasilva",
+                        "style": "bodySmall",
+                        "color": "onSurfaceVariant"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "content": "Este é um exemplo de post renderizado a partir de JSON! 🚀",
+                "style": "bodyMedium"
+              },
+              {
+                "type": "image",
+                "src": "https://picsum.photos/800/400",
+                "borderRadius": 8
+              },
+              {
+                "type": "layout.row",
+                "spacing": 16,
+                "children": [
+                  {
+                    "type": "button.icon",
+                    "icon": "💬",
+                    "label": "23"
+                  },
+                  {
+                    "type": "button.icon",
+                    "icon": "🔁",
+                    "label": "8"
+                  },
+                  {
+                    "type": "button.icon",
+                    "icon": "❤️",
+                    "label": "142"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "type": "layout.row",
+          "spacing": 12,
+          "children": [
+            {
+              "type": "button.filled",
+              "label": "Mostrar Toast",
+              "onPress": {
+                "type": "action.snackbar.show",
+                "message": "✨ Olha que bonito esse toast Material Design 3!",
+                "duration": 5000
+              }
+            },
+            {
+              "type": "button.text",
+              "label": "Com Ação",
+              "onPress": {
+                "type": "action.snackbar.show",
+                "message": "Você pode desfazer esta ação",
+                "duration": 10000,
+                "action": {
+                  "label": "Desfazer",
+                  "onPress": {
+                    "type": "action.snackbar.show",
+                    "message": "Ação desfeita! ↩️",
+                    "duration": 3000
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

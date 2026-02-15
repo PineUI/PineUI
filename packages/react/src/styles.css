@@ -135,7 +135,7 @@
   background: transparent;
   color: var(--md-sys-color-onSurfaceVariant);
   padding: 8px;
-  border-radius: 50%;
+  border-radius: 8px;
   min-width: 40px;
   min-height: 40px;
 }
@@ -160,6 +160,15 @@
 .pineui-button--small {
   font-size: 12px;
   padding: 6px 16px;
+}
+
+/* Small icon buttons need specific sizing */
+.pineui-button--icon.pineui-button--small {
+  padding: 4px;
+  min-width: 20px;
+  min-height: 20px;
+  font-size: 14px;
+  line-height: 1;
 }
 
 /* Card */
@@ -460,6 +469,12 @@ textarea.pineui-input {
   justify-content: center;
   z-index: 999;
   animation: fadeIn 0.2s ease-out;
+  pointer-events: auto;
+}
+
+.pineui-modal-backdrop--bottomSheet {
+  align-items: flex-end;
+  justify-content: stretch;
 }
 
 @keyframes fadeIn {
@@ -493,13 +508,11 @@ textarea.pineui-input {
 }
 
 .pineui-modal--bottomSheet {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  width: 100%;
   max-width: 100vw;
   max-height: 80vh;
   border-radius: 16px 16px 0 0;
+  margin: 0;
   animation: slideUpFromBottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -521,4 +534,221 @@ textarea.pineui-input {
   width: 400px;
   max-width: 90vw;
   padding: 24px;
+}
+
+/* Tabs */
+.pineui-tabs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.pineui-tabs__header {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--md-sys-color-outline);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.pineui-tabs__tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--md-sys-color-onSurfaceVariant);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.pineui-tabs__tab:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.pineui-tabs__tab--active {
+  color: var(--md-sys-color-primary);
+  border-bottom-color: var(--md-sys-color-primary);
+}
+
+.pineui-tabs__badge {
+  background: var(--md-sys-color-surfaceVariant);
+  color: var(--md-sys-color-onSurfaceVariant);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pineui-tabs__content {
+  padding: 16px 0;
+}
+
+/* Badge */
+.pineui-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pineui-badge--default {
+  background: var(--md-sys-color-surfaceVariant);
+  color: var(--md-sys-color-onSurfaceVariant);
+}
+
+.pineui-badge--success {
+  background: rgba(25, 135, 84, 0.1);
+  color: var(--md-sys-color-success);
+  border: 1px solid var(--md-sys-color-success);
+}
+
+.pineui-badge--warning {
+  background: rgba(255, 193, 7, 0.1);
+  color: #ff9800;
+  border: 1px solid #ff9800;
+}
+
+.pineui-badge--error {
+  background: rgba(186, 26, 26, 0.1);
+  color: var(--md-sys-color-error);
+  border: 1px solid var(--md-sys-color-error);
+}
+
+.pineui-badge--info {
+  background: rgba(103, 80, 164, 0.1);
+  color: var(--md-sys-color-primary);
+  border: 1px solid var(--md-sys-color-primary);
+}
+
+.pineui-badge--small {
+  padding: 2px 6px;
+  font-size: 10px;
+}
+
+.pineui-badge--large {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+/* Chip */
+.pineui-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--md-sys-color-onSurface);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pineui-chip:hover {
+  background: var(--md-sys-color-surfaceVariant);
+}
+
+.pineui-chip--selected {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-onPrimary);
+  border-color: var(--md-sys-color-primary);
+}
+
+/* Grid */
+.pineui-grid {
+  width: 100%;
+}
+
+/* Progress */
+.pineui-progress {
+  width: 100%;
+}
+
+.pineui-progress__header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.pineui-progress__label {
+  color: var(--md-sys-color-onSurface);
+  font-weight: 500;
+}
+
+.pineui-progress__percentage {
+  color: var(--md-sys-color-onSurfaceVariant);
+}
+
+.pineui-progress__track {
+  width: 100%;
+  height: 8px;
+  background: var(--md-sys-color-surfaceVariant);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.pineui-progress__fill {
+  height: 100%;
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
+.pineui-progress__fill--primary {
+  background: var(--md-sys-color-primary);
+}
+
+.pineui-progress__fill--success {
+  background: var(--md-sys-color-success);
+}
+
+.pineui-progress__fill--error {
+  background: var(--md-sys-color-error);
+}
+
+/* Table */
+.pineui-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.pineui-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pineui-table__header {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--md-sys-color-onSurfaceVariant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--md-sys-color-outline);
+}
+
+.pineui-table__row {
+  border-bottom: 1px solid var(--md-sys-color-surfaceVariant);
+  transition: background 0.2s;
+}
+
+.pineui-table__row:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.pineui-table__cell {
+  padding: 16px;
+  vertical-align: middle;
 }

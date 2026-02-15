@@ -1,0 +1,356 @@
+{
+  "endpoints": {
+    "/api/inbox/conversations/unread": {
+      "method": "GET",
+      "response": {
+        "data": [
+          {
+            "id": "1",
+            "name": "Clarity Coach",
+            "time": "8:45 AM",
+            "message": "Just wanted to check in...",
+            "avatar": "https://i.pravatar.cc/150?img=20",
+            "unread": "2"
+          },
+          {
+            "id": "3",
+            "name": "Emily Chen",
+            "time": "Yesterday",
+            "message": "Thanks for the advice!",
+            "avatar": "https://i.pravatar.cc/150?img=45",
+            "unread": "1"
+          },
+          {
+            "id": "2",
+            "name": "Carlos Ramirez",
+            "time": "10:18 AM",
+            "message": "Creating a space...",
+            "avatar": "https://i.pravatar.cc/150?img=13",
+            "unread": "1"
+          }
+        ]
+      }
+    },
+    "/api/inbox/conversations/agents": {
+      "method": "GET",
+      "response": {
+        "data": [
+          {
+            "id": "1",
+            "name": "Clarity Coach",
+            "time": "8:45 AM",
+            "message": "Just wanted to check in...",
+            "avatar": "https://i.pravatar.cc/150?img=20",
+            "unread": "2"
+          }
+        ]
+      }
+    },
+    "/api/inbox/conversations": {
+      "method": "GET",
+      "response": {
+        "data": [
+          {
+            "id": "1",
+            "name": "Clarity Coach",
+            "time": "8:45 AM",
+            "message": "Just wanted to check in...",
+            "avatar": "https://i.pravatar.cc/150?img=20",
+            "unread": "2"
+          },
+          {
+            "id": "2",
+            "name": "Carlos Ramirez",
+            "time": "10:18 AM",
+            "message": "Creating a space...",
+            "avatar": "https://i.pravatar.cc/150?img=13",
+            "unread": ""
+          },
+          {
+            "id": "3",
+            "name": "Emily Chen",
+            "time": "Yesterday",
+            "message": "Thanks for the advice!",
+            "avatar": "https://i.pravatar.cc/150?img=45",
+            "unread": "1"
+          },
+          {
+            "id": "4",
+            "name": "Sarah Johnson",
+            "time": "Yesterday",
+            "message": "See you at the workshop",
+            "avatar": "https://i.pravatar.cc/150?img=32",
+            "unread": ""
+          },
+          {
+            "id": "5",
+            "name": "Michael Brown",
+            "time": "Oct 26",
+            "message": "Great session today",
+            "avatar": "https://i.pravatar.cc/150?img=68",
+            "unread": ""
+          }
+        ]
+      }
+    },
+    "/api/inbox/messages": {
+      "method": "GET",
+      "response": {
+        "data": {
+          "1": [
+            {
+              "id": "1",
+              "author": "Ravi Patel",
+              "time": "3:55 PM",
+              "content": "What's one small habit that's helped you the most in staying consistent?",
+              "avatar": "https://i.pravatar.cc/150?img=15",
+              "userId": "user_ravi",
+              "likes": "12",
+              "replies": "3"
+            },
+            {
+              "id": "2",
+              "author": "Kristin Watson",
+              "time": "4:23 PM",
+              "content": "For me, it's showing up every day even when I don't feel like it. Small wins compound!",
+              "avatar": "https://i.pravatar.cc/150?img=48",
+              "userId": "user_kristin",
+              "likes": "20",
+              "replies": "6"
+            },
+            {
+              "id": "3",
+              "author": "David Kim",
+              "time": "4:45 PM",
+              "content": "Absolutely agree! I've found that starting with just 5 minutes makes all the difference.",
+              "avatar": "https://i.pravatar.cc/150?img=33",
+              "userId": "user_david",
+              "likes": "8",
+              "replies": "2"
+            },
+            {
+              "id": "4",
+              "author": "Robert Fox",
+              "time": "5:12 PM",
+              "content": "Love this conversation! Consistency beats intensity every time. Keep it going! 🔥",
+              "avatar": "https://i.pravatar.cc/150?img=12",
+              "userId": "user_robert",
+              "likes": "15",
+              "replies": "4"
+            }
+          ],
+          "2": [
+            {
+              "id": "1",
+              "author": "Carlos Ramirez",
+              "time": "10:15 AM",
+              "content": "Hey everyone! I'm creating a new space for Spanish-speaking entrepreneurs. Who's interested?",
+              "avatar": "https://i.pravatar.cc/150?img=13",
+              "userId": "user_carlos",
+              "likes": "18",
+              "replies": "7"
+            },
+            {
+              "id": "2",
+              "author": "Maria Garcia",
+              "time": "10:32 AM",
+              "content": "¡Me encanta la idea! Count me in 🙌",
+              "avatar": "https://i.pravatar.cc/150?img=25",
+              "userId": "user_maria",
+              "likes": "5",
+              "replies": "1"
+            }
+          ],
+          "3": [
+            {
+              "id": "1",
+              "author": "Emily Chen",
+              "time": "Yesterday 3:20 PM",
+              "content": "Thanks so much for the advice on scaling my business. It really helped!",
+              "avatar": "https://i.pravatar.cc/150?img=45",
+              "userId": "user_emily",
+              "likes": "4",
+              "replies": "0"
+            },
+            {
+              "id": "2",
+              "author": "Robert Fox",
+              "time": "Yesterday 4:05 PM",
+              "content": "You're welcome! Happy to help anytime. Keep pushing forward! 💪",
+              "avatar": "https://i.pravatar.cc/150?img=12",
+              "userId": "user_robert",
+              "likes": "6",
+              "replies": "1"
+            }
+          ],
+          "4": [
+            {
+              "id": "1",
+              "author": "Sarah Johnson",
+              "time": "Yesterday 2:15 PM",
+              "content": "Looking forward to the workshop tomorrow! Should I bring anything?",
+              "avatar": "https://i.pravatar.cc/150?img=32",
+              "userId": "user_sarah",
+              "likes": "2",
+              "replies": "0"
+            }
+          ],
+          "5": [
+            {
+              "id": "1",
+              "author": "Michael Brown",
+              "time": "Oct 26 5:30 PM",
+              "content": "Great session today! The frameworks you shared were super practical.",
+              "avatar": "https://i.pravatar.cc/150?img=68",
+              "userId": "user_michael",
+              "likes": "7",
+              "replies": "2"
+            }
+          ]
+        }
+      }
+    },
+    "/api/inbox/profile": {
+      "method": "GET",
+      "response": {
+        "data": {
+          "user_robert": {
+            "userId": "user_robert",
+            "name": "Robert Fox",
+            "role": "Business Coach",
+            "avatar": "https://i.pravatar.cc/150?img=12",
+            "email": "robert.fox@example.com",
+            "location": "San Francisco, CA",
+            "memberSince": "Member since Oct 2022",
+            "bio": "Helping entrepreneurs scale their businesses through strategic coaching and mentorship. 10+ years of experience in business development and leadership.",
+            "links": {
+              "website": "🔗 robertfox.com",
+              "twitter": "🐦 @robertfox",
+              "linkedin": "💼 linkedin.com/in/robertfox"
+            }
+          },
+          "user_ravi": {
+            "userId": "user_ravi",
+            "name": "Ravi Patel",
+            "role": "Product Manager",
+            "avatar": "https://i.pravatar.cc/150?img=15",
+            "email": "ravi.patel@example.com",
+            "location": "New York, NY",
+            "memberSince": "Member since Jan 2023",
+            "bio": "Product leader focused on building tools that help teams collaborate better. Passionate about user research and agile methodologies.",
+            "links": {
+              "website": "🔗 ravipatel.io",
+              "twitter": "🐦 @ravipatel",
+              "linkedin": "💼 linkedin.com/in/ravipatel"
+            }
+          },
+          "user_kristin": {
+            "userId": "user_kristin",
+            "name": "Kristin Watson",
+            "role": "Marketing Strategist",
+            "avatar": "https://i.pravatar.cc/150?img=48",
+            "email": "kristin.watson@example.com",
+            "location": "Austin, TX",
+            "memberSince": "Member since Mar 2023",
+            "bio": "Growth marketer specializing in content strategy and community building. Love helping brands tell authentic stories.",
+            "links": {
+              "website": "🔗 kristinwatson.com",
+              "twitter": "🐦 @kristinwatson",
+              "linkedin": "💼 linkedin.com/in/kristinwatson"
+            }
+          },
+          "user_david": {
+            "userId": "user_david",
+            "name": "David Kim",
+            "role": "Software Engineer",
+            "avatar": "https://i.pravatar.cc/150?img=33",
+            "email": "david.kim@example.com",
+            "location": "Seattle, WA",
+            "memberSince": "Member since Feb 2023",
+            "bio": "Full-stack developer passionate about building scalable systems. Open source contributor and tech blogger.",
+            "links": {
+              "website": "🔗 davidkim.dev",
+              "twitter": "🐦 @davidkim",
+              "linkedin": "💼 linkedin.com/in/davidkim"
+            }
+          },
+          "user_carlos": {
+            "userId": "user_carlos",
+            "name": "Carlos Ramirez",
+            "role": "Community Manager",
+            "avatar": "https://i.pravatar.cc/150?img=13",
+            "email": "carlos.ramirez@example.com",
+            "location": "Miami, FL",
+            "memberSince": "Member since Dec 2022",
+            "bio": "Building communities that bring people together. Bilingual community builder focused on Latin American markets.",
+            "links": {
+              "website": "🔗 carlosramirez.com",
+              "twitter": "🐦 @carlosramirez",
+              "linkedin": "💼 linkedin.com/in/carlosramirez"
+            }
+          },
+          "user_emily": {
+            "userId": "user_emily",
+            "name": "Emily Chen",
+            "role": "Startup Founder",
+            "avatar": "https://i.pravatar.cc/150?img=45",
+            "email": "emily.chen@example.com",
+            "location": "San Francisco, CA",
+            "memberSince": "Member since Apr 2023",
+            "bio": "Building a SaaS platform for remote teams. Previously at Google. Always learning, always shipping.",
+            "links": {
+              "website": "🔗 emilychen.co",
+              "twitter": "🐦 @emilychen",
+              "linkedin": "💼 linkedin.com/in/emilychen"
+            }
+          },
+          "user_sarah": {
+            "userId": "user_sarah",
+            "name": "Sarah Johnson",
+            "role": "UX Designer",
+            "avatar": "https://i.pravatar.cc/150?img=32",
+            "email": "sarah.johnson@example.com",
+            "location": "Portland, OR",
+            "memberSince": "Member since May 2023",
+            "bio": "User experience designer focused on accessibility and inclusive design. Creating delightful experiences for everyone.",
+            "links": {
+              "website": "🔗 sarahjohnson.design",
+              "twitter": "🐦 @sarahjohnson",
+              "linkedin": "💼 linkedin.com/in/sarahjohnson"
+            }
+          },
+          "user_michael": {
+            "userId": "user_michael",
+            "name": "Michael Brown",
+            "role": "Sales Coach",
+            "avatar": "https://i.pravatar.cc/150?img=68",
+            "email": "michael.brown@example.com",
+            "location": "Chicago, IL",
+            "memberSince": "Member since Nov 2022",
+            "bio": "Helping sales teams close more deals through effective communication. 15 years in B2B sales and training.",
+            "links": {
+              "website": "🔗 michaelbrown.coach",
+              "twitter": "🐦 @michaelbrown",
+              "linkedin": "💼 linkedin.com/in/michaelbrown"
+            }
+          },
+          "user_maria": {
+            "userId": "user_maria",
+            "name": "Maria Garcia",
+            "role": "Content Creator",
+            "avatar": "https://i.pravatar.cc/150?img=25",
+            "email": "maria.garcia@example.com",
+            "location": "Barcelona, Spain",
+            "memberSince": "Member since Jun 2023",
+            "bio": "Creating content that inspires and educates. Bilingual creator focused on entrepreneurship and personal development.",
+            "links": {
+              "website": "🔗 mariagarcia.es",
+              "twitter": "🐦 @mariagarcia",
+              "linkedin": "💼 linkedin.com/in/mariagarcia"
+            }
+          }
+        }
+      }
+    }
+  }
+}

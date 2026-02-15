@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "1.0.0",
+  "screen": {
+    "type": "layout.column",
+    "spacing": 0,
+    "children": [
+      {
+        "type": "layout.row",
+        "mainAxisAlignment": "spaceBetween",
+        "crossAxisAlignment": "center",
+        "padding": 24,
+        "children": [
+          {
+            "type": "text",
+            "content": "Manage audience",
+            "style": "headlineSmall",
+            "fontWeight": "bold"
+          },
+          {
+            "type": "button.filled",
+            "label": "Add"
+          }
+        ]
+      },
+      {
+        "type": "tabs",
+        "defaultTab": "all",
+        "tabs": [
+          {
+            "id": "all",
+            "label": "All",
+            "badge": 720,
+            "content": {
+              "type": "layout.column",
+              "spacing": 16,
+              "padding": 24,
+              "children": [
+                {
+                  "type": "table",
+                  "columns": [
+                    {
+                      "key": "name",
+                      "label": "NAME",
+                      "width": "35%",
+                      "template": {
+                        "type": "layout.row",
+                        "spacing": 12,
+                        "crossAxisAlignment": "center",
+                        "children": [
+                          {
+                            "type": "avatar",
+                            "src": "{{item.avatar}}",
+                            "size": 48
+                          },
+                          {
+                            "type": "layout.column",
+                            "spacing": 4,
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "{{item.name}}",
+                                "style": "bodyMedium",
+                                "fontWeight": "bold"
+                              },
+                              {
+                                "type": "text",
+                                "content": "{{item.email}}",
+                                "style": "bodySmall",
+                                "color": "onSurfaceVariant"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "key": "score",
+                      "label": "SCORE",
+                      "width": "20%",
+                      "template": {
+                        "type": "badge",
+                        "label": "{{item.score}}",
+                        "variant": "{{item.scoreVariant}}",
+                        "size": "medium"
+                      }
+                    },
+                    {
+                      "key": "role",
+                      "label": "ROLE",
+                      "width": "25%"
+                    },
+                    {
+                      "key": "joined",
+                      "label": "JOINED",
+                      "width": "20%"
+                    }
+                  ],
+                  "data": {
+                    "type": "action.http",
+                    "method": "GET",
+                    "url": "/api/admin/users"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

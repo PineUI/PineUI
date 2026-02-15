@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PineUI Demo - Server-Driven UI</title>
+  <link rel="stylesheet" href="./pineui.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    .header {
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      opacity: 0.95;
+      margin-bottom: 0.5rem;
+    }
+
+    .header .subtitle {
+      font-size: 0.95rem;
+      opacity: 0.85;
+    }
+
+    .header .links {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .header .links a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.2);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+
+    .header .links a:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .header .links a.active {
+      background: rgba(255,255,255,0.4);
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 1rem 2rem;
+    }
+
+    /* Demos que precisam de mais espaço */
+    .container--wide {
+      max-width: 1400px;
+    }
+
+    .demo-controls {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+      gap: 8px;
+    }
+
+    .demo-controls button {
+      padding: 10px 20px;
+      border: none;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .demo-controls button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .demo-controls button.active {
+      background: white;
+      color: #667eea;
+    }
+
+    .demo-container {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      min-height: 600px;
+    }
+
+    #pineui-root {
+      width: 100%;
+      height: 100%;
+      min-height: 600px;
+      display: block;
+    }
+
+    #ui-view, #api-view {
+      width: 100%;
+      min-height: 600px;
+      display: none;
+      background: #0d1117;
+      color: #c9d1d9;
+      overflow: auto;
+    }
+
+    #ui-view pre, #api-view pre {
+      margin: 0;
+      padding: 24px;
+    }
+
+    #ui-view code, #api-view code {
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 600px;
+      color: #666;
+      gap: 16px;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .footer {
+      text-align: center;
+      color: white;
+      padding: 2rem;
+      opacity: 0.9;
+    }
+
+    .footer a {
+      color: white;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🍍 PineUI</h1>
+    <p>Server-Driven UI for AI-Native Applications</p>
+    <div class="links">
+      <a href="?demo=twitter" data-demo="twitter">🐦 Twitter</a>
+      <a href="?demo=simple" data-demo="simple">🎨 Simple</a>
+      <a href="?demo=gallery" data-demo="gallery">🖼️ Gallery</a>
+      <a href="?demo=inbox" data-demo="inbox">📬 Inbox</a>
+      <a href="?demo=admin" data-demo="admin">👥 Admin</a>
+      <a href="https://github.com/pineui/pineui" target="_blank">📦 GitHub</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="demo-controls">
+      <button id="view-btn" class="active" onclick="switchToView()">👁️ Renderizado</button>
+      <button id="ui-btn" onclick="switchToUI()">💻 UI (JSON)</button>
+      <button id="api-btn" onclick="switchToAPI()">🔌 API (JSON)</button>
+    </div>
+
+    <div class="demo-container">
+      <div id="pineui-root">
+        <div class="loading">
+          <div class="spinner"></div>
+          <p>Carregando PineUI...</p>
+        </div>
+      </div>
+
+      <div id="ui-view">
+        <pre><code id="ui-code" class="language-json"></code></pre>
+      </div>
+
+      <div id="api-view">
+        <pre><code id="api-code" class="language-json"></code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>✨ Tudo declarativo, multi-plataforma e AI-friendly</p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+      <a href="https://github.com/pineui/pineui">Veja o código no GitHub</a>
+    </p>
+  </div>
+
+  <script src="./pineui.standalone.js"></script>
+  <script src="./mock-api.js"></script>
+  <script>
+    let currentSchema = null;
+    let currentAPIData = null;
+    let currentMode = 'view';
+
+    function switchToView() {
+      currentMode = 'view';
+      document.getElementById('pineui-root').style.display = 'block';
+      document.getElementById('ui-view').style.display = 'none';
+      document.getElementById('api-view').style.display = 'none';
+      document.getElementById('view-btn').classList.add('active');
+      document.getElementById('ui-btn').classList.remove('active');
+      document.getElementById('api-btn').classList.remove('active');
+    }
+
+    function switchToUI() {
+      currentMode = 'ui';
+      document.getElementById('pineui-root').style.display = 'none';
+      document.getElementById('ui-view').style.display = 'block';
+      document.getElementById('api-view').style.display = 'none';
+      document.getElementById('view-btn').classList.remove('active');
+      document.getElementById('ui-btn').classList.add('active');
+      document.getElementById('api-btn').classList.remove('active');
+
+      if (currentSchema) {
+        const codeElement = document.getElementById('ui-code');
+        codeElement.textContent = JSON.stringify(currentSchema, null, 2);
+        hljs.highlightElement(codeElement);
+      }
+    }
+
+    function switchToAPI() {
+      currentMode = 'api';
+      document.getElementById('pineui-root').style.display = 'none';
+      document.getElementById('ui-view').style.display = 'none';
+      document.getElementById('api-view').style.display = 'block';
+      document.getElementById('view-btn').classList.remove('active');
+      document.getElementById('ui-btn').classList.remove('active');
+      document.getElementById('api-btn').classList.add('active');
+
+      if (currentAPIData) {
+        const codeElement = document.getElementById('api-code');
+        codeElement.textContent = JSON.stringify(currentAPIData, null, 2);
+        hljs.highlightElement(codeElement);
+      }
+    }
+
+    // Update active link
+    const urlParams = new URLSearchParams(window.location.search);
+    const demo = urlParams.get('demo') || 'twitter';
+    document.querySelectorAll('.header .links a[data-demo]').forEach(link => {
+      if (link.dataset.demo === demo) {
+        link.classList.add('active');
+      }
+    });
+
+    // Adjust container width for demos that need more space
+    const container = document.querySelector('.container');
+    if (demo === 'inbox' || demo === 'admin') {
+      container.classList.add('container--wide');
+    }
+
+    console.log('🍍 Initializing PineUI...');
+
+    window.addEventListener('load', async function() {
+      console.log('✅ Page loaded');
+
+      if (!window.PineUI || !window.PineUI.render) {
+        console.error('❌ PineUI SDK not loaded');
+        document.getElementById('pineui-root').innerHTML = `
+          <div class="loading">
+            <p style="color: red;">SDK não carregado. Verifique o console.</p>
+          </div>
+        `;
+        return;
+      }
+
+      console.log('✅ PineUI SDK found');
+
+      // Load API definitions for this demo
+      if (window.loadAPIDefinitions) {
+        await window.loadAPIDefinitions(demo);
+      }
+
+      // Initialize mock API
+      if (window.initMockAPI) {
+        window.initMockAPI(demo);
+      }
+
+      // Load UI schema
+      const schemaFile = `./demos/${demo}/ui.json`;
+      console.log('Loading schema:', schemaFile);
+
+      try {
+        const response = await fetch(schemaFile);
+        if (!response.ok) {
+          throw new Error(`Failed to load schema: ${response.status}`);
+        }
+
+        const schema = await response.json();
+        console.log('✅ Schema loaded');
+        currentSchema = schema;
+
+        // Load API data for code view
+        const apiFile = `./demos/${demo}/api.json`;
+        try {
+          const apiResponse = await fetch(apiFile);
+          if (apiResponse.ok) {
+            currentAPIData = await apiResponse.json();
+            console.log('✅ API data loaded');
+          }
+        } catch (e) {
+          console.warn('⚠️ No API data file');
+        }
+
+        window.PineUI.render({
+          target: '#pineui-root',
+          schema: schema,
+          baseUrl: '',
+          onReady: () => {
+            console.log('✅ PineUI is ready!');
+          },
+          onError: (error) => {
+            console.error('❌ PineUI error:', error);
+            document.getElementById('pineui-root').innerHTML = `
+              <div class="loading">
+                <p style="color: red;">Erro ao carregar: ${error.message}</p>
+                <button onclick="location.reload()" style="
+                  padding: 10px 20px;
+                  border: none;
+                  background: #667eea;
+                  color: white;
+                  border-radius: 8px;
+                  cursor: pointer;
+                  font-size: 14px;
+                ">Tentar novamente</button>
+              </div>
+            `;
+          }
+        });
+      } catch (error) {
+        console.error('❌ Failed to load schema:', error);
+        document.getElementById('pineui-root').innerHTML = `
+          <div class="loading">
+            <p style="color: red;">Erro ao carregar schema: ${error.message}</p>
+          </div>
+        `;
+      }
+    });
+  </script>
+</body>
+</html>

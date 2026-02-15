@@ -1,0 +1,654 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": {
+    "selectedConversationId": "1",
+    "selectedUserId": "user_robert"
+  },
+  "intents": {
+    "conversation.select": {
+      "handler": {
+        "type": "action.state.patch",
+        "path": "selectedConversationId",
+        "value": "{{conversationId}}"
+      }
+    },
+    "user.viewProfile": {
+      "handler": {
+        "type": "action.state.patch",
+        "path": "selectedUserId",
+        "value": "{{userId}}"
+      }
+    },
+    "category.select": {
+      "handler": {
+        "type": "action.state.patch",
+        "path": "selectedCategory",
+        "value": "{{category}}"
+      }
+    }
+  },
+  "screen": {
+    "type": "layout.row",
+    "spacing": 0,
+    "height": "100vh",
+    "children": [
+      {
+        "type": "layout.column",
+        "spacing": 0,
+        "width": 280,
+        "height": "100%",
+        "overflow": "auto",
+        "children": [
+          {
+            "type": "layout.column",
+            "padding": 16,
+            "spacing": 16,
+            "children": [
+              {
+                "type": "layout.row",
+                "mainAxisAlignment": "spaceBetween",
+                "crossAxisAlignment": "center",
+                "children": [
+                  {
+                    "type": "text",
+                    "content": "Direct messages",
+                    "style": "titleMedium",
+                    "fontWeight": "bold"
+                  },
+                  {
+                    "type": "button.icon",
+                    "icon": "✕",
+                    "size": "small"
+                  }
+                ]
+              },
+              {
+                "type": "tabs",
+                "tabs": [
+                  {
+                    "id": "inbox",
+                    "label": "Inbox",
+                    "content": {
+                      "type": "collection",
+                      "layout": "list",
+                      "data": {
+                        "type": "action.http",
+                        "method": "GET",
+                        "url": "/api/inbox/conversations"
+                      },
+                      "itemTemplate": {
+                        "type": "pattern.conversationItem",
+                        "props": {
+                          "conversation": "{{item}}"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "unread",
+                    "label": "Unread",
+                    "badge": 3,
+                    "content": {
+                      "type": "collection",
+                      "layout": "list",
+                      "data": {
+                        "type": "action.http",
+                        "method": "GET",
+                        "url": "/api/inbox/conversations/unread"
+                      },
+                      "itemTemplate": {
+                        "type": "pattern.conversationItem",
+                        "props": {
+                          "conversation": "{{item}}"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "id": "agents",
+                    "label": "Agents",
+                    "content": {
+                      "type": "collection",
+                      "layout": "list",
+                      "data": {
+                        "type": "action.http",
+                        "method": "GET",
+                        "url": "/api/inbox/conversations/agents"
+                      },
+                      "itemTemplate": {
+                        "type": "pattern.conversationItem",
+                        "props": {
+                          "conversation": "{{item}}"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "defaultTab": "inbox"
+              },
+              {
+                "type": "input.text",
+                "placeholder": "🔍 Search for a name"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "layout.column",
+        "flex": 1,
+        "spacing": 0,
+        "height": "100%",
+        "children": [
+          {
+            "type": "layout.row",
+            "padding": 16,
+            "mainAxisAlignment": "spaceBetween",
+            "crossAxisAlignment": "center",
+            "children": [
+              {
+                "type": "text",
+                "content": "Clarity Community 🔥",
+                "style": "titleMedium",
+                "fontWeight": "bold"
+              },
+              {
+                "type": "button.icon",
+                "icon": "⋮",
+                "size": "small"
+              }
+            ]
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "layout.column",
+            "flex": 1,
+            "padding": 16,
+            "spacing": 24,
+            "overflow": "auto",
+            "children": [
+              {
+                "type": "layout.column",
+                "spacing": 2,
+                "crossAxisAlignment": "center",
+                "children": [
+                  {
+                    "type": "text",
+                    "content": "MONDAY, OCTOBER 28TH",
+                    "style": "bodySmall",
+                    "color": "onSurfaceVariant",
+                    "fontWeight": "bold"
+                  }
+                ]
+              },
+              {
+                "type": "collection",
+                "layout": "list",
+                "data": {
+                  "type": "action.http",
+                  "method": "GET",
+                  "url": "/api/inbox/messages?conversationId={{state.selectedConversationId}}"
+                },
+                "itemTemplate": {
+                  "type": "pattern.messageItem",
+                  "props": {
+                    "message": "{{item}}"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "layout.row",
+            "padding": 16,
+            "spacing": 12,
+            "crossAxisAlignment": "center",
+            "children": [
+              {
+                "type": "button.icon",
+                "icon": "📎",
+                "size": "small"
+              },
+              {
+                "type": "input.text",
+                "placeholder": "Send a message...",
+                "flex": 1
+              },
+              {
+                "type": "button.icon",
+                "icon": "😊",
+                "size": "small"
+              },
+              {
+                "type": "button.icon",
+                "icon": "🖼️",
+                "size": "small"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "layout.column",
+        "spacing": 0,
+        "width": 320,
+        "height": "100%",
+        "overflow": "auto",
+        "children": [
+          {
+            "type": "collection",
+            "layout": "list",
+            "data": {
+              "type": "action.http",
+              "method": "GET",
+              "url": "/api/inbox/profile?userId={{state.selectedUserId}}"
+            },
+            "itemTemplate": {
+              "type": "pattern.profilePanel",
+              "props": {
+                "profile": "{{item}}"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "patterns": {
+    "pattern.conversationItem": {
+      "definition": {
+        "type": "layout.row",
+        "padding": 12,
+        "spacing": 12,
+        "crossAxisAlignment": "center",
+        "onPress": {
+          "intent": "conversation.select",
+          "conversationId": "{{props.conversation.id}}"
+        },
+        "children": [
+          {
+            "type": "avatar",
+            "src": "{{props.conversation.avatar}}",
+            "size": 40
+          },
+          {
+            "type": "layout.column",
+            "flex": 1,
+            "spacing": 4,
+            "children": [
+              {
+                "type": "layout.row",
+                "mainAxisAlignment": "spaceBetween",
+                "children": [
+                  {
+                    "type": "text",
+                    "content": "{{props.conversation.name}}",
+                    "style": "bodyMedium",
+                    "fontWeight": "bold"
+                  },
+                  {
+                    "type": "text",
+                    "content": "{{props.conversation.time}}",
+                    "style": "bodySmall",
+                    "color": "onSurfaceVariant"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "content": "{{props.conversation.message}}",
+                "style": "bodySmall",
+                "color": "onSurfaceVariant"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "pattern.messageItem": {
+      "definition": {
+        "type": "layout.row",
+        "spacing": 12,
+        "crossAxisAlignment": "start",
+        "children": [
+          {
+            "type": "layout.column",
+            "spacing": 0,
+            "onPress": {
+              "intent": "user.viewProfile",
+              "userId": "{{props.message.userId}}"
+            },
+            "children": [
+              {
+                "type": "avatar",
+                "src": "{{props.message.avatar}}",
+                "size": 40
+              }
+            ]
+          },
+          {
+            "type": "layout.column",
+            "flex": 1,
+            "spacing": 8,
+            "children": [
+              {
+                "type": "layout.row",
+                "spacing": 8,
+                "crossAxisAlignment": "center",
+                "children": [
+                  {
+                    "type": "text",
+                    "content": "{{props.message.author}}",
+                    "style": "bodyMedium",
+                    "fontWeight": "bold"
+                  },
+                  {
+                    "type": "text",
+                    "content": "{{props.message.time}}",
+                    "style": "bodySmall",
+                    "color": "onSurfaceVariant"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "content": "{{props.message.content}}",
+                "style": "bodyMedium"
+              },
+              {
+                "type": "layout.row",
+                "spacing": 16,
+                "children": [
+                  {
+                    "type": "layout.row",
+                    "spacing": 4,
+                    "crossAxisAlignment": "center",
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "👍",
+                        "style": "bodySmall"
+                      },
+                      {
+                        "type": "text",
+                        "content": "{{props.message.likes}}",
+                        "style": "bodySmall",
+                        "color": "onSurfaceVariant"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "layout.row",
+                    "spacing": 4,
+                    "crossAxisAlignment": "center",
+                    "children": [
+                      {
+                        "type": "text",
+                        "content": "💬",
+                        "style": "bodySmall"
+                      },
+                      {
+                        "type": "text",
+                        "content": "{{props.message.replies}} replies",
+                        "style": "bodySmall",
+                        "color": "onSurfaceVariant"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "pattern.profilePanel": {
+      "definition": {
+        "type": "layout.column",
+        "padding": 16,
+        "spacing": 16,
+        "children": [
+          {
+            "type": "text",
+            "content": "Profile",
+            "style": "titleMedium",
+            "fontWeight": "bold"
+          },
+          {
+            "type": "layout.column",
+            "spacing": 8,
+            "crossAxisAlignment": "center",
+            "children": [
+              {
+                "type": "avatar",
+                "src": "{{props.profile.avatar}}",
+                "size": 80
+              },
+              {
+                "type": "text",
+                "content": "{{props.profile.name}}",
+                "style": "titleMedium",
+                "fontWeight": "bold"
+              },
+              {
+                "type": "text",
+                "content": "{{props.profile.role}}",
+                "style": "bodyMedium",
+                "color": "onSurfaceVariant"
+              }
+            ]
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "layout.column",
+            "spacing": 12,
+            "children": [
+              {
+                "type": "text",
+                "content": "About",
+                "style": "bodyMedium",
+                "fontWeight": "bold"
+              },
+              {
+                "type": "layout.row",
+                "spacing": 16,
+                "children": [
+                  {
+                    "type": "text",
+                    "content": "Posts",
+                    "style": "bodySmall",
+                    "color": "primary"
+                  },
+                  {
+                    "type": "text",
+                    "content": "Comments",
+                    "style": "bodySmall",
+                    "color": "onSurfaceVariant"
+                  },
+                  {
+                    "type": "text",
+                    "content": "Spaces",
+                    "style": "bodySmall",
+                    "color": "onSurfaceVariant"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "layout.column",
+            "spacing": 12,
+            "children": [
+              {
+                "type": "layout.row",
+                "spacing": 8,
+                "crossAxisAlignment": "center",
+                "children": [
+                  {
+                    "type": "text",
+                    "content": "✉️",
+                    "style": "bodyMedium"
+                  },
+                  {
+                    "type": "text",
+                    "content": "{{props.profile.email}}",
+                    "style": "bodySmall",
+                    "color": "onSurfaceVariant"
+                  }
+                ]
+              },
+              {
+                "type": "layout.row",
+                "spacing": 8,
+                "crossAxisAlignment": "center",
+                "children": [
+                  {
+                    "type": "text",
+                    "content": "📍",
+                    "style": "bodyMedium"
+                  },
+                  {
+                    "type": "text",
+                    "content": "{{props.profile.location}}",
+                    "style": "bodySmall",
+                    "color": "onSurfaceVariant"
+                  }
+                ]
+              },
+              {
+                "type": "layout.row",
+                "spacing": 8,
+                "crossAxisAlignment": "center",
+                "children": [
+                  {
+                    "type": "text",
+                    "content": "📅",
+                    "style": "bodyMedium"
+                  },
+                  {
+                    "type": "text",
+                    "content": "{{props.profile.memberSince}}",
+                    "style": "bodySmall",
+                    "color": "onSurfaceVariant"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "layout.column",
+            "spacing": 8,
+            "children": [
+              {
+                "type": "text",
+                "content": "Tags",
+                "style": "bodyMedium",
+                "fontWeight": "bold"
+              },
+              {
+                "type": "layout.row",
+                "spacing": 8,
+                "children": [
+                  {
+                    "type": "chip",
+                    "label": "Exiter",
+                    "selected": false
+                  },
+                  {
+                    "type": "chip",
+                    "label": "Pro",
+                    "selected": false
+                  },
+                  {
+                    "type": "chip",
+                    "label": "Creator",
+                    "selected": false
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "layout.column",
+            "spacing": 8,
+            "children": [
+              {
+                "type": "text",
+                "content": "Bio",
+                "style": "bodyMedium",
+                "fontWeight": "bold"
+              },
+              {
+                "type": "text",
+                "content": "{{props.profile.bio}}",
+                "style": "bodySmall",
+                "color": "onSurfaceVariant"
+              }
+            ]
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "layout.column",
+            "spacing": 8,
+            "children": [
+              {
+                "type": "text",
+                "content": "Links",
+                "style": "bodyMedium",
+                "fontWeight": "bold"
+              },
+              {
+                "type": "layout.column",
+                "spacing": 8,
+                "children": [
+                  {
+                    "type": "text",
+                    "content": "{{props.profile.links.website}}",
+                    "style": "bodySmall",
+                    "color": "primary"
+                  },
+                  {
+                    "type": "text",
+                    "content": "{{props.profile.links.twitter}}",
+                    "style": "bodySmall",
+                    "color": "primary"
+                  },
+                  {
+                    "type": "text",
+                    "content": "{{props.profile.links.linkedin}}",
+                    "style": "bodySmall",
+                    "color": "primary"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

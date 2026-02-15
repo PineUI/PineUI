@@ -14,6 +14,17 @@ import { Renderer } from './renderer/Renderer';
 import { SnackbarContainer, SnackbarMessage } from './components/Snackbar';
 import { ModalContainer } from './components/Modal';
 
+// Helper function to get nested values from objects
+function getNestedValue(obj: any, path: string): any {
+  const parts = path.split('.');
+  let value = obj;
+  for (const part of parts) {
+    if (value == null) return undefined;
+    value = value[part];
+  }
+  return value;
+}
+
 interface PineUIProps {
   schema?: PineUISchema;
   schemaUrl?: string;
@@ -26,7 +37,9 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
   const [error, setError] = useState<Error | null>(null);
   const [snackbars, setSnackbars] = useState<SnackbarMessage[]>([]);
   const [overlays, setOverlays] = useState<Record<string, { visible: boolean; config: any }>>({});
-  const [state, setState] = useState<Record<string, any>>({
+
+  // Initialize state with schema state if provided, or use defaults
+  const initialState = initialSchema?.state || {
     currentUser: {
       id: 'user_current',
       username: 'currentuser',
@@ -39,7 +52,9 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
       posting: false,
     },
     testInput: '',
-  });
+  };
+
+  const [state, setState] = useState<Record<string, any>>(initialState);
 
   useEffect(() => {
     if (schemaUrl && !initialSchema) {
@@ -53,6 +68,10 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
       const response = await fetch(schemaUrl!);
       const data = await response.json();
       setSchema(data);
+      // Update state with schema's initial state if provided
+      if (data.state) {
+        setState(prevState => ({ ...prevState, ...data.state }));
+      }
     } catch (err) {
       setError(err as Error);
     } finally {
@@ -60,19 +79,46 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
     }
   };
 
-  const executeAction = async (action: ActionNode, _params?: any): Promise<void> => {
-    console.log('Executing action:', action);
+  const executeAction = async (action: ActionNode, params?: any): Promise<void> => {
+    console.log('Executing action:', action, 'with params:', params);
 
-    switch (action.type) {
+    // Resolve bindings in action using params
+    let resolvedAction = action;
+    if (params) {
+      const actionStr = JSON.stringify(action);
+      const resolvedStr = actionStr.replace(/\{\{([^}]+)\}\}/g, (_, key) => {
+        const trimmed = key.trim();
+        return params[trimmed] !== undefined ? String(params[trimmed]) : '';
+      });
+      resolvedAction = JSON.parse(resolvedStr);
+    }
+
+    // Handle intent (new syntax with "intent" field)
+    if (resolvedAction.intent) {
+      const intentName = resolvedAction.intent;
+      const intentParams = { ...params, ...resolvedAction };
+      delete intentParams.intent;
+      return executeIntent(intentName, intentParams);
+    }
+
+    // Handle legacy intent.* type syntax (backwards compatibility)
+    if (resolvedAction.type && resolvedAction.type.startsWith('intent.')) {
+      const intentName = resolvedAction.type.substring(7);
+      const intentParams = { ...params, ...resolvedAction };
+      delete intentParams.type;
+      return executeIntent(intentName, intentParams);
+    }
+
+    switch (resolvedAction.type) {
       case 'action.http': {
         try {
-          const url = action.url.startsWith('http') ? action.url : `${baseUrl}${action.url}`;
+          const url = resolvedAction.url.startsWith('http') ? resolvedAction.url : `${baseUrl}${resolvedAction.url}`;
           const response = await fetch(url, {
-            method: action.method || 'GET',
+            method: resolvedAction.method || 'GET',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: action.body ? JSON.stringify(action.body) : undefined,
+            body: resolvedAction.body ? JSON.stringify(resolvedAction.body) : undefined,
           });
           const data = await response.json();
           console.log('HTTP action result:', data);
@@ -85,21 +131,21 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
       case 'action.state.patch': {
         setState((prev) => {
           const newState = { ...prev };
-          setNestedValue(newState, action.path, action.value);
+          setNestedValue(newState, resolvedAction.path, resolvedAction.value);
           return newState;
         });
         break;
       }
 
       case 'action.overlay.open': {
-        const overlayConfig = schema?.overlays?.[action.overlayId];
+        const overlayConfig = schema?.overlays?.[resolvedAction.overlayId];
         if (overlayConfig) {
           setOverlays((prev) => ({
             ...prev,
-            [action.overlayId]: { visible: true, config: overlayConfig },
+            [resolvedAction.overlayId]: { visible: true, config: overlayConfig },
           }));
         } else {
-          console.warn('Overlay not found:', action.overlayId);
+          console.warn('Overlay not found:', resolvedAction.overlayId);
         }
         break;
       }
@@ -107,25 +153,38 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
       case 'action.overlay.close': {
         setOverlays((prev) => ({
           ...prev,
-          [action.overlayId]: { ...prev[action.overlayId], visible: false },
+          [resolvedAction.overlayId]: { ...prev[resolvedAction.overlayId], visible: false },
         }));
         break;
       }
 
       case 'action.collection.refresh': {
-        console.log('Refresh collection:', action.collectionId);
+        console.log('Refresh collection:', resolvedAction.collectionId);
         // TODO: Trigger collection refresh
         break;
       }
 
       case 'action.snackbar.show': {
+        // Resolve bindings in the message (e.g., {{state.testInput}})
+        const resolvedMessage = typeof resolvedAction.message === 'string' && resolvedAction.message.includes('{{')
+          ? resolvedAction.message.replace(/\{\{(.+?)\}\}/g, (_, expr) => {
+              const trimmed = expr.trim();
+              if (trimmed.startsWith('state.')) {
+                const path = trimmed.substring(6); // Remove "state."
+                const value = getNestedValue(state, path);
+                return value != null ? String(value) : '';
+              }
+              return '';
+            })
+          : resolvedAction.message;
+
         const snackbar: SnackbarMessage = {
           id: `snackbar-${Date.now()}`,
-          message: action.message,
-          duration: action.duration || 3000,
-          action: action.action ? {
-            label: action.action.label,
-            onPress: () => executeAction(action.action.onPress),
+          message: resolvedMessage,
+          duration: resolvedAction.duration || 3000,
+          action: resolvedAction.action ? {
+            label: resolvedAction.action.label,
+            onPress: () => executeAction(resolvedAction.action.onPress),
           } : undefined,
         };
         setSnackbars((prev) => [...prev, snackbar]);
@@ -133,7 +192,7 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
       }
 
       default:
-        console.warn('Unknown action type:', action.type);
+        console.warn('Unknown action type:', resolvedAction.type);
     }
   };
 

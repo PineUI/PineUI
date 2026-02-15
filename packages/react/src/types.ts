@@ -2,6 +2,7 @@
 
 export interface PineUISchema {
   schemaVersion: string;
+  state?: Record<string, any>;
   screen: ComponentNode;
   patterns?: Record<string, PatternDefinition>;
   overlays?: Record<string, OverlayDefinition>;

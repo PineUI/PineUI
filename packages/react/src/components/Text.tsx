@@ -33,7 +33,7 @@ export const Text: React.FC<TextProps> = ({
 
   return (
     <p className={className} style={styles}>
-      {content}
+      {content || '(empty)'}
     </p>
   );
 };

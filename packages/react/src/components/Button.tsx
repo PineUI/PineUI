@@ -1,5 +1,6 @@
 import React from 'react';
 import { RenderContext, ActionNode } from '../types';
+import { resolveBindings } from '../renderer/bindings';
 import clsx from 'clsx';
 
 interface ButtonProps {
@@ -27,7 +28,8 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   const handleClick = async () => {
     if (!enabled || loading || !onPress || !context) return;
-    await context.executeAction(onPress);
+    const resolvedAction = resolveBindings(onPress, context);
+    await context.executeAction(resolvedAction);
   };
 
   const className = clsx('pineui-button', `pineui-button--${type.split('.')[1]}`, {
