@@ -13,8 +13,12 @@ interface LayoutProps {
   flex?: number;
   width?: number | string;
   height?: number | string;
+  maxWidth?: number | string;
   overflow?: 'visible' | 'hidden' | 'scroll' | 'auto';
   backgroundColor?: string;
+  border?: string;
+  borderRadius?: number;
+  elevation?: number;
   borderRight?: string;
   borderLeft?: string;
   borderTop?: string;
@@ -34,8 +38,12 @@ export const Layout: React.FC<LayoutProps> = ({
   flex,
   width,
   height,
+  maxWidth,
   overflow,
   backgroundColor,
+  border,
+  borderRadius,
+  elevation,
   borderRight,
   borderLeft,
   borderTop,
@@ -74,8 +82,14 @@ export const Layout: React.FC<LayoutProps> = ({
     height: height !== undefined
       ? (typeof height === 'number' ? `${height}px` : height)
       : undefined,
+    maxWidth: maxWidth !== undefined
+      ? (typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth)
+      : undefined,
     overflow: overflow,
     backgroundColor: backgroundColor,
+    border: border,
+    borderRadius: borderRadius !== undefined ? `${borderRadius}px` : undefined,
+    boxShadow: elevation ? getElevationShadow(elevation) : undefined,
     borderRight: borderRight,
     borderLeft: borderLeft,
     borderTop: borderTop,
@@ -112,4 +126,15 @@ function mapCrossAlignment(alignment: string): string {
     stretch: 'stretch',
   };
   return map[alignment] || 'flex-start';
+}
+
+function getElevationShadow(elevation: number): string {
+  const shadows: Record<number, string> = {
+    1: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+    2: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
+    3: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+    4: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
+    5: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+  };
+  return shadows[elevation] || shadows[1];
 }
