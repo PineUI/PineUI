@@ -19,8 +19,8 @@ PineUI é um protocolo completo e SDK multi-plataforma para construir interfaces
 - [Quick Start](#-quick-start)
 - [Arquitetura](#-arquitetura)
 - [Conceitos Fundamentais](#-conceitos-fundamentais)
-- [Componentes (Primitives)](#-componentes-primitives)
-- [Components](#-components)
+- [Primitives](#-primitives)
+- [Custom Components](#-custom-components)
 - [Imports System](#-imports-system)
 - [Views System](#️-views-system)
 - [Actions vs Intents](#-actions-vs-intents)
@@ -192,7 +192,7 @@ Funciona de simples a complexo progressivamente.
 
 ---
 
-## 🧩 Componentes (Primitives)
+## 🧩 Primitives
 
 ### Text
 
@@ -541,11 +541,11 @@ Tabela de dados com ordenação.
 
 ---
 
-## 🎨 Components
+## 🎨 Custom Components
 
-Components são **componentes compostos reutilizáveis** definidos no schema.
+Custom Components são **componentes compostos reutilizáveis** que você define no schema usando Primitives.
 
-### Como Definir um Component
+### Como Definir um Custom Component
 
 ```json
 {
@@ -615,7 +615,7 @@ Components são **componentes compostos reutilizáveis** definidos no schema.
 }
 ```
 
-### Vantagens dos Components
+### Vantagens dos Custom Components
 
 ✅ **Reusabilidade** - Define uma vez, usa em múltiplos lugares
 ✅ **Consistência** - Mantém UI uniforme automaticamente
@@ -1785,7 +1785,7 @@ interface ActionNode {
 }
 ```
 
-### 2. Crie Components para UI Repetida
+### 2. Crie Custom Components para UI Repetida
 
 ❌ **Errado:** Repetir estrutura em cada item
 ```json
