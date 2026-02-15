@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PineUI - Simple Demo</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      opacity: 0.95;
+    }
+
+    #pineui-app {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+      min-height: 600px;
+    }
+
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 600px;
+      color: #666;
+      gap: 16px;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .footer {
+      text-align: center;
+      color: white;
+      margin-top: 30px;
+      opacity: 0.9;
+    }
+
+    .footer a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🍍</h1>
+      <h1>PineUI</h1>
+      <p>Server-Driven UI for AI-Native Applications</p>
+    </div>
+
+    <div id="pineui-app">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Carregando PineUI...</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>🚀 Renderizado a partir de JSON pelo servidor</p>
+      <p><a href="/api/schema/simple" target="_blank">Ver Schema JSON</a></p>
+    </div>
+  </div>
+
+  <script src="/sdk/pineui.umd.js"></script>
+  <script>
+    console.log('🍍 Initializing PineUI...');
+
+    setTimeout(() => {
+      if (window.PineUI) {
+        window.PineUI.render({
+          target: '#pineui-app',
+          schemaUrl: '/api/schema/simple',
+          baseUrl: '',
+          onReady: () => {
+            console.log('✅ PineUI is ready!');
+          },
+          onError: (error) => {
+            console.error('❌ PineUI error:', error);
+            document.getElementById('pineui-app').innerHTML = `
+              <div class="loading">
+                <p style="color: red;">Erro ao carregar: ${error.message}</p>
+                <button onclick="location.reload()">Tentar novamente</button>
+              </div>
+            `;
+          }
+        });
+      } else {
+        console.error('PineUI SDK not loaded');
+      }
+    }, 100);
+  </script>
+</body>
+</html>

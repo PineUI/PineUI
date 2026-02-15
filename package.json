@@ -1,0 +1,30 @@
+{
+  "name": "pineui",
+  "version": "0.1.0",
+  "description": "Server-Driven UI for AI-Native Applications",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=server",
+    "dev:sdk": "npm run dev --workspace=@pineui/react",
+    "build": "npm run build --workspaces",
+    "build:sdk": "npm run build --workspace=@pineui/react",
+    "server": "npm run start --workspace=server"
+  },
+  "keywords": [
+    "server-driven-ui",
+    "sdui",
+    "react",
+    "flutter",
+    "ai",
+    "material-design"
+  ],
+  "author": "Luma Ventures Ltda <CNPJ: 21.951.820/0001-39>",
+  "license": "SEE LICENSE IN LICENSE",
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  }
+}

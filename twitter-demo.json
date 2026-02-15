@@ -1,0 +1,420 @@
+{
+  "schemaVersion": "1.0.0",
+  "screen": {
+    "type": "layout.scaffold",
+    "appBar": {
+      "type": "layout.appBar",
+      "title": {
+        "type": "text",
+        "content": "🍍 PineUI Twitter",
+        "style": "titleLarge",
+        "fontWeight": "bold"
+      }
+    },
+    "body": {
+      "type": "collection",
+      "id": "feed_posts",
+      "layout": "list",
+      "virtualized": true,
+      "itemSpacing": 0,
+      "data": {
+        "type": "action.http",
+        "method": "GET",
+        "url": "/api/feed"
+      },
+      "itemTemplate": {
+        "type": "pattern.postCard",
+        "props": {
+          "post": "{{item}}"
+        }
+      },
+      "loadingState": {
+        "type": "layout.column",
+        "mainAxisAlignment": "center",
+        "padding": 32,
+        "children": [
+          {
+            "type": "text",
+            "content": "Carregando posts...",
+            "style": "bodyMedium",
+            "color": "onSurfaceVariant"
+          }
+        ]
+      },
+      "emptyState": {
+        "type": "layout.column",
+        "mainAxisAlignment": "center",
+        "crossAxisAlignment": "center",
+        "padding": 32,
+        "children": [
+          {
+            "type": "text",
+            "content": "Nenhum post ainda",
+            "style": "headlineSmall"
+          }
+        ]
+      }
+    },
+    "floatingActionButton": {
+      "type": "button.fab",
+      "icon": "➕",
+      "label": "Novo post",
+      "onPress": {
+        "type": "intent.post.compose"
+      }
+    }
+  },
+  "patterns": {
+    "pattern.postCard": {
+      "type": "pattern.postCard",
+      "definition": {
+        "type": "card",
+        "elevation": 0,
+        "padding": 16,
+        "child": {
+          "type": "layout.column",
+          "spacing": 12,
+          "children": [
+            {
+              "type": "layout.row",
+              "spacing": 12,
+              "crossAxisAlignment": "start",
+              "children": [
+                {
+                  "type": "avatar",
+                  "src": "{{props.post.author.avatar}}",
+                  "size": 48
+                },
+                {
+                  "type": "layout.column",
+                  "flex": 1,
+                  "spacing": 8,
+                  "children": [
+                    {
+                      "type": "layout.row",
+                      "mainAxisAlignment": "spaceBetween",
+                      "children": [
+                        {
+                          "type": "layout.row",
+                          "spacing": 8,
+                          "children": [
+                            {
+                              "type": "text",
+                              "content": "{{props.post.author.displayName}}",
+                              "style": "titleSmall",
+                              "fontWeight": "bold"
+                            },
+                            {
+                              "type": "text",
+                              "content": "@{{props.post.author.username}}",
+                              "style": "bodySmall",
+                              "color": "onSurfaceVariant"
+                            },
+                            {
+                              "type": "text",
+                              "content": "·",
+                              "style": "bodySmall",
+                              "color": "onSurfaceVariant"
+                            },
+                            {
+                              "type": "text",
+                              "content": "{{props.post.createdAt | timeAgo}}",
+                              "style": "bodySmall",
+                              "color": "onSurfaceVariant"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "button.icon",
+                          "icon": "⋮",
+                          "size": "small"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "content": "{{props.post.content.text}}",
+                      "style": "bodyMedium"
+                    },
+                    {
+                      "type": "conditionalRender",
+                      "conditions": [
+                        {
+                          "when": "{{props.post.media != null}}",
+                          "render": {
+                            "type": "image",
+                            "src": "{{props.post.media[0].url}}",
+                            "borderRadius": 12
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "layout.row",
+                      "mainAxisAlignment": "spaceBetween",
+                      "spacing": 16,
+                      "children": [
+                        {
+                          "type": "button.icon",
+                          "icon": "💬",
+                          "size": "small",
+                          "color": "onSurfaceVariant",
+                          "label": "{{props.post.metrics.comments}}",
+                          "onPress": {
+                            "type": "intent.post.viewComments",
+                            "postId": "{{props.post.id}}"
+                          }
+                        },
+                        {
+                          "type": "button.icon",
+                          "icon": "🔁",
+                          "size": "small",
+                          "color": "onSurfaceVariant",
+                          "label": "{{props.post.metrics.retweets}}"
+                        },
+                        {
+                          "type": "button.icon",
+                          "icon": "{{props.post.userActions.liked ? '❤️' : '🤍'}}",
+                          "size": "small",
+                          "color": "{{props.post.userActions.liked ? 'error' : 'onSurfaceVariant'}}",
+                          "label": "{{props.post.metrics.likes}}",
+                          "onPress": {
+                            "type": "intent.post.like",
+                            "postId": "{{props.post.id}}"
+                          }
+                        },
+                        {
+                          "type": "button.icon",
+                          "icon": "↗️",
+                          "size": "small",
+                          "color": "onSurfaceVariant"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "divider",
+              "thickness": 1,
+              "color": "surfaceVariant"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "overlays": {
+    "composer": {
+      "type": "overlay.modal",
+      "presentation": "bottomSheet",
+      "dismissible": true,
+      "child": {
+        "type": "layout.column",
+        "padding": 16,
+        "spacing": 16,
+        "children": [
+          {
+            "type": "layout.row",
+            "mainAxisAlignment": "spaceBetween",
+            "children": [
+              {
+                "type": "button.text",
+                "label": "Cancelar",
+                "onPress": {
+                  "type": "action.overlay.close",
+                  "overlayId": "composer"
+                }
+              },
+              {
+                "type": "text",
+                "content": "Novo Post",
+                "style": "titleMedium",
+                "fontWeight": "bold"
+              },
+              {
+                "type": "button.filled",
+                "label": "Postar",
+                "onPress": {
+                  "type": "intent.post.create"
+                }
+              }
+            ]
+          },
+          {
+            "type": "layout.row",
+            "spacing": 12,
+            "crossAxisAlignment": "start",
+            "children": [
+              {
+                "type": "avatar",
+                "src": "{{state.currentUser.avatar}}",
+                "size": 48
+              },
+              {
+                "type": "layout.column",
+                "flex": 1,
+                "spacing": 12,
+                "children": [
+                  {
+                    "type": "input.text",
+                    "id": "composer_input",
+                    "placeholder": "O que está acontecendo?",
+                    "multiline": true,
+                    "maxLines": 10,
+                    "maxLength": 280,
+                    "autofocus": true,
+                    "value": "{{state.composer.text}}",
+                    "onChanged": {
+                      "type": "action.state.patch",
+                      "path": "state.composer.text",
+                      "value": "{{value}}"
+                    }
+                  },
+                  {
+                    "type": "layout.row",
+                    "mainAxisAlignment": "spaceBetween",
+                    "children": [
+                      {
+                        "type": "layout.row",
+                        "spacing": 8,
+                        "children": [
+                          {
+                            "type": "button.icon",
+                            "icon": "📷",
+                            "color": "primary"
+                          },
+                          {
+                            "type": "button.icon",
+                            "icon": "🎥",
+                            "color": "primary"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "text",
+                        "content": "{{state.composer.text.length || 0}}/280",
+                        "style": "bodySmall",
+                        "color": "onSurfaceVariant"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "comments": {
+      "type": "overlay.modal",
+      "presentation": "bottomSheet",
+      "dismissible": true,
+      "child": {
+        "type": "layout.column",
+        "padding": 16,
+        "spacing": 16,
+        "children": [
+          {
+            "type": "layout.row",
+            "mainAxisAlignment": "spaceBetween",
+            "children": [
+              {
+                "type": "button.icon",
+                "icon": "←",
+                "onPress": {
+                  "type": "action.overlay.close",
+                  "overlayId": "comments"
+                }
+              },
+              {
+                "type": "text",
+                "content": "Comentários",
+                "style": "titleMedium",
+                "fontWeight": "bold"
+              },
+              {
+                "type": "text",
+                "content": "",
+                "style": "bodySmall"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "content": "Sistema de comentários será implementado aqui! 💬",
+            "style": "bodyMedium",
+            "color": "onSurfaceVariant"
+          },
+          {
+            "type": "text",
+            "content": "Por enquanto, estamos mostrando que o modal funciona perfeitamente.",
+            "style": "bodySmall",
+            "color": "onSurfaceVariant"
+          }
+        ]
+      }
+    }
+  },
+  "intents": {
+    "post.compose": {
+      "handler": {
+        "type": "action.overlay.open",
+        "overlayId": "composer"
+      }
+    },
+    "post.create": {
+      "handler": [
+        {
+          "type": "action.http",
+          "method": "POST",
+          "url": "/api/posts",
+          "body": {
+            "content": {
+              "text": "{{state.composer.text}}"
+            }
+          }
+        },
+        {
+          "type": "action.overlay.close",
+          "overlayId": "composer"
+        },
+        {
+          "type": "action.state.patch",
+          "path": "state.composer.text",
+          "value": ""
+        },
+        {
+          "type": "action.snackbar.show",
+          "message": "Post criado com sucesso! 🎉",
+          "duration": 3000
+        },
+        {
+          "type": "action.collection.refresh",
+          "collectionId": "feed_posts"
+        }
+      ]
+    },
+    "post.like": {
+      "handler": [
+        {
+          "type": "action.http",
+          "method": "POST",
+          "url": "/api/posts/{{postId}}/like"
+        },
+        {
+          "type": "action.snackbar.show",
+          "message": "Post curtido! ❤️",
+          "duration": 2000
+        }
+      ]
+    },
+    "post.viewComments": {
+      "handler": {
+        "type": "action.overlay.open",
+        "overlayId": "comments"
+      }
+    }
+  }
+}

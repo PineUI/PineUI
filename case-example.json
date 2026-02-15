@@ -1,0 +1,646 @@
+{
+  "schemaVersion": "1.0.0",
+  "screen": {
+    "id": "home_feed",
+    "type": "layout.scaffold",
+    "appBar": {
+      "type": "layout.appBar",
+      "title": {
+        "type": "text",
+        "content": "Home",
+        "style": "titleLarge"
+      },
+      "leading": {
+        "type": "button.icon",
+        "icon": "menu",
+        "onPress": {
+          "type": "intent.navigation.openDrawer"
+        }
+      },
+      "actions": [
+        {
+          "type": "button.icon",
+          "icon": "notifications",
+          "badge": 3,
+          "onPress": {
+            "type": "intent.navigation.navigate",
+            "destination": "notifications"
+          }
+        }
+      ]
+    },
+    "body": {
+      "type": "layout.column",
+      "children": [
+        {
+          "type": "collection",
+          "id": "feed_posts",
+          "layout": "list",
+          "virtualized": true,
+          "itemSpacing": 0,
+          "divider": {
+            "type": "divider",
+            "thickness": 1,
+            "color": "surfaceVariant"
+          },
+          "data": {
+            "type": "action.http",
+            "method": "GET",
+            "url": "/api/feed",
+            "pagination": {
+              "type": "cursor",
+              "cursorParam": "after",
+              "limitParam": "limit",
+              "limit": 20
+            },
+            "cache": {
+              "strategy": "stale-while-revalidate",
+              "ttl": 300
+            }
+          },
+          "itemTemplate": {
+            "type": "pattern.postCard",
+            "props": {
+              "post": "{{item}}"
+            }
+          },
+          "loadingState": {
+            "type": "layout.column",
+            "children": [
+              {
+                "type": "pattern.postCard.skeleton",
+                "count": 3
+              }
+            ]
+          },
+          "emptyState": {
+            "type": "layout.column",
+            "mainAxisAlignment": "center",
+            "crossAxisAlignment": "center",
+            "padding": 32,
+            "children": [
+              {
+                "type": "image",
+                "src": "/assets/empty-feed.svg",
+                "width": 200,
+                "height": 200
+              },
+              {
+                "type": "text",
+                "content": "Seu feed está vazio",
+                "style": "headlineSmall",
+                "color": "onSurfaceVariant"
+              },
+              {
+                "type": "text",
+                "content": "Siga pessoas para ver posts aqui",
+                "style": "bodyMedium",
+                "color": "onSurfaceVariant"
+              },
+              {
+                "type": "button.filled",
+                "label": "Descobrir pessoas",
+                "onPress": {
+                  "type": "intent.navigation.navigate",
+                  "destination": "discover"
+                }
+              }
+            ]
+          },
+          "errorState": {
+            "type": "layout.column",
+            "mainAxisAlignment": "center",
+            "crossAxisAlignment": "center",
+            "padding": 32,
+            "children": [
+              {
+                "type": "text",
+                "content": "Erro ao carregar feed",
+                "style": "titleMedium",
+                "color": "error"
+              },
+              {
+                "type": "button.text",
+                "label": "Tentar novamente",
+                "onPress": {
+                  "type": "action.collection.retry",
+                  "collectionId": "feed_posts"
+                }
+              }
+            ]
+          },
+          "refreshable": true,
+          "onRefresh": {
+            "type": "action.collection.refresh",
+            "collectionId": "feed_posts"
+          }
+        }
+      ]
+    },
+    "floatingActionButton": {
+      "type": "button.fab",
+      "icon": "add",
+      "label": "Novo post",
+      "onPress": {
+        "type": "intent.post.compose"
+      }
+    },
+    "bottomNavigationBar": {
+      "type": "layout.bottomNav",
+      "currentIndex": 0,
+      "items": [
+        {
+          "icon": "home",
+          "label": "Home",
+          "destination": "home"
+        },
+        {
+          "icon": "search",
+          "label": "Buscar",
+          "destination": "search"
+        },
+        {
+          "icon": "notifications",
+          "label": "Notificações",
+          "badge": 3,
+          "destination": "notifications"
+        },
+        {
+          "icon": "mail",
+          "label": "Mensagens",
+          "destination": "messages"
+        },
+        {
+          "icon": "person",
+          "label": "Perfil",
+          "destination": "profile"
+        }
+      ],
+      "onItemTap": {
+        "type": "intent.navigation.navigate",
+        "destination": "{{item.destination}}"
+      }
+    }
+  },
+  "patterns": {
+    "postCard": {
+      "type": "pattern.postCard",
+      "definition": {
+        "type": "card",
+        "elevation": 0,
+        "padding": 16,
+        "onTap": {
+          "type": "intent.post.view",
+          "postId": "{{props.post.id}}"
+        },
+        "child": {
+          "type": "layout.column",
+          "spacing": 12,
+          "children": [
+            {
+              "type": "layout.row",
+              "spacing": 12,
+              "crossAxisAlignment": "start",
+              "children": [
+                {
+                  "type": "avatar",
+                  "src": "{{props.post.author.avatar}}",
+                  "size": 48,
+                  "onTap": {
+                    "type": "intent.profile.view",
+                    "userId": "{{props.post.author.id}}"
+                  }
+                },
+                {
+                  "type": "layout.column",
+                  "flex": 1,
+                  "spacing": 4,
+                  "children": [
+                    {
+                      "type": "layout.row",
+                      "mainAxisAlignment": "spaceBetween",
+                      "children": [
+                        {
+                          "type": "layout.row",
+                          "spacing": 4,
+                          "children": [
+                            {
+                              "type": "text",
+                              "content": "{{props.post.author.displayName}}",
+                              "style": "titleSmall",
+                              "fontWeight": "bold"
+                            },
+                            {
+                              "type": "icon",
+                              "name": "verified",
+                              "size": 16,
+                              "color": "primary",
+                              "visible": "{{props.post.author.verified}}"
+                            },
+                            {
+                              "type": "text",
+                              "content": "@{{props.post.author.username}}",
+                              "style": "bodySmall",
+                              "color": "onSurfaceVariant"
+                            },
+                            {
+                              "type": "text",
+                              "content": "·",
+                              "style": "bodySmall",
+                              "color": "onSurfaceVariant"
+                            },
+                            {
+                              "type": "text",
+                              "content": "{{props.post.createdAt | timeAgo}}",
+                              "style": "bodySmall",
+                              "color": "onSurfaceVariant"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "button.icon",
+                          "icon": "moreVert",
+                          "size": "small",
+                          "onPress": {
+                            "type": "intent.post.openMenu",
+                            "postId": "{{props.post.id}}"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "content": "{{props.post.content.text}}",
+                      "style": "bodyMedium",
+                      "linkify": true,
+                      "maxLines": null
+                    },
+                    {
+                      "type": "pattern.postMedia",
+                      "props": {
+                        "media": "{{props.post.media}}"
+                      },
+                      "visible": "{{props.post.media != null}}"
+                    },
+                    {
+                      "type": "layout.row",
+                      "mainAxisAlignment": "spaceBetween",
+                      "spacing": 16,
+                      "children": [
+                        {
+                          "type": "button.icon",
+                          "icon": "chatBubbleOutline",
+                          "size": "small",
+                          "color": "onSurfaceVariant",
+                          "label": "{{props.post.metrics.comments}}",
+                          "onPress": {
+                            "type": "intent.post.comment",
+                            "postId": "{{props.post.id}}"
+                          }
+                        },
+                        {
+                          "type": "button.icon",
+                          "icon": "repeat",
+                          "size": "small",
+                          "color": "{{props.post.userActions.retweeted ? 'success' : 'onSurfaceVariant'}}",
+                          "label": "{{props.post.metrics.retweets}}",
+                          "onPress": {
+                            "type": "intent.post.retweet",
+                            "postId": "{{props.post.id}}"
+                          }
+                        },
+                        {
+                          "type": "button.icon",
+                          "icon": "{{props.post.userActions.liked ? 'favorite' : 'favoriteBorder'}}",
+                          "size": "small",
+                          "color": "{{props.post.userActions.liked ? 'error' : 'onSurfaceVariant'}}",
+                          "label": "{{props.post.metrics.likes}}",
+                          "haptic": "light",
+                          "animation": "heartBeat",
+                          "onPress": {
+                            "type": "intent.post.like",
+                            "postId": "{{props.post.id}}",
+                            "optimistic": {
+                              "type": "action.state.patch",
+                              "path": "props.post.userActions.liked",
+                              "value": "{{!props.post.userActions.liked}}",
+                              "rollbackOnError": true
+                            }
+                          }
+                        },
+                        {
+                          "type": "button.icon",
+                          "icon": "{{props.post.userActions.bookmarked ? 'bookmark' : 'bookmarkBorder'}}",
+                          "size": "small",
+                          "color": "onSurfaceVariant",
+                          "onPress": {
+                            "type": "intent.post.bookmark",
+                            "postId": "{{props.post.id}}",
+                            "optimistic": {
+                              "type": "action.state.patch",
+                              "path": "props.post.userActions.bookmarked",
+                              "value": "{{!props.post.userActions.bookmarked}}",
+                              "rollbackOnError": true
+                            }
+                          }
+                        },
+                        {
+                          "type": "button.icon",
+                          "icon": "iosShare",
+                          "size": "small",
+                          "color": "onSurfaceVariant",
+                          "onPress": {
+                            "type": "intent.post.share",
+                            "postId": "{{props.post.id}}"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "postMedia": {
+      "type": "pattern.postMedia",
+      "definition": {
+        "type": "layout.column",
+        "spacing": 8,
+        "children": [
+          {
+            "type": "conditionalRender",
+            "conditions": [
+              {
+                "when": "{{props.media.length == 1 && props.media[0].type == 'image'}}",
+                "render": {
+                  "type": "image",
+                  "src": "{{props.media[0].url}}",
+                  "thumbnail": "{{props.media[0].thumbnail}}",
+                  "aspectRatio": "{{props.media[0].width / props.media[0].height}}",
+                  "borderRadius": 12,
+                  "loading": "lazy",
+                  "alt": "{{props.media[0].alt}}",
+                  "onTap": {
+                    "type": "intent.media.view",
+                    "mediaUrl": "{{props.media[0].url}}",
+                    "mediaType": "image"
+                  }
+                }
+              },
+              {
+                "when": "{{props.media.length > 1}}",
+                "render": {
+                  "type": "layout.grid",
+                  "columns": 2,
+                  "spacing": 4,
+                  "aspectRatio": 1,
+                  "children": "{{props.media | map: (item) => { type: 'image', src: item.thumbnail, borderRadius: 8, onTap: { type: 'intent.media.view', mediaUrl: item.url } }}}"
+                }
+              },
+              {
+                "when": "{{props.media[0].type == 'video'}}",
+                "render": {
+                  "type": "video",
+                  "src": "{{props.media[0].url}}",
+                  "thumbnail": "{{props.media[0].thumbnail}}",
+                  "aspectRatio": "16:9",
+                  "borderRadius": 12,
+                  "controls": true,
+                  "autoplay": false,
+                  "muted": true,
+                  "loop": true
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "overlays": {
+    "composer": {
+      "type": "overlay.modal",
+      "presentation": "bottomSheet",
+      "dismissible": true,
+      "child": {
+        "type": "layout.column",
+        "padding": 16,
+        "spacing": 16,
+        "children": [
+          {
+            "type": "layout.row",
+            "mainAxisAlignment": "spaceBetween",
+            "children": [
+              {
+                "type": "button.text",
+                "label": "Cancelar",
+                "onPress": {
+                  "type": "action.overlay.close",
+                  "overlayId": "composer"
+                }
+              },
+              {
+                "type": "button.filled",
+                "label": "Postar",
+                "enabled": "{{state.composer.text.length > 0 && state.composer.text.length <= 280}}",
+                "loading": "{{state.composer.posting}}",
+                "onPress": {
+                  "type": "intent.post.create",
+                  "content": {
+                    "text": "{{state.composer.text}}",
+                    "media": "{{state.composer.media}}"
+                  },
+                  "onSuccess": [
+                    {
+                      "type": "action.overlay.close",
+                      "overlayId": "composer"
+                    },
+                    {
+                      "type": "action.collection.refresh",
+                      "collectionId": "feed_posts"
+                    },
+                    {
+                      "type": "action.snackbar.show",
+                      "message": "Post criado com sucesso!",
+                      "duration": 3000
+                    }
+                  ],
+                  "onError": {
+                    "type": "action.snackbar.show",
+                    "message": "Erro ao criar post. Tente novamente.",
+                    "duration": 5000,
+                    "action": {
+                      "label": "Tentar novamente",
+                      "onPress": "{{retry}}"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "layout.row",
+            "spacing": 12,
+            "crossAxisAlignment": "start",
+            "children": [
+              {
+                "type": "avatar",
+                "src": "{{state.currentUser.avatar}}",
+                "size": 48
+              },
+              {
+                "type": "layout.column",
+                "flex": 1,
+                "spacing": 12,
+                "children": [
+                  {
+                    "type": "input.text",
+                    "id": "composer_input",
+                    "placeholder": "O que está acontecendo?",
+                    "multiline": true,
+                    "maxLines": 10,
+                    "maxLength": 280,
+                    "autofocus": true,
+                    "value": "{{state.composer.text}}",
+                    "onChanged": {
+                      "type": "action.state.patch",
+                      "path": "state.composer.text",
+                      "value": "{{value}}"
+                    }
+                  },
+                  {
+                    "type": "pattern.mediaPreview",
+                    "props": {
+                      "media": "{{state.composer.media}}"
+                    },
+                    "visible": "{{state.composer.media != null}}"
+                  },
+                  {
+                    "type": "layout.row",
+                    "mainAxisAlignment": "spaceBetween",
+                    "children": [
+                      {
+                        "type": "layout.row",
+                        "spacing": 8,
+                        "children": [
+                          {
+                            "type": "button.icon",
+                            "icon": "image",
+                            "color": "primary",
+                            "onPress": {
+                              "type": "action.media.pick",
+                              "mediaType": "image",
+                              "multiple": true,
+                              "maxFiles": 4,
+                              "onSelected": {
+                                "type": "action.state.patch",
+                                "path": "state.composer.media",
+                                "value": "{{files}}"
+                              }
+                            }
+                          },
+                          {
+                            "type": "button.icon",
+                            "icon": "videocam",
+                            "color": "primary",
+                            "onPress": {
+                              "type": "action.media.pick",
+                              "mediaType": "video",
+                              "maxFiles": 1,
+                              "onSelected": {
+                                "type": "action.state.patch",
+                                "path": "state.composer.media",
+                                "value": "{{files}}"
+                              }
+                            }
+                          },
+                          {
+                            "type": "button.icon",
+                            "icon": "public",
+                            "color": "primary",
+                            "onPress": {
+                              "type": "intent.composer.changeVisibility"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "text",
+                        "content": "{{state.composer.text.length}}/280",
+                        "style": "bodySmall",
+                        "color": "{{state.composer.text.length > 280 ? 'error' : 'onSurfaceVariant'}}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "intents": {
+    "post.compose": {
+      "handler": {
+        "type": "action.overlay.open",
+        "overlayId": "composer"
+      }
+    },
+    "post.like": {
+      "handler": {
+        "type": "action.http",
+        "method": "POST",
+        "url": "/api/posts/{{postId}}/like",
+        "telemetry": {
+          "event": "post.liked",
+          "properties": {
+            "postId": "{{postId}}"
+          }
+        }
+      }
+    },
+    "post.view": {
+      "handler": {
+        "type": "action.navigation.push",
+        "screen": "post_detail",
+        "params": {
+          "postId": "{{postId}}"
+        },
+        "telemetry": {
+          "event": "post.viewed",
+          "properties": {
+            "postId": "{{postId}}"
+          }
+        }
+      }
+    },
+    "profile.view": {
+      "handler": {
+        "type": "action.navigation.push",
+        "screen": "user_profile",
+        "params": {
+          "userId": "{{userId}}"
+        },
+        "telemetry": {
+          "event": "profile.viewed",
+          "properties": {
+            "userId": "{{userId}}"
+          }
+        }
+      }
+    }
+  },
+  "telemetry": {
+    "screenView": {
+      "event": "screen.viewed",
+      "properties": {
+        "screenId": "home_feed",
+        "timestamp": "{{now}}"
+      }
+    }
+  }
+}
