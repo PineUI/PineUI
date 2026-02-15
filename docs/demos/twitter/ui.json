@@ -50,6 +50,58 @@
           "value": false
         }
       ]
+    },
+    "post.compose": {
+      "handler": {
+        "type": "action.overlay.open",
+        "overlayId": "composer"
+      }
+    },
+    "post.create": {
+      "handler": [
+        {
+          "type": "action.http",
+          "method": "POST",
+          "url": "/api/twitter/posts",
+          "body": {
+            "content": {
+              "text": "{{state.composer.text}}"
+            }
+          }
+        },
+        {
+          "type": "action.overlay.close",
+          "overlayId": "composer"
+        },
+        {
+          "type": "action.state.patch",
+          "path": "state.composer.text",
+          "value": ""
+        },
+        {
+          "type": "action.snackbar.show",
+          "message": "Post criado com sucesso! 🎉",
+          "duration": 3000
+        },
+        {
+          "type": "action.collection.refresh",
+          "collectionId": "feed_posts"
+        }
+      ]
+    },
+    "post.like": {
+      "handler": [
+        {
+          "type": "action.http",
+          "method": "POST",
+          "url": "/api/twitter/posts/{{postId}}/like"
+        },
+        {
+          "type": "action.snackbar.show",
+          "message": "Post curtido! ❤️",
+          "duration": 2000
+        }
+      ]
     }
   },
   "screen": {
@@ -443,60 +495,6 @@
           }
         ]
       }
-    }
-  },
-  "intents": {
-    "post.compose": {
-      "handler": {
-        "type": "action.overlay.open",
-        "overlayId": "composer"
-      }
-    },
-    "post.create": {
-      "handler": [
-        {
-          "type": "action.http",
-          "method": "POST",
-          "url": "/api/twitter/posts",
-          "body": {
-            "content": {
-              "text": "{{state.composer.text}}"
-            }
-          }
-        },
-        {
-          "type": "action.overlay.close",
-          "overlayId": "composer"
-        },
-        {
-          "type": "action.state.patch",
-          "path": "state.composer.text",
-          "value": ""
-        },
-        {
-          "type": "action.snackbar.show",
-          "message": "Post criado com sucesso! 🎉",
-          "duration": 3000
-        },
-        {
-          "type": "action.collection.refresh",
-          "collectionId": "feed_posts"
-        }
-      ]
-    },
-    "post.like": {
-      "handler": [
-        {
-          "type": "action.http",
-          "method": "POST",
-          "url": "/api/twitter/posts/{{postId}}/like"
-        },
-        {
-          "type": "action.snackbar.show",
-          "message": "Post curtido! ❤️",
-          "duration": 2000
-        }
-      ]
     }
   }
 }
