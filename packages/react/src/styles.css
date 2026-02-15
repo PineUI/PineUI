@@ -22,12 +22,20 @@
   box-sizing: border-box;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
 .pineui-root {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   color: var(--md-sys-color-onBackground);
   background: var(--md-sys-color-background);
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 /* Typography */
