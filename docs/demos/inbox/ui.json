@@ -53,7 +53,7 @@
       {
         "type": "layout.column",
         "spacing": 0,
-        "width": "18%",
+        "flex": 18,
         "overflow": "auto",
         "children": [
           {
@@ -152,11 +152,8 @@
         ]
       },
       {
-        "type": "divider"
-      },
-      {
         "type": "layout.column",
-        "width": "60%",
+        "flex": 60,
         "spacing": 0,
         "children": [
           {
@@ -253,12 +250,9 @@
         ]
       },
       {
-        "type": "divider"
-      },
-      {
         "type": "layout.column",
         "spacing": 0,
-        "width": "22%",
+        "flex": 22,
         "overflow": "auto",
         "children": [
           {
