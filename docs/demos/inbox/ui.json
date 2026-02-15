@@ -277,7 +277,7 @@
     ]
   },
   "components": {
-    "pattern.conversationItem": {
+    "component.conversationItem": {
       "definition": {
         "type": "layout.row",
         "padding": 8,
@@ -328,7 +328,7 @@
         ]
       }
     },
-    "pattern.messageItem": {
+    "component.messageItem": {
       "definition": {
         "type": "layout.row",
         "spacing": 12,
@@ -426,7 +426,7 @@
         ]
       }
     },
-    "pattern.profilePanel": {
+    "component.profilePanel": {
       "definition": {
         "type": "layout.column",
         "padding": 16,
