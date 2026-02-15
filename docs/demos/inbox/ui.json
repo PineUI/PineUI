@@ -156,7 +156,7 @@
       },
       {
         "type": "layout.column",
-        "flex": 1,
+        "width": "60%",
         "spacing": 0,
         "children": [
           {
