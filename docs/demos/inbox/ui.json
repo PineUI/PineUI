@@ -37,7 +37,7 @@
         "flex": 28,
         "overflow": "auto",
         "backgroundColor": "#ffffff",
-        "borderRight": "1px solid #e7e0ec",
+        "borderRight": "1px solid #d0d0d0",
         "children": [
           {
             "type": "layout.column",
@@ -61,6 +61,9 @@
                     "size": "small"
                   }
                 ]
+              },
+              {
+                "type": "divider"
               },
               {
                 "type": "input.text",
@@ -139,7 +142,7 @@
         "flex": 47,
         "spacing": 0,
         "backgroundColor": "#ffffff",
-        "borderRight": "1px solid #e7e0ec",
+        "borderRight": "1px solid #d0d0d0",
         "children": [
           {
             "type": "layout.row",
@@ -148,10 +151,22 @@
             "crossAxisAlignment": "center",
             "children": [
               {
-                "type": "text",
-                "content": "Clarity Community 🔥",
-                "style": "titleMedium",
-                "fontWeight": "bold"
+                "type": "layout.row",
+                "spacing": 8,
+                "crossAxisAlignment": "center",
+                "children": [
+                  {
+                    "type": "text",
+                    "content": "Clarity Community 🔥",
+                    "style": "titleMedium",
+                    "fontWeight": "bold"
+                  },
+                  {
+                    "type": "button.icon",
+                    "icon": "▼",
+                    "size": "small"
+                  }
+                ]
               },
               {
                 "type": "button.icon",
@@ -167,7 +182,7 @@
             "type": "layout.column",
             "flex": 1,
             "padding": 16,
-            "spacing": 24,
+            "spacing": 16,
             "overflow": "auto",
             "children": [
               {
@@ -213,22 +228,23 @@
               {
                 "type": "button.icon",
                 "icon": "📎",
-                "size": "small"
+                "size": "medium"
               },
               {
                 "type": "input.text",
                 "placeholder": "Send a message...",
-                "flex": 1
+                "flex": 1,
+                "borderRadius": 12
               },
               {
                 "type": "button.icon",
                 "icon": "😊",
-                "size": "small"
+                "size": "medium"
               },
               {
                 "type": "button.icon",
                 "icon": "🖼️",
-                "size": "small"
+                "size": "medium"
               }
             ]
           }
@@ -264,7 +280,7 @@
     "pattern.conversationItem": {
       "definition": {
         "type": "layout.row",
-        "padding": 12,
+        "padding": 8,
         "spacing": 12,
         "crossAxisAlignment": "center",
         "onPress": {
@@ -289,14 +305,15 @@
                   {
                     "type": "text",
                     "content": "{{props.conversation.name}}",
-                    "style": "bodyMedium",
+                    "style": "bodyLarge",
                     "fontWeight": "bold"
                   },
                   {
                     "type": "text",
                     "content": "{{props.conversation.time}}",
                     "style": "bodySmall",
-                    "color": "onSurfaceVariant"
+                    "color": "onSurfaceVariant",
+                    "fontSize": 12
                   }
                 ]
               },
@@ -359,7 +376,8 @@
               {
                 "type": "text",
                 "content": "{{props.message.content}}",
-                "style": "bodyMedium"
+                "style": "bodyMedium",
+                "lineHeight": 1.5
               },
               {
                 "type": "layout.row",
@@ -367,7 +385,7 @@
                 "children": [
                   {
                     "type": "layout.row",
-                    "spacing": 4,
+                    "spacing": 6,
                     "crossAxisAlignment": "center",
                     "children": [
                       {
@@ -385,7 +403,7 @@
                   },
                   {
                     "type": "layout.row",
-                    "spacing": 4,
+                    "spacing": 6,
                     "crossAxisAlignment": "center",
                     "children": [
                       {
@@ -422,13 +440,13 @@
           },
           {
             "type": "layout.column",
-            "spacing": 8,
+            "spacing": 12,
             "crossAxisAlignment": "center",
             "children": [
               {
                 "type": "avatar",
                 "src": "{{props.profile.avatar}}",
-                "size": 80
+                "size": 96
               },
               {
                 "type": "text",
@@ -465,7 +483,8 @@
                     "type": "text",
                     "content": "Posts",
                     "style": "bodySmall",
-                    "color": "primary"
+                    "color": "primary",
+                    "fontWeight": "bold"
                   },
                   {
                     "type": "text",
@@ -488,7 +507,7 @@
           },
           {
             "type": "layout.column",
-            "spacing": 12,
+            "spacing": 8,
             "children": [
               {
                 "type": "layout.row",
@@ -599,7 +618,8 @@
                 "type": "text",
                 "content": "{{props.profile.bio}}",
                 "style": "bodySmall",
-                "color": "onSurfaceVariant"
+                "color": "onSurfaceVariant",
+                "lineHeight": 1.6
               }
             ]
           },
@@ -624,19 +644,22 @@
                     "type": "text",
                     "content": "{{props.profile.links.website}}",
                     "style": "bodySmall",
-                    "color": "primary"
+                    "color": "primary",
+                    "textDecoration": "underline"
                   },
                   {
                     "type": "text",
                     "content": "{{props.profile.links.twitter}}",
                     "style": "bodySmall",
-                    "color": "primary"
+                    "color": "primary",
+                    "textDecoration": "underline"
                   },
                   {
                     "type": "text",
                     "content": "{{props.profile.links.linkedin}}",
                     "style": "bodySmall",
-                    "color": "primary"
+                    "color": "primary",
+                    "textDecoration": "underline"
                   }
                 ]
               }
