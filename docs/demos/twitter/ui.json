@@ -6,7 +6,7 @@
       "type": "layout.appBar",
       "title": {
         "type": "text",
-        "content": "🍍 PineUI Demo - Twitter",
+        "content": "Twitter",
         "style": "titleLarge"
       }
     },

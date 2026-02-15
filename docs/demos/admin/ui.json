@@ -12,7 +12,7 @@
         "children": [
           {
             "type": "text",
-            "content": "🍍 PineUI Demo - Admin",
+            "content": "Admin",
             "style": "titleLarge"
           },
           {
