@@ -6,9 +6,8 @@
       "type": "layout.appBar",
       "title": {
         "type": "text",
-        "content": "🍍 PineUI Twitter",
-        "style": "titleLarge",
-        "fontWeight": "bold"
+        "content": "🍍 PineUI Demo - Twitter",
+        "style": "titleLarge"
       }
     },
     "body": {

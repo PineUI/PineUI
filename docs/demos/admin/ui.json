@@ -12,9 +12,8 @@
         "children": [
           {
             "type": "text",
-            "content": "Manage audience",
-            "style": "headlineSmall",
-            "fontWeight": "bold"
+            "content": "🍍 PineUI Demo - Admin",
+            "style": "titleLarge"
           },
           {
             "type": "button.filled",

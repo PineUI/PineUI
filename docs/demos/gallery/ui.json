@@ -18,9 +18,8 @@
       "type": "layout.appBar",
       "title": {
         "type": "text",
-        "content": "Courses",
-        "style": "titleLarge",
-        "fontWeight": "bold"
+        "content": "🍍 PineUI Demo - Gallery",
+        "style": "titleLarge"
       }
     },
     "body": {
