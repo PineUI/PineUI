@@ -33,7 +33,7 @@ interface PineUIProps {
 }
 
 export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl, baseUrl = '' }) => {
-  const [schema, setSchema] = useState<PineUISchema | null>(initialSchema || null);
+  const [schema, setSchema] = useState<PineUISchema | null>(null);
   const [loading, setLoading] = useState(!initialSchema);
   const [error, setError] = useState<Error | null>(null);
   const [snackbars, setSnackbars] = useState<SnackbarMessage[]>([]);
@@ -60,8 +60,28 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
   useEffect(() => {
     if (schemaUrl && !initialSchema) {
       loadSchema();
+    } else if (initialSchema) {
+      loadInitialSchema();
     }
-  }, [schemaUrl, initialSchema]);
+  }, [schemaUrl, initialSchema, baseUrl]);
+
+  const loadInitialSchema = async () => {
+    try {
+      let data = initialSchema!;
+      // Load imports if present
+      if (data.imports && baseUrl) {
+        console.log('Loading imports for initial schema...', data.imports);
+        data = await loadImports(data, baseUrl);
+        console.log('Imports loaded! Components:', Object.keys(data.components || {}));
+      }
+      setSchema(data);
+      if (data.state) {
+        setState(prevState => ({ ...prevState, ...data.state }));
+      }
+    } catch (err) {
+      setError(err as Error);
+    }
+  };
 
   const loadSchema = async () => {
     try {

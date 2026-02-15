@@ -5,12 +5,17 @@ function resolveRelativePath(baseUrl: string, relativePath: string): string {
     return relativePath;
   }
 
-  // Remove leading ./
-  const cleanPath = relativePath.replace(/^\.\//, '');
-
-  // Combine base URL with path
-  const base = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-  return `${base}/${cleanPath}`;
+  // Use URL API to properly resolve relative paths including ../
+  try {
+    const base = new URL(baseUrl, window.location.href);
+    const resolved = new URL(relativePath, base);
+    return resolved.href;
+  } catch {
+    // Fallback for simple paths
+    const cleanPath = relativePath.replace(/^\.\//, '');
+    const base = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+    return `${base}/${cleanPath}`;
+  }
 }
 
 export async function loadImports(schema: PineUISchema, baseUrl: string): Promise<PineUISchema> {
@@ -32,7 +37,8 @@ export async function loadImports(schema: PineUISchema, baseUrl: string): Promis
           ...componentData
         };
       } catch (error) {
-        console.error(`Failed to load component from ${componentPath}:`, error);
+        console.error(`❌ Failed to load component from ${componentPath}:`, error);
+        console.error(`   Resolved URL: ${resolveRelativePath(baseUrl, componentPath)}`);
       }
     }
   }
