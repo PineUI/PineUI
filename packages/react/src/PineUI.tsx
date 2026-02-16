@@ -267,8 +267,32 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
 
   if (loading) {
     return (
-      <div className="pineui-loading">
-        <p>Loading PineUI...</p>
+      <div className="pineui-loading" style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '400px',
+        gap: '16px',
+        color: '#79747E'
+      }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          border: '4px solid #E7E0EC',
+          borderTop: '4px solid #6750A4',
+          borderRadius: '50%',
+          animation: 'pineui-spin 1s linear infinite'
+        }} />
+        <p style={{ margin: 0, fontSize: '14px', fontWeight: 500 }}>Carregando aplicação...</p>
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            @keyframes pineui-spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          `
+        }} />
       </div>
     );
   }
