@@ -10,6 +10,7 @@ export default defineConfig({
     'process.env': JSON.stringify({}),
   },
   build: {
+    emptyOutDir: false, // Don't clear dist folder
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'PineUI',

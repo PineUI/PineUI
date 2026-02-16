@@ -15,7 +15,7 @@
   "license": "Apache-2.0 WITH Commons-Clause",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PineUI/PineUI.git",
+    "url": "git+https://github.com/PineUI/PineUI.git",
     "directory": "packages/react"
   },
   "homepage": "https://pineui.github.io/PineUI/",
@@ -23,14 +23,16 @@
     "url": "https://github.com/PineUI/PineUI/issues"
   },
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
+  "main": "./dist/pineui.umd.js",
+  "module": "./dist/pineui.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
+      "import": "./dist/pineui.es.js",
+      "require": "./dist/pineui.umd.js",
       "types": "./dist/index.d.ts"
-    }
+    },
+    "./dist/style.css": "./dist/style.css"
   },
   "files": [
     "dist",

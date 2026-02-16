@@ -399,6 +399,7 @@
         <a class="sidebar-item active" data-section="introduction">Introduction</a>
         <a class="sidebar-item" data-section="installation">Installation</a>
         <a class="sidebar-item" data-section="quick-start">Quick Start</a>
+        <a class="sidebar-item" data-section="llm-usage">Using with LLMs</a>
       </div>
 
       <div class="sidebar-section">
@@ -767,6 +768,89 @@
     ]
   }
 }</pre>
+      </section>
+
+      <!-- Using with LLMs Section -->
+      <section class="doc-section" id="llm-usage">
+        <h2>🤖 Using with LLMs</h2>
+
+        <p>PineUI is designed to be AI-friendly. LLMs like ChatGPT, Claude, and others can generate complete UIs using PineUI's declarative JSON schema - no specific training required!</p>
+
+        <h3>Why LLMs Love PineUI</h3>
+        <ul>
+          <li><strong>Declarative</strong> - Describe what you want, not how to build it</li>
+          <li><strong>JSON-based</strong> - Native format for LLMs to generate</li>
+          <li><strong>Material Design</strong> - Built-in components with consistent naming</li>
+          <li><strong>Self-contained</strong> - Complete apps in a single schema</li>
+        </ul>
+
+        <h3>Example Prompt</h3>
+        <p>Copy and paste this prompt into ChatGPT, Claude, or any LLM:</p>
+
+        <div style="background: #F7F2FA; padding: 16px; border-radius: 8px; border-left: 4px solid #6750A4; margin: 16px 0;">
+          <pre style="white-space: pre-wrap; font-size: 13px; line-height: 1.6;">Create a complete HTML page with a PineUI application that displays a gallery of online courses with category filtering.
+
+<strong>Requirements:</strong>
+1. Use PineUI from CDN:
+   - JS: https://unpkg.com/@pineui/react@latest/dist/pineui.standalone.js
+   - CSS: https://unpkg.com/@pineui/react@latest/dist/style.css
+
+2. The app should have:
+   - Header with app bar showing "Course Gallery" title
+   - Row of filter chips for categories: All, Design, Development, Business, Marketing
+   - Grid layout (3 columns on desktop) showing course cards
+   - Each card should show: thumbnail image, category badge, title, instructor name, rating, and price
+
+3. State management:
+   - selectedCategory state (default "All")
+   - When a chip is clicked, update selectedCategory
+   - Use conditional rendering to filter courses by category
+
+4. Sample courses data (at least 9 courses across different categories):
+   - Include realistic course titles, instructors, ratings, and prices
+   - Use placeholder images from https://picsum.photos/400/225
+
+5. Styling:
+   - Use Material Design 3 colors
+   - Responsive grid (3 columns on desktop, 2 on tablet, 1 on mobile)
+   - Selected chip should be filled style, others outlined
+
+Use PineUI.render() to mount the application to a div with id="app".</pre>
+        </div>
+
+        <h3>What the LLM Will Generate</h3>
+        <p>The LLM will create a complete, working application with:</p>
+        <ul>
+          <li>Proper HTML structure with PineUI CDN links</li>
+          <li>Complete JSON schema with state management</li>
+          <li>Interactive category filtering</li>
+          <li>Responsive grid layout</li>
+          <li>Material Design 3 styling</li>
+        </ul>
+
+        <h3>Tips for Better Results</h3>
+        <ul>
+          <li><strong>Be specific</strong> - Describe exact components and layouts you want</li>
+          <li><strong>Reference CDN</strong> - Always provide the unpkg links for PineUI</li>
+          <li><strong>Mention state</strong> - If you need interactivity, specify state variables and actions</li>
+          <li><strong>Include examples</strong> - Reference component types like "button.filled", "layout.column", etc.</li>
+          <li><strong>Ask for variations</strong> - Request the LLM to iterate or add features</li>
+        </ul>
+
+        <h3>Common Use Cases</h3>
+        <ul>
+          <li>📱 Mobile-first landing pages</li>
+          <li>🎨 Product galleries and catalogs</li>
+          <li>📊 Data dashboards with charts</li>
+          <li>📝 Forms and surveys</li>
+          <li>🛒 E-commerce product listings</li>
+          <li>📧 Email templates</li>
+          <li>📰 News feeds and blogs</li>
+        </ul>
+
+        <p style="margin-top: 24px; padding: 12px 16px; background: #E8F5E9; border-left: 3px solid #4CAF50; border-radius: 4px;">
+          <strong>💡 Pro Tip:</strong> After the LLM generates the initial UI, you can ask it to add features, change styling, or refactor components. PineUI's declarative nature makes iterations easy!
+        </p>
       </section>
 
       <!-- Schema Structure Section -->
