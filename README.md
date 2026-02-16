@@ -7,11 +7,17 @@
 
 **Server-Driven UI Protocol and SDK for AI-Native Applications**
 
-PineUI é um protocolo completo e SDK multi-plataforma para construir interfaces declarativas renderizadas a partir de JSON, com governança centralizada no servidor. Projetado para escalar para milhões de usuários e ser compreensível por Large Language Models.
+PineUI is a complete protocol and multi-platform SDK for building declarative interfaces rendered from JSON, with centralized governance on the server. Designed to scale to millions of users and be comprehensible by Large Language Models.
 
-> 🏢 Desenvolvido por [Luma Ventures](https://lumaventures.com) | CNPJ: 21.951.820/0001-39
+> 🍍 **Why "PineUI"?** In Brazilian Portuguese, we have an expression: "_descascar esse abacaxi_" (literally "peeling this pineapple"), which means **solving a tough problem**. PineUI helps you peel through the tough challenges of building dynamic, multi-platform UIs.
 
-**🚀 [Experimente agora em https://pineui.github.io/PineUI/](https://pineui.github.io/PineUI/)**
+> 👨‍💻 Created by **David Ruiz (wupsbr)** - CPTO at Ingresse, former Director of Engineering at iFood (R$70B+ GMV), CTO at Paraná Banco, and co-founder of ONOVOLAB.
+
+> 🏢 Developed by [Luma Ventures](https://lumaventures.com) | CNPJ: 21.951.820/0001-39
+
+**🚀 [Try it now at https://pineui.github.io/PineUI/](https://pineui.github.io/PineUI/)**
+
+**📖 [Complete Documentation](https://pineui.github.io/PineUI/documentation.html)**
 
 ---
 
@@ -50,7 +56,8 @@ PineUI é um protocolo completo e SDK multi-plataforma para construir interfaces
 - 📊 **Performance** - 60 FPS garantido em listas infinitas
 - 🎨 **Theming** - Suporte completo a temas customizados
 - 🔄 **Real-time Updates** - State management reativo
-- 📱 **Responsive** - Mobile-first com breakpoints automáticos
+- 📱 **Responsive** - Mobile-first, fully responsive design with automatic breakpoints
+- 🎨 **Design System** - Complete Material Design 3 theming and customization
 
 ---
 
@@ -86,6 +93,97 @@ open http://localhost:8080
 | 🖼️ Gallery | `?demo=gallery` | Grid de cursos com filtros por categoria |
 | 📬 Inbox | `?demo=inbox` | Mensageiro com 3 colunas interativas |
 | 👥 Admin | `?demo=admin` | Dashboard com tabs e tabela de usuários |
+
+---
+
+## 🤖 Using with LLMs
+
+PineUI is designed to be AI-friendly. You can generate complete UIs by simply describing what you want to an LLM.
+
+### Example Prompt
+
+```
+Create a PineUI application that displays a gallery of online courses with category filtering.
+
+Use PineUI from CDN:
+- JS: https://unpkg.com/@pineui/react@latest/dist/pineui.standalone.js
+- CSS: https://unpkg.com/@pineui/react@latest/dist/style.css
+
+Requirements:
+1. Header with title "Course Gallery" and subtitle
+2. Row of filter chips: All, Design, Development, Business, Marketing
+3. Grid layout with 3 columns showing course cards
+4. Each card should have:
+   - Course image (16:9 aspect ratio, rounded corners)
+   - Course title (bold)
+   - Instructor name
+   - Progress bar (if progress > 0)
+   - Badge showing "New" or "Completed" status
+5. Load courses from API: GET /api/courses?category={{selectedCategory}}
+6. Clicking a chip should filter courses by category
+7. Use Material Design 3 styling
+
+State:
+- selectedCategory: defaults to "All"
+
+Example course data:
+{
+  "id": "1",
+  "title": "UI/UX Design Fundamentals",
+  "instructor": "Sarah Johnson",
+  "image": "https://picsum.photos/400/225?1",
+  "category": "Design",
+  "progress": 75,
+  "status": "in-progress"
+}
+```
+
+**What the LLM will generate:**
+
+The LLM will create a complete PineUI schema JSON with:
+- `state` for `selectedCategory`
+- `components` with `component.courseCard` definition
+- `intents` for `category.select`
+- `screen` with layout, chips, and collection
+- Proper Material Design 3 styling
+- State-driven filtering with automatic reload
+
+**Try it yourself:**
+1. Copy the prompt above
+2. Send to Claude, GPT-4, or any LLM
+3. Get a working PineUI application instantly!
+
+### Why LLMs Love PineUI
+
+✅ **Declarative JSON** - No imperative code, just data structures
+✅ **Consistent Patterns** - Components, intents, state follow predictable patterns
+✅ **Well-Documented** - Complete API reference and examples
+✅ **Material Design 3** - Built-in design system reduces decisions
+✅ **Validation-Friendly** - Clear schema structure catches errors
+
+### Real-World Usage
+
+```javascript
+// AI generates this JSON schema
+const schema = {
+  "schemaVersion": "1.0.0",
+  "state": {"selectedCategory": "All"},
+  "components": {
+    "component.courseCard": { /* ... */ }
+  },
+  "intents": {
+    "category.select": { /* ... */ }
+  },
+  "screen": { /* ... */ }
+};
+
+// Your app just renders it
+PineUI.render({
+  target: '#app',
+  schema: schema,
+  baseUrl: 'https://api.example.com'
+});
+```
 
 ---
 
