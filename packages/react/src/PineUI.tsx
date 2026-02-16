@@ -35,6 +35,7 @@ interface PineUIProps {
 export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl, baseUrl = '' }) => {
   const [schema, setSchema] = useState<PineUISchema | null>(initialSchema || null);
   const [loading, setLoading] = useState(!initialSchema && !!schemaUrl);
+  const [initializing, setInitializing] = useState(!!initialSchema);
   const [error, setError] = useState<Error | null>(null);
   const [snackbars, setSnackbars] = useState<SnackbarMessage[]>([]);
   const [overlays, setOverlays] = useState<Record<string, { visible: boolean; config: any }>>({});
@@ -81,6 +82,8 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
       }
     } catch (err) {
       setError(err as Error);
+    } finally {
+      setInitializing(false);
     }
   };
 
@@ -261,6 +264,11 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
     executeAction,
     executeIntent,
   };
+
+  // Don't render anything during initialization to avoid flash
+  if (initializing) {
+    return null;
+  }
 
   if (loading) {
     return (
