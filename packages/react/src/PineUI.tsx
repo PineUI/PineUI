@@ -14,6 +14,7 @@ import { Renderer } from './renderer/Renderer';
 import { SnackbarContainer, SnackbarMessage } from './components/Snackbar';
 import { ModalContainer } from './components/Modal';
 import { loadImports } from './loader/imports';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 // Helper function to get nested values from objects
 function getNestedValue(obj: any, path: string): any {
@@ -299,11 +300,13 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
   };
 
   return (
-    <div className="pineui-root">
-      <Renderer node={schema.screen} context={context} />
-      <SnackbarContainer messages={snackbars} onDismiss={dismissSnackbar} />
-      <ModalContainer overlays={overlays} onClose={closeOverlay} context={context} renderer={Renderer} />
-    </div>
+    <ErrorBoundary>
+      <div className="pineui-root">
+        <Renderer node={schema.screen} context={context} />
+        <SnackbarContainer messages={snackbars} onDismiss={dismissSnackbar} />
+        <ModalContainer overlays={overlays} onClose={closeOverlay} context={context} renderer={Renderer} />
+      </div>
+    </ErrorBoundary>
   );
 };
 
