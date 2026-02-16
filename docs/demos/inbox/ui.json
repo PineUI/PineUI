@@ -13,11 +13,18 @@
   },
   "intents": {
     "conversation.select": {
-      "handler": {
-        "type": "action.state.patch",
-        "path": "selectedConversationId",
-        "value": "{{conversationId}}"
-      }
+      "handler": [
+        {
+          "type": "action.state.patch",
+          "path": "selectedConversationId",
+          "value": "{{conversationId}}"
+        },
+        {
+          "type": "action.state.patch",
+          "path": "selectedUserId",
+          "value": "{{userId}}"
+        }
+      ]
     },
     "user.viewProfile": {
       "handler": {

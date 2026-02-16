@@ -10,7 +10,8 @@
             "time": "8:45 AM",
             "message": "Just wanted to check in...",
             "avatar": "https://i.pravatar.cc/150?img=20",
-            "unread": "2"
+            "unread": "2",
+            "userId": "user_robert"
           },
           {
             "id": "3",
@@ -18,7 +19,8 @@
             "time": "Yesterday",
             "message": "Thanks for the advice!",
             "avatar": "https://i.pravatar.cc/150?img=45",
-            "unread": "1"
+            "unread": "1",
+            "userId": "user_emily"
           },
           {
             "id": "2",
@@ -26,7 +28,8 @@
             "time": "10:18 AM",
             "message": "Creating a space...",
             "avatar": "https://i.pravatar.cc/150?img=13",
-            "unread": "1"
+            "unread": "1",
+            "userId": "user_carlos"
           }
         ]
       }
@@ -41,7 +44,8 @@
             "time": "8:45 AM",
             "message": "Just wanted to check in...",
             "avatar": "https://i.pravatar.cc/150?img=20",
-            "unread": "2"
+            "unread": "2",
+            "userId": "user_robert"
           }
         ]
       }
@@ -56,7 +60,8 @@
             "time": "8:45 AM",
             "message": "Just wanted to check in...",
             "avatar": "https://i.pravatar.cc/150?img=20",
-            "unread": "2"
+            "unread": "2",
+            "userId": "user_robert"
           },
           {
             "id": "2",
@@ -64,7 +69,8 @@
             "time": "10:18 AM",
             "message": "Creating a space...",
             "avatar": "https://i.pravatar.cc/150?img=13",
-            "unread": ""
+            "unread": "",
+            "userId": "user_carlos"
           },
           {
             "id": "3",
@@ -72,7 +78,8 @@
             "time": "Yesterday",
             "message": "Thanks for the advice!",
             "avatar": "https://i.pravatar.cc/150?img=45",
-            "unread": "1"
+            "unread": "1",
+            "userId": "user_emily"
           },
           {
             "id": "4",
@@ -80,7 +87,8 @@
             "time": "Yesterday",
             "message": "See you at the workshop",
             "avatar": "https://i.pravatar.cc/150?img=32",
-            "unread": ""
+            "unread": "",
+            "userId": "user_sarah"
           },
           {
             "id": "5",

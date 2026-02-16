@@ -7,7 +7,8 @@
       "crossAxisAlignment": "center",
       "onPress": {
         "intent": "conversation.select",
-        "conversationId": "{{props.conversation.id}}"
+        "conversationId": "{{props.conversation.id}}",
+        "userId": "{{props.conversation.userId}}"
       },
       "children": [
         {
