@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentation - PineUI</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      color: #1D1B20;
+      background: #FFFBFE;
+      line-height: 1.6;
+    }
+
+    .header {
+      background: white;
+      border-bottom: 1px solid #E7E0EC;
+      padding: 16px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #6750A4;
+    }
+
+    .header-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .header-links a {
+      color: #49454F;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .header-links a:hover {
+      color: #6750A4;
+    }
+
+    .container {
+      display: flex;
+      height: calc(100vh - 65px);
+    }
+
+    .sidebar {
+      width: 280px;
+      background: white;
+      border-right: 1px solid #E7E0EC;
+      overflow-y: auto;
+      padding: 24px 0;
+    }
+
+    .sidebar-section {
+      margin-bottom: 24px;
+    }
+
+    .sidebar-section-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #79747E;
+      padding: 8px 24px;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-item {
+      display: block;
+      padding: 8px 24px;
+      color: #49454F;
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.2s;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+    }
+
+    .sidebar-item:hover {
+      background: #F7F2FA;
+      color: #6750A4;
+    }
+
+    .sidebar-item.active {
+      background: #F7F2FA;
+      color: #6750A4;
+      border-left-color: #6750A4;
+      font-weight: 600;
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 48px 64px;
+      max-width: 1200px;
+    }
+
+    .doc-section {
+      display: none;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    .doc-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #1D1B20;
+    }
+
+    h3 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-top: 40px;
+      margin-bottom: 16px;
+      color: #1D1B20;
+    }
+
+    h4 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      color: #1D1B20;
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: #49454F;
+      font-size: 16px;
+    }
+
+    .property-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #E7E0EC;
+    }
+
+    .property-table th {
+      background: #F7F2FA;
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 14px;
+      color: #1D1B20;
+      border-bottom: 1px solid #E7E0EC;
+    }
+
+    .property-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #F7F2FA;
+      font-size: 14px;
+    }
+
+    .property-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .property-name {
+      font-family: 'Courier New', monospace;
+      color: #6750A4;
+      font-weight: 600;
+    }
+
+    .property-type {
+      font-family: 'Courier New', monospace;
+      color: #0277BD;
+      font-size: 13px;
+    }
+
+    code {
+      background: #F7F2FA;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      color: #6750A4;
+    }
+
+    pre {
+      background: #1D1B20;
+      color: #E7E0EC;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 24px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .example-box {
+      background: #F7F2FA;
+      border-left: 4px solid #6750A4;
+      padding: 16px 20px;
+      margin: 24px 0;
+      border-radius: 4px;
+    }
+
+    .example-box h4 {
+      margin-top: 0;
+      color: #6750A4;
+      font-size: 16px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    .badge-required {
+      background: #FEE2E2;
+      color: #BA1A1A;
+    }
+
+    .badge-optional {
+      background: #E0F2F1;
+      color: #00695C;
+    }
+
+    ul, ol {
+      margin-left: 24px;
+      margin-bottom: 16px;
+    }
+
+    li {
+      margin-bottom: 8px;
+      color: #49454F;
+    }
+
+    a {
+      color: #6750A4;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🍍 PineUI Documentation</h1>
+    <div class="header-links">
+      <a href="/">Home</a>
+      <a href="/documentation.html">Docs</a>
+      <a href="https://github.com/PineUI/PineUI" target="_blank">GitHub</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Getting Started</div>
+        <a class="sidebar-item active" data-section="introduction">Introduction</a>
+        <a class="sidebar-item" data-section="installation">Installation</a>
+        <a class="sidebar-item" data-section="quick-start">Quick Start</a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Core Concepts</div>
+        <a class="sidebar-item" data-section="schema">Schema Structure</a>
+        <a class="sidebar-item" data-section="components">Components</a>
+        <a class="sidebar-item" data-section="state">State Management</a>
+        <a class="sidebar-item" data-section="intents">Intents</a>
+        <a class="sidebar-item" data-section="actions">Actions</a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Components</div>
+        <a class="sidebar-item" data-section="text">Text</a>
+        <a class="sidebar-item" data-section="button">Button</a>
+        <a class="sidebar-item" data-section="layout">Layout</a>
+        <a class="sidebar-item" data-section="card">Card</a>
+        <a class="sidebar-item" data-section="input">Input</a>
+        <a class="sidebar-item" data-section="image">Image</a>
+        <a class="sidebar-item" data-section="avatar">Avatar</a>
+        <a class="sidebar-item" data-section="collection">Collection</a>
+        <a class="sidebar-item" data-section="conditional">Conditional Render</a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Actions</div>
+        <a class="sidebar-item" data-section="action-http">HTTP Request</a>
+        <a class="sidebar-item" data-section="action-state">State Patch</a>
+        <a class="sidebar-item" data-section="action-overlay">Overlay Control</a>
+        <a class="sidebar-item" data-section="action-snackbar">Snackbar</a>
+        <a class="sidebar-item" data-section="action-delay">Delay</a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Advanced</div>
+        <a class="sidebar-item" data-section="custom-components">Custom Components</a>
+        <a class="sidebar-item" data-section="overlays">Overlays & Modals</a>
+        <a class="sidebar-item" data-section="bindings">Data Bindings</a>
+      </div>
+    </nav>
+
+    <main class="content">
+      <!-- Introduction Section -->
+      <section class="doc-section active" id="introduction">
+        <h2>Introduction</h2>
+        <p>
+          PineUI is a Server-Driven UI framework designed for AI-native applications.
+          It enables you to build dynamic, reactive user interfaces entirely through JSON schemas,
+          making it perfect for LLM-generated UIs and multi-platform applications.
+        </p>
+
+        <h3>Why PineUI?</h3>
+        <ul>
+          <li><strong>100% Declarative:</strong> Define your entire UI in JSON - no imperative code needed</li>
+          <li><strong>Server-Driven:</strong> Update UIs without redeploying - perfect for A/B testing and dynamic content</li>
+          <li><strong>AI-Friendly:</strong> LLMs can easily generate and modify PineUI schemas</li>
+          <li><strong>Multi-Platform:</strong> Same schema works on Web (React) and Mobile (Flutter)</li>
+          <li><strong>Material Design 3:</strong> Beautiful, modern UI components out of the box</li>
+        </ul>
+
+        <h3>Key Features</h3>
+        <ul>
+          <li>Reactive state management with automatic UI updates</li>
+          <li>Intent-based action system for clean separation of concerns</li>
+          <li>Built-in HTTP client for API integration</li>
+          <li>Collection rendering with virtualization support</li>
+          <li>Modal and overlay system</li>
+          <li>Custom component library support</li>
+          <li>Data binding with {{}} syntax</li>
+        </ul>
+      </section>
+
+      <!-- Installation Section -->
+      <section class="doc-section" id="installation">
+        <h2>Installation</h2>
+
+        <h3>React</h3>
+        <pre>{
+  "dependencies": {
+    "@pineui/react": "^0.1.0"
+  }
+}</pre>
+
+        <h3>CDN (Standalone)</h3>
+        <pre>&lt;script src="https://unpkg.com/@pineui/react@latest/dist/pineui.standalone.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="https://unpkg.com/@pineui/react@latest/dist/style.css"&gt;</pre>
+      </section>
+
+      <!-- Quick Start Section -->
+      <section class="doc-section" id="quick-start">
+        <h2>Quick Start</h2>
+
+        <h3>Basic Example</h3>
+        <pre>{
+  "schemaVersion": "1.0.0",
+  "screen": {
+    "type": "layout.column",
+    "padding": 16,
+    "spacing": 16,
+    "children": [
+      {
+        "type": "text",
+        "content": "Hello PineUI!",
+        "style": "titleLarge"
+      },
+      {
+        "type": "button.filled",
+        "label": "Click Me",
+        "onPress": {
+          "type": "action.snackbar.show",
+          "message": "Button clicked!"
+        }
+      }
+    ]
+  }
+}</pre>
+
+        <h3>With State Management</h3>
+        <pre>{
+  "schemaVersion": "1.0.0",
+  "state": {
+    "counter": 0
+  },
+  "intents": {
+    "increment": {
+      "handler": {
+        "type": "action.state.patch",
+        "path": "counter",
+        "value": "{{state.counter + 1}}"
+      }
+    }
+  },
+  "screen": {
+    "type": "layout.column",
+    "padding": 16,
+    "spacing": 16,
+    "children": [
+      {
+        "type": "text",
+        "content": "Count: {{state.counter}}",
+        "style": "titleLarge"
+      },
+      {
+        "type": "button.filled",
+        "label": "Increment",
+        "onPress": {
+          "intent": "increment"
+        }
+      }
+    ]
+  }
+}</pre>
+      </section>
+
+      <!-- Schema Structure Section -->
+      <section class="doc-section" id="schema">
+        <h2>Schema Structure</h2>
+        <p>A PineUI schema is a JSON object that defines your entire application structure.</p>
+
+        <h3>Root Properties</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">schemaVersion</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Schema version (currently "1.0.0")</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">imports</span></td>
+              <td><span class="property-type">object</span></td>
+              <td>External component imports</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">state</span></td>
+              <td><span class="property-type">object</span></td>
+              <td>Initial application state</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">intents</span></td>
+              <td><span class="property-type">object</span></td>
+              <td>Intent definitions (actions handlers)</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">screen</span></td>
+              <td><span class="property-type">ComponentNode</span></td>
+              <td>Root UI component</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">components</span></td>
+              <td><span class="property-type">object</span></td>
+              <td>Custom component definitions</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">overlays</span></td>
+              <td><span class="property-type">object</span></td>
+              <td>Modal and overlay definitions</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- More sections will be added dynamically -->
+      <section class="doc-section" id="text">
+        <h2>Text Component</h2>
+        <p>Display text with Material Design 3 typography styles.</p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">type</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">"text"</span></td>
+              <td>Component type identifier</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">content</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Text content to display. Supports {{bindings}}</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">style</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Typography style: "titleLarge", "titleMedium", "titleSmall", "bodyLarge", "bodyMedium", "bodySmall", "headlineSmall"</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">color</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Text color (hex, Material color token, or CSS color)</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">fontWeight</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>"normal", "bold", or numeric (400, 600, 700, etc.)</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">fontSize</span></td>
+              <td><span class="property-type">number</span></td>
+              <td>Font size in pixels</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">lineHeight</span></td>
+              <td><span class="property-type">number</span></td>
+              <td>Line height multiplier</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Example</h3>
+        <pre>{
+  "type": "text",
+  "content": "Hello World",
+  "style": "titleLarge",
+  "color": "#6750A4",
+  "fontWeight": "bold"
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Tip</h4>
+          <p>Use Material Design color tokens like <code>onSurface</code>, <code>primary</code>, <code>onSurfaceVariant</code> for consistent theming across platforms.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // Navigation
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // Update sidebar
+        document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+
+        // Update content
+        const sectionId = item.getAttribute('data-section');
+        document.querySelectorAll('.doc-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+
+        // Scroll to top
+        document.querySelector('.content').scrollTop = 0;
+      });
+    });
+  </script>
+</body>
+</html>
