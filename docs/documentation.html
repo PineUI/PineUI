@@ -785,47 +785,49 @@
         </ul>
 
         <h3>Complete LLM Context Guide</h3>
-        <p>For best results, provide this comprehensive guide as context to your LLM:</p>
-        <p style="margin: 16px 0; padding: 16px; background: #F7F2FA; border-radius: 8px; border-left: 4px solid #6750A4;">
-          📄 <strong><a href="https://github.com/PineUI/PineUI/blob/main/PROMPT.md" target="_blank" style="color: #6750A4; text-decoration: underline;">PROMPT.md</a></strong> - Complete reference with all components, actions, patterns, and examples
-        </p>
-        <p>This guide contains everything an LLM needs to know about PineUI: schema structure, all available components, state management, actions, data bindings, design system, and complete working examples.</p>
+        <p>For best results, provide this comprehensive guide as context to your LLM. Copy and paste the content from PROMPT.md into your conversation with ChatGPT, Claude, or any other LLM.</p>
 
-        <details id="prompt-details" style="margin: 24px 0; background: #FAFAFA; border: 1px solid #E7E0EC; border-radius: 8px; padding: 16px;">
+        <div style="margin: 24px 0; padding: 16px; background: #F7F2FA; border-radius: 8px; border-left: 4px solid #6750A4; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <div style="font-weight: 600; color: #6750A4; margin-bottom: 4px;">📄 PROMPT.md - Complete LLM Context Guide</div>
+            <div style="font-size: 14px; color: #49454F;">All components, actions, state management, design system, patterns & examples</div>
+          </div>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <a href="./PROMPT.md" download style="display: inline-block; padding: 10px 24px; background: #6750A4; color: white; text-decoration: none; border-radius: 20px; font-weight: 500; font-size: 14px;">
+              ⬇️ Download PROMPT.md
+            </a>
+            <a href="https://github.com/PineUI/PineUI/blob/main/PROMPT.md" target="_blank" style="display: inline-block; padding: 10px 24px; background: white; color: #6750A4; text-decoration: none; border-radius: 20px; font-weight: 500; font-size: 14px; border: 1px solid #6750A4;">
+              🔗 View on GitHub
+            </a>
+          </div>
+        </div>
+
+        <details style="margin: 24px 0; background: #FAFAFA; border: 1px solid #E7E0EC; border-radius: 8px; padding: 16px;">
           <summary style="cursor: pointer; font-weight: 600; color: #6750A4; font-size: 14px; user-select: none;">
-            📄 View Complete PROMPT.md Content (Click to expand)
+            📋 What's included in PROMPT.md? (Click to expand)
           </summary>
-          <div id="prompt-content" style="margin-top: 16px; max-height: 600px; overflow-y: auto; background: white; padding: 16px; border-radius: 4px; border: 1px solid #E7E0EC;">
-            <div style="text-align: center; padding: 32px; color: #79747E;">
-              <div style="font-size: 24px; margin-bottom: 8px;">⏳</div>
-              <div>Loading PROMPT.md...</div>
-            </div>
+          <div style="margin-top: 16px; padding: 16px; background: white; border-radius: 4px;">
+            <h4 style="margin: 0 0 12px 0; color: #1D1B20; font-size: 15px;">The complete guide includes:</h4>
+            <ul style="margin: 0; padding-left: 24px; color: #49454F; line-height: 1.8;">
+              <li><strong>Schema Structure:</strong> How to organize your PineUI JSON schemas</li>
+              <li><strong>State Management:</strong> Defining state, data bindings, and expressions</li>
+              <li><strong>All Components:</strong>
+                <ul>
+                  <li>Layout: column, row, grid, scaffold</li>
+                  <li>UI: text, buttons, inputs, cards, images, avatars, chips, badges</li>
+                  <li>Advanced: collections, conditionals, modals, icons, progress</li>
+                </ul>
+              </li>
+              <li><strong>All Actions:</strong> state.patch, http.request, snackbar, overlay, sequence, delay</li>
+              <li><strong>Intents System:</strong> Creating reusable named actions</li>
+              <li><strong>Design System:</strong> Material Design 3 colors, typography, spacing</li>
+              <li><strong>Best Practices:</strong> Naming conventions, error handling, responsiveness</li>
+              <li><strong>Common Patterns:</strong> Loading states, form validation, pagination</li>
+              <li><strong>Complete Examples:</strong> Full working schemas like the course gallery</li>
+              <li><strong>Tips for LLMs:</strong> How to get the best results from AI assistants</li>
+            </ul>
           </div>
         </details>
-
-        <script>
-          (function() {
-            const details = document.getElementById('prompt-details');
-            const contentDiv = document.getElementById('prompt-content');
-            let loaded = false;
-
-            details.addEventListener('toggle', function() {
-              if (this.open && !loaded) {
-                fetch('./PROMPT.md')
-                  .then(response => response.text())
-                  .then(text => {
-                    contentDiv.innerHTML = '<pre style="white-space: pre-wrap; font-size: 13px; line-height: 1.6; color: #1D1B20; margin: 0; font-family: ui-monospace, SFMono-Regular, Consolas, monospace;">' +
-                      text.replace(/</g, '&lt;').replace(/>/g, '&gt;') +
-                      '</pre>';
-                    loaded = true;
-                  })
-                  .catch(err => {
-                    contentDiv.innerHTML = '<div style="text-align: center; padding: 32px; color: #BA1A1A;"><div style="font-size: 24px; margin-bottom: 8px;">❌</div><div>Failed to load PROMPT.md</div><div style="margin-top: 8px;"><a href="https://github.com/PineUI/PineUI/blob/main/PROMPT.md" target="_blank" style="color: #6750A4;">View on GitHub</a></div></div>';
-                  });
-              }
-            });
-          })();
-        </script>
 
         <h3>Quick Example Prompt</h3>
         <p>Copy and paste this prompt into ChatGPT, Claude, or any LLM:</p>
