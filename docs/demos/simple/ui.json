@@ -9,6 +9,29 @@
       "../../components/ui/card/elevated.json"
     ]
   },
+  "state": {
+    "showDemoAlert": false
+  },
+  "intents": {
+    "alert.show": {
+      "handler": [
+        {
+          "type": "action.state.patch",
+          "path": "showDemoAlert",
+          "value": true
+        },
+        {
+          "type": "action.delay",
+          "duration": 3000
+        },
+        {
+          "type": "action.state.patch",
+          "path": "showDemoAlert",
+          "value": false
+        }
+      ]
+    }
+  },
   "screen": {
     "type": "layout.scaffold",
     "body": {
@@ -37,6 +60,28 @@
           "content": "Custom Components Library",
           "style": "titleMedium",
           "fontWeight": "bold"
+        },
+        {
+          "type": "button.filled",
+          "label": "Mostrar Alert",
+          "onPress": {
+            "intent": "alert.show"
+          }
+        },
+        {
+          "type": "conditionalRender",
+          "conditions": [
+            {
+              "when": "{{state.showDemoAlert}}",
+              "render": {
+                "type": "component.alert.success",
+                "props": {
+                  "title": "Sucesso!",
+                  "description": "Este é um alert reutilizável da biblioteca PineUI. Ele vai desaparecer em 3 segundos."
+                }
+              }
+            }
+          ]
         },
         {
           "type": "component.alert.success",
