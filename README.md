@@ -63,7 +63,53 @@ PineUI is a complete protocol and multi-platform SDK for building declarative in
 
 ## 🚀 Quick Start
 
-### Instalação
+### Option 1: Use from GitHub Pages (Fastest)
+
+Include PineUI directly in your HTML:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://pineui.github.io/PineUI/pineui.css">
+</head>
+<body>
+  <div id="app"></div>
+
+  <script src="https://pineui.github.io/PineUI/pineui.standalone.js"></script>
+  <script>
+    PineUI.render({
+      target: '#app',
+      schema: {
+        "schemaVersion": "1.0.0",
+        "screen": {
+          "type": "layout.column",
+          "padding": 16,
+          "spacing": 16,
+          "children": [
+            {
+              "type": "text",
+              "content": "Hello PineUI!",
+              "style": "titleLarge"
+            },
+            {
+              "type": "button.filled",
+              "label": "Click Me",
+              "onPress": {
+                "type": "action.snackbar.show",
+                "message": "Button clicked!"
+              }
+            }
+          ]
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+```
+
+### Option 2: Clone and Build
 
 ```bash
 git clone https://github.com/pineui/pineui.git
@@ -105,9 +151,9 @@ PineUI is designed to be AI-friendly. You can generate complete UIs by simply de
 ```
 Create a PineUI application that displays a gallery of online courses with category filtering.
 
-Use PineUI from CDN:
-- JS: https://unpkg.com/@pineui/react@latest/dist/pineui.standalone.js
-- CSS: https://unpkg.com/@pineui/react@latest/dist/style.css
+Use PineUI from GitHub Pages:
+- JS: https://pineui.github.io/PineUI/pineui.standalone.js
+- CSS: https://pineui.github.io/PineUI/pineui.css
 
 Requirements:
 1. Header with title "Course Gallery" and subtitle

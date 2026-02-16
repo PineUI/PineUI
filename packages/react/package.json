@@ -1,6 +1,27 @@
 {
   "name": "@pineui/react",
   "version": "0.1.0",
+  "description": "Server-Driven UI framework for AI-native applications. Build dynamic, multi-platform interfaces from JSON schemas.",
+  "keywords": [
+    "server-driven-ui",
+    "ai-native",
+    "react",
+    "json-schema",
+    "material-design",
+    "declarative-ui",
+    "cross-platform"
+  ],
+  "author": "David Ruiz <wupsbr@gmail.com>",
+  "license": "Apache-2.0 WITH Commons-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PineUI/PineUI.git",
+    "directory": "packages/react"
+  },
+  "homepage": "https://pineui.github.io/PineUI/",
+  "bugs": {
+    "url": "https://github.com/PineUI/PineUI/issues"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -11,6 +32,11 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && vite build --config vite.config.standalone.ts",
