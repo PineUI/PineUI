@@ -10,7 +10,6 @@
           "spacing": 12,
           "crossAxisAlignment": "start",
           "padding": 12,
-          "borderBottom": "1px solid #E7E0EC",
           "children": [
         {
           "type": "layout.column",
