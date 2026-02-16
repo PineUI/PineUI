@@ -284,7 +284,7 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
           borderRadius: '50%',
           animation: 'pineui-spin 1s linear infinite'
         }} />
-        <p style={{ margin: 0, fontSize: '14px', fontWeight: 500 }}>Carregando aplicação...</p>
+        <p style={{ margin: 0, fontSize: '14px', fontWeight: 500 }}>Loading application...</p>
         <style dangerouslySetInnerHTML={{
           __html: `
             @keyframes pineui-spin {
