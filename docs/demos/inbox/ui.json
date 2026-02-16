@@ -285,6 +285,19 @@
               "props": {
                 "profile": "{{item}}"
               }
+            },
+            "errorState": {
+              "type": "layout.column",
+              "padding": 16,
+              "spacing": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "content": "⚠️ Error loading profile",
+                  "style": "bodyMedium",
+                  "color": "error"
+                }
+              ]
             }
           }
         ]
