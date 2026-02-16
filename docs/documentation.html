@@ -3737,23 +3737,54 @@ Email: wupsbr@gmail.com</pre>
   </div>
 
   <script>
-    // Navigation
+    // Function to navigate to a section
+    function navigateToSection(sectionId) {
+      // Update sidebar
+      document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+      const activeItem = document.querySelector(`.sidebar-item[data-section="${sectionId}"]`);
+      if (activeItem) {
+        activeItem.classList.add('active');
+      }
+
+      // Update content
+      document.querySelectorAll('.doc-section').forEach(s => s.classList.remove('active'));
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.classList.add('active');
+      }
+
+      // Scroll to top
+      document.querySelector('.content').scrollTop = 0;
+
+      // Update URL hash
+      window.history.pushState(null, null, `#${sectionId}`);
+    }
+
+    // Navigation click handlers
     document.querySelectorAll('.sidebar-item').forEach(item => {
       item.addEventListener('click', (e) => {
         e.preventDefault();
-
-        // Update sidebar
-        document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-
-        // Update content
         const sectionId = item.getAttribute('data-section');
-        document.querySelectorAll('.doc-section').forEach(s => s.classList.remove('active'));
-        document.getElementById(sectionId).classList.add('active');
-
-        // Scroll to top
-        document.querySelector('.content').scrollTop = 0;
+        navigateToSection(sectionId);
       });
+    });
+
+    // Handle initial hash on page load
+    window.addEventListener('load', () => {
+      const hash = window.location.hash.substring(1); // Remove the #
+      if (hash) {
+        navigateToSection(hash);
+      }
+    });
+
+    // Handle browser back/forward buttons
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.substring(1);
+      if (hash) {
+        navigateToSection(hash);
+      } else {
+        navigateToSection('introduction');
+      }
     });
   </script>
 </body>
