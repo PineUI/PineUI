@@ -91,24 +91,6 @@
           }
         },
         {
-          "type": "layout.row",
-          "spacing": 8,
-          "children": [
-            {
-              "type": "component.badge.default",
-              "props": {
-                "label": "Nova Feature"
-              }
-            },
-            {
-              "type": "component.badge.success",
-              "props": {
-                "label": "Stable"
-              }
-            }
-          ]
-        },
-        {
           "type": "component.card.elevated",
           "props": {
             "title": "Card Componente",

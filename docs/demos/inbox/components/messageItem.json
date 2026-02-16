@@ -1,10 +1,17 @@
 {
   "component.messageItem": {
     "definition": {
-      "type": "layout.row",
-      "spacing": 12,
-      "crossAxisAlignment": "start",
+      "type": "layout.column",
+      "padding": 0,
+      "spacing": 0,
       "children": [
+        {
+          "type": "layout.row",
+          "spacing": 12,
+          "crossAxisAlignment": "start",
+          "padding": 12,
+          "borderBottom": "1px solid #E7E0EC",
+          "children": [
         {
           "type": "layout.column",
           "spacing": 0,
@@ -92,6 +99,8 @@
                 }
               ]
             }
+          ]
+        }
           ]
         }
       ]
