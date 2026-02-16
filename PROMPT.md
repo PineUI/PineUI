@@ -1014,4 +1014,4 @@ Use 8-point grid: 8, 16, 24, 32, 40, 48...
 
 ---
 
-**Created by David Ruiz (wupsbr)** - CPTO at Ingresse, former Director of Engineering at iFood
+**Created by David Ruiz (wupsbr)** - CPTO at Ingresse
