@@ -266,11 +266,123 @@
     a:hover {
       text-decoration: underline;
     }
+
+    /* Mobile menu toggle */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #6750A4;
+      padding: 8px;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .header {
+        padding: 12px 16px;
+      }
+
+      .header h1 {
+        font-size: 18px;
+      }
+
+      .header-links {
+        display: none;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      .container {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 65px;
+        left: -280px;
+        width: 280px;
+        height: calc(100vh - 65px);
+        z-index: 99;
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+      }
+
+      .sidebar.mobile-open {
+        left: 0;
+      }
+
+      .content {
+        padding: 24px 16px;
+        width: 100%;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      h3 {
+        font-size: 20px;
+        margin-top: 32px;
+      }
+
+      h4 {
+        font-size: 16px;
+        margin-top: 24px;
+      }
+
+      pre {
+        font-size: 12px;
+        padding: 16px;
+        overflow-x: auto;
+      }
+
+      code {
+        font-size: 12px;
+      }
+
+      .example-box {
+        padding: 12px 16px;
+        margin: 16px 0;
+      }
+
+      table {
+        font-size: 14px;
+      }
+
+      table th,
+      table td {
+        padding: 8px;
+      }
+    }
+
+    /* Mobile overlay */
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      top: 65px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 98;
+    }
+
+    .mobile-overlay.active {
+      display: block;
+    }
   </style>
 </head>
 <body>
   <div class="header">
-    <h1>🍍 PineUI Documentation</h1>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <button class="mobile-menu-toggle" id="mobile-menu-btn" aria-label="Toggle menu">☰</button>
+      <h1>🍍 PineUI Documentation</h1>
+    </div>
     <div class="header-links">
       <a href="/">Home</a>
       <a href="/documentation.html">Docs</a>
@@ -278,8 +390,10 @@
     </div>
   </div>
 
+  <div class="mobile-overlay" id="mobile-overlay"></div>
+
   <div class="container">
-    <nav class="sidebar">
+    <nav class="sidebar" id="sidebar">
       <div class="sidebar-section">
         <div class="sidebar-section-title">Getting Started</div>
         <a class="sidebar-item active" data-section="introduction">Introduction</a>
@@ -4034,6 +4148,24 @@ Email: wupsbr@gmail.com</pre>
   </div>
 
   <script>
+    // Mobile menu handling
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+    const sidebar = document.getElementById('sidebar');
+
+    function toggleMobileMenu() {
+      sidebar.classList.toggle('mobile-open');
+      mobileOverlay.classList.toggle('active');
+    }
+
+    function closeMobileMenu() {
+      sidebar.classList.remove('mobile-open');
+      mobileOverlay.classList.remove('active');
+    }
+
+    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    mobileOverlay.addEventListener('click', closeMobileMenu);
+
     // Function to navigate to a section
     function navigateToSection(sectionId) {
       // Update sidebar
@@ -4055,6 +4187,9 @@ Email: wupsbr@gmail.com</pre>
 
       // Update URL hash
       window.history.pushState(null, null, `#${sectionId}`);
+
+      // Close mobile menu when navigating
+      closeMobileMenu();
     }
 
     // Navigation click handlers

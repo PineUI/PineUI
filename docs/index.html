@@ -181,6 +181,101 @@
       color: white;
       text-decoration: underline;
     }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .header {
+        padding: 1.5rem 1rem;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .header p {
+        font-size: 1rem;
+      }
+
+      .header .subtitle {
+        font-size: 0.85rem;
+      }
+
+      .header .links {
+        gap: 0.5rem;
+      }
+
+      .header .links a {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+      }
+
+      .container {
+        padding: 0 0.75rem 1.5rem;
+      }
+
+      .container--wide,
+      .container--inbox {
+        max-width: 100%;
+        padding: 0 0.75rem 1.5rem;
+      }
+
+      .demo-controls {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .demo-controls button {
+        padding: 8px 16px;
+        font-size: 13px;
+      }
+
+      .demo-container {
+        border-radius: 12px;
+      }
+
+      #ui-view, #api-view {
+        min-height: 400px;
+      }
+
+      #ui-view pre, #api-view pre {
+        padding: 16px;
+      }
+
+      #ui-view code, #api-view code {
+        font-size: 12px;
+      }
+
+      .loading {
+        min-height: 300px;
+        padding: 40px 16px;
+      }
+
+      .footer {
+        padding: 1.5rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header h1 {
+        font-size: 1.75rem;
+      }
+
+      .header p {
+        font-size: 0.95rem;
+      }
+
+      .header .links a {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.7rem;
+      }
+
+      .demo-controls button {
+        padding: 7px 14px;
+        font-size: 12px;
+      }
+    }
   </style>
 </head>
 <body>
