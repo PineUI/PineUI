@@ -68,6 +68,7 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
 
   const loadInitialSchema = async () => {
     try {
+      setLoading(true);
       let data = initialSchema!;
       // Load imports if present
       if (data.imports && baseUrl) {
