@@ -493,7 +493,184 @@
         </table>
       </section>
 
-      <!-- More sections will be added dynamically -->
+      <!-- Components Section -->
+      <section class="doc-section" id="components">
+        <h2>Components</h2>
+        <p>
+          PineUI provides a comprehensive set of Material Design 3 components that can be composed
+          to build complex user interfaces. All components support data binding and can be nested
+          to create rich layouts.
+        </p>
+
+        <h3>Component Categories</h3>
+        <ul>
+          <li><strong>Layout:</strong> Structure your UI with rows, columns, and spacing</li>
+          <li><strong>Display:</strong> Show text, images, avatars, and cards</li>
+          <li><strong>Input:</strong> Text fields and form controls</li>
+          <li><strong>Action:</strong> Buttons, FABs, and interactive elements</li>
+          <li><strong>Data:</strong> Collections and conditional rendering</li>
+        </ul>
+
+        <div class="example-box">
+          <h4>💡 Component Composition</h4>
+          <p>All PineUI components can be composed together. Use layout components (row, column) to arrange other components, and nest them as deeply as needed.</p>
+        </div>
+      </section>
+
+      <!-- State Management Section -->
+      <section class="doc-section" id="state">
+        <h2>State Management</h2>
+        <p>
+          PineUI includes a reactive state management system. When state changes, the UI automatically
+          updates to reflect the new values. State can be accessed using <code>{{state.propertyName}}</code> syntax.
+        </p>
+
+        <h3>Initial State</h3>
+        <p>Define your initial state in the schema root:</p>
+        <pre>{
+  "state": {
+    "username": "",
+    "counter": 0,
+    "items": [],
+    "settings": {
+      "darkMode": false,
+      "notifications": true
+    }
+  }
+}</pre>
+
+        <h3>Updating State</h3>
+        <p>Use the <code>action.state.patch</code> action to update state:</p>
+        <pre>{
+  "type": "action.state.patch",
+  "path": "counter",
+  "value": "{{state.counter + 1}}"
+}</pre>
+
+        <h3>Nested State</h3>
+        <p>Access and update nested state using dot notation:</p>
+        <pre>{
+  "type": "action.state.patch",
+  "path": "settings.darkMode",
+  "value": true
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Reactivity</h4>
+          <p>State updates are automatically reactive. Any component that references a state value will re-render when that value changes.</p>
+        </div>
+      </section>
+
+      <!-- Intents Section -->
+      <section class="doc-section" id="intents">
+        <h2>Intents</h2>
+        <p>
+          Intents are named action handlers that encapsulate business logic. They provide a clean
+          separation between UI components and actions, making your schemas more maintainable.
+        </p>
+
+        <h3>Defining Intents</h3>
+        <pre>{
+  "intents": {
+    "loadUsers": {
+      "handler": {
+        "type": "action.http",
+        "method": "GET",
+        "url": "https://api.example.com/users",
+        "responseMapping": {
+          "users": "{{response.data}}"
+        }
+      }
+    },
+    "deleteUser": {
+      "handler": [
+        {
+          "type": "action.http",
+          "method": "DELETE",
+          "url": "https://api.example.com/users/{{props.userId}}"
+        },
+        {
+          "intent": "loadUsers"
+        }
+      ]
+    }
+  }
+}</pre>
+
+        <h3>Calling Intents</h3>
+        <p>Trigger intents from component actions:</p>
+        <pre>{
+  "type": "button.filled",
+  "label": "Load Data",
+  "onPress": {
+    "intent": "loadUsers"
+  }
+}</pre>
+
+        <h3>Intent Props</h3>
+        <p>Pass parameters to intents:</p>
+        <pre>{
+  "onPress": {
+    "intent": "deleteUser",
+    "props": {
+      "userId": "{{item.id}}"
+    }
+  }
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Action Chains</h4>
+          <p>Intents can execute multiple actions in sequence by using an array. This is perfect for workflows like: make API call → update state → show success message.</p>
+        </div>
+      </section>
+
+      <!-- Actions Section -->
+      <section class="doc-section" id="actions">
+        <h2>Actions</h2>
+        <p>
+          Actions are the building blocks of interactivity in PineUI. They handle HTTP requests,
+          state updates, navigation, and more. Actions can be triggered from component events
+          or executed within intents.
+        </p>
+
+        <h3>Action Types</h3>
+        <ul>
+          <li><code>action.http</code> - Make HTTP requests to APIs</li>
+          <li><code>action.state.patch</code> - Update application state</li>
+          <li><code>action.overlay.open/close</code> - Control modals and overlays</li>
+          <li><code>action.snackbar.show</code> - Display toast notifications</li>
+          <li><code>action.delay</code> - Add timing delays</li>
+          <li><code>action.collection.refresh</code> - Refresh collection data</li>
+        </ul>
+
+        <h3>Action Chaining</h3>
+        <p>Execute multiple actions in sequence:</p>
+        <pre>{
+  "onPress": [
+    {
+      "type": "action.state.patch",
+      "path": "loading",
+      "value": true
+    },
+    {
+      "type": "action.http",
+      "method": "POST",
+      "url": "/api/save"
+    },
+    {
+      "type": "action.state.patch",
+      "path": "loading",
+      "value": false
+    },
+    {
+      "type": "action.snackbar.show",
+      "message": "Saved successfully!"
+    }
+  ]
+}</pre>
+      </section>
+
+      <!-- Text Component Section -->
       <section class="doc-section" id="text">
         <h2>Text Component</h2>
         <p>Display text with Material Design 3 typography styles.</p>

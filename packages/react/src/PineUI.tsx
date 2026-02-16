@@ -33,8 +33,8 @@ interface PineUIProps {
 }
 
 export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl, baseUrl = '' }) => {
-  const [schema, setSchema] = useState<PineUISchema | null>(null);
-  const [loading, setLoading] = useState(!initialSchema);
+  const [schema, setSchema] = useState<PineUISchema | null>(initialSchema || null);
+  const [loading, setLoading] = useState(!initialSchema && !!schemaUrl);
   const [error, setError] = useState<Error | null>(null);
   const [snackbars, setSnackbars] = useState<SnackbarMessage[]>([]);
   const [overlays, setOverlays] = useState<Record<string, { visible: boolean; config: any }>>({});
@@ -73,8 +73,9 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
         console.log('Loading imports for initial schema...', data.imports);
         data = await loadImports(data, baseUrl);
         console.log('Imports loaded! Components:', Object.keys(data.components || {}));
+        // Update schema with imported components
+        setSchema(data);
       }
-      setSchema(data);
       if (data.state) {
         setState(prevState => ({ ...prevState, ...data.state }));
       }
