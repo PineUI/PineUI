@@ -738,6 +738,2572 @@
         </div>
       </section>
 
+      <!-- Button Component Section -->
+      <section class="doc-section" id="button">
+        <h2>Button Component</h2>
+        <p>
+          Buttons trigger actions when pressed. PineUI provides multiple button types following
+          Material Design 3 guidelines: filled, outlined, text, icon, and floating action buttons (FAB).
+        </p>
+
+        <h3>Button Types</h3>
+        <ul>
+          <li><code>button.filled</code> - High emphasis, primary actions</li>
+          <li><code>button.outlined</code> - Medium emphasis, secondary actions</li>
+          <li><code>button.text</code> - Low emphasis, tertiary actions</li>
+          <li><code>button.icon</code> - Icon-only button for toolbars</li>
+          <li><code>button.fab</code> - Floating action button for primary screen actions</li>
+        </ul>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">type</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Button type: "button.filled", "button.outlined", "button.text", "button.icon", "button.fab"</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">label</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Button text label. Supports {{bindings}}. Required for filled/outlined/text buttons</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">icon</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Material icon name (e.g., "add", "delete", "edit"). Required for icon and fab buttons</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">onPress</span></td>
+              <td><span class="property-type">Action | Action[]</span></td>
+              <td>Action(s) to execute when button is pressed</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">disabled</span></td>
+              <td><span class="property-type">boolean</span></td>
+              <td>Disable button interaction. Can use {{bindings}}</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">fullWidth</span></td>
+              <td><span class="property-type">boolean</span></td>
+              <td>Make button expand to full width of container</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">color</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Custom button color (hex or Material color token)</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">size</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>For FAB: "small", "medium", "large". Default: "medium"</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Examples</h3>
+
+        <h4>Filled Button</h4>
+        <pre>{
+  "type": "button.filled",
+  "label": "Submit",
+  "onPress": {
+    "intent": "submitForm"
+  }
+}</pre>
+
+        <h4>Outlined Button</h4>
+        <pre>{
+  "type": "button.outlined",
+  "label": "Cancel",
+  "onPress": {
+    "type": "action.overlay.close"
+  }
+}</pre>
+
+        <h4>Text Button</h4>
+        <pre>{
+  "type": "button.text",
+  "label": "Learn More",
+  "onPress": {
+    "type": "action.http",
+    "method": "GET",
+    "url": "/api/details"
+  }
+}</pre>
+
+        <h4>Icon Button</h4>
+        <pre>{
+  "type": "button.icon",
+  "icon": "favorite",
+  "onPress": {
+    "type": "action.state.patch",
+    "path": "isFavorite",
+    "value": true
+  }
+}</pre>
+
+        <h4>Floating Action Button</h4>
+        <pre>{
+  "type": "button.fab",
+  "icon": "add",
+  "size": "large",
+  "onPress": {
+    "type": "action.overlay.open",
+    "overlayId": "createItemModal"
+  }
+}</pre>
+
+        <h4>Button with Icon and Label</h4>
+        <pre>{
+  "type": "button.filled",
+  "label": "Download",
+  "icon": "download",
+  "onPress": {
+    "intent": "downloadFile"
+  }
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Button Hierarchy</h4>
+          <p>Use filled buttons for primary actions, outlined for secondary actions, and text buttons for tertiary actions. This creates a clear visual hierarchy that guides users.</p>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Disabled State</h4>
+          <p>You can dynamically disable buttons based on state: <code>"disabled": "{{state.formInvalid}}"</code></p>
+        </div>
+      </section>
+
+      <!-- Layout Component Section -->
+      <section class="doc-section" id="layout">
+        <h2>Layout Components</h2>
+        <p>
+          Layout components organize other components in rows and columns. They provide flexible
+          spacing, alignment, and responsive behavior to structure your UI.
+        </p>
+
+        <h3>Layout Types</h3>
+        <ul>
+          <li><code>layout.column</code> - Vertical stack of components</li>
+          <li><code>layout.row</code> - Horizontal arrangement of components</li>
+        </ul>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">type</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>"layout.column" or "layout.row"</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">children</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">ComponentNode[]</span></td>
+              <td>Array of child components to render</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">spacing</span></td>
+              <td><span class="property-type">number</span></td>
+              <td>Gap between children in pixels. Default: 0</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">padding</span></td>
+              <td><span class="property-type">number | object</span></td>
+              <td>Padding around the layout. Number for all sides, or object: {top, right, bottom, left}</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">mainAxisAlignment</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>"start", "center", "end", "spaceBetween", "spaceAround", "spaceEvenly". Default: "start"</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">crossAxisAlignment</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>"start", "center", "end", "stretch". Default: "start"</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">width</span></td>
+              <td><span class="property-type">number | string</span></td>
+              <td>Width in pixels or percentage (e.g., "100%")</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">height</span></td>
+              <td><span class="property-type">number | string</span></td>
+              <td>Height in pixels or percentage</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">backgroundColor</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Background color (hex, Material color token, or CSS color)</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">borderRadius</span></td>
+              <td><span class="property-type">number</span></td>
+              <td>Corner radius in pixels</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">scrollable</span></td>
+              <td><span class="property-type">boolean</span></td>
+              <td>Enable scrolling when content overflows. Default: false</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Examples</h3>
+
+        <h4>Basic Column</h4>
+        <pre>{
+  "type": "layout.column",
+  "padding": 16,
+  "spacing": 12,
+  "children": [
+    {
+      "type": "text",
+      "content": "Title",
+      "style": "titleLarge"
+    },
+    {
+      "type": "text",
+      "content": "Subtitle",
+      "style": "bodyMedium"
+    }
+  ]
+}</pre>
+
+        <h4>Row with Alignment</h4>
+        <pre>{
+  "type": "layout.row",
+  "spacing": 8,
+  "mainAxisAlignment": "spaceBetween",
+  "crossAxisAlignment": "center",
+  "children": [
+    {
+      "type": "text",
+      "content": "Total",
+      "style": "bodyLarge"
+    },
+    {
+      "type": "text",
+      "content": "$99.99",
+      "style": "titleMedium",
+      "fontWeight": "bold"
+    }
+  ]
+}</pre>
+
+        <h4>Nested Layouts</h4>
+        <pre>{
+  "type": "layout.column",
+  "padding": 16,
+  "spacing": 16,
+  "children": [
+    {
+      "type": "layout.row",
+      "spacing": 8,
+      "crossAxisAlignment": "center",
+      "children": [
+        {
+          "type": "avatar",
+          "url": "{{user.avatar}}",
+          "size": 40
+        },
+        {
+          "type": "layout.column",
+          "spacing": 4,
+          "children": [
+            {
+              "type": "text",
+              "content": "{{user.name}}",
+              "style": "titleMedium"
+            },
+            {
+              "type": "text",
+              "content": "{{user.email}}",
+              "style": "bodySmall"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}</pre>
+
+        <h4>Padding Object Syntax</h4>
+        <pre>{
+  "type": "layout.column",
+  "padding": {
+    "top": 24,
+    "right": 16,
+    "bottom": 24,
+    "left": 16
+  },
+  "children": [...]
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Alignment Guide</h4>
+          <p><strong>mainAxisAlignment</strong> controls alignment along the primary direction (vertical for column, horizontal for row).</p>
+          <p><strong>crossAxisAlignment</strong> controls alignment perpendicular to the primary direction.</p>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Responsive Spacing</h4>
+          <p>Use consistent spacing values (8, 12, 16, 24) to create a harmonious layout that follows Material Design spacing guidelines.</p>
+        </div>
+      </section>
+
+      <!-- Card Component Section -->
+      <section class="doc-section" id="card">
+        <h2>Card Component</h2>
+        <p>
+          Cards are surfaces that display content and actions on a single topic. They provide
+          elevation, borders, and can be made interactive with tap handlers.
+        </p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">type</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">"card"</span></td>
+              <td>Component type identifier</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">child</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">ComponentNode</span></td>
+              <td>Single child component to render inside the card</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">elevation</span></td>
+              <td><span class="property-type">number</span></td>
+              <td>Shadow depth: 0-5. Default: 1</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">padding</span></td>
+              <td><span class="property-type">number | object</span></td>
+              <td>Internal padding. Number for all sides, or object: {top, right, bottom, left}</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">backgroundColor</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Card background color. Default: "surface"</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">borderRadius</span></td>
+              <td><span class="property-type">number</span></td>
+              <td>Corner radius in pixels. Default: 12</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">onPress</span></td>
+              <td><span class="property-type">Action | Action[]</span></td>
+              <td>Action(s) to execute when card is tapped</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">width</span></td>
+              <td><span class="property-type">number | string</span></td>
+              <td>Card width in pixels or percentage</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">height</span></td>
+              <td><span class="property-type">number | string</span></td>
+              <td>Card height in pixels or percentage</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Examples</h3>
+
+        <h4>Basic Card</h4>
+        <pre>{
+  "type": "card",
+  "elevation": 2,
+  "padding": 16,
+  "child": {
+    "type": "layout.column",
+    "spacing": 8,
+    "children": [
+      {
+        "type": "text",
+        "content": "Card Title",
+        "style": "titleMedium"
+      },
+      {
+        "type": "text",
+        "content": "Card content goes here",
+        "style": "bodyMedium"
+      }
+    ]
+  }
+}</pre>
+
+        <h4>Interactive Card</h4>
+        <pre>{
+  "type": "card",
+  "elevation": 1,
+  "padding": 16,
+  "onPress": {
+    "intent": "openDetails",
+    "props": {
+      "id": "{{item.id}}"
+    }
+  },
+  "child": {
+    "type": "layout.row",
+    "spacing": 12,
+    "crossAxisAlignment": "center",
+    "children": [
+      {
+        "type": "avatar",
+        "url": "{{item.imageUrl}}",
+        "size": 48
+      },
+      {
+        "type": "layout.column",
+        "spacing": 4,
+        "children": [
+          {
+            "type": "text",
+            "content": "{{item.title}}",
+            "style": "titleMedium"
+          },
+          {
+            "type": "text",
+            "content": "{{item.subtitle}}",
+            "style": "bodySmall"
+          }
+        ]
+      }
+    ]
+  }
+}</pre>
+
+        <h4>Card with Image</h4>
+        <pre>{
+  "type": "card",
+  "elevation": 2,
+  "padding": 0,
+  "child": {
+    "type": "layout.column",
+    "spacing": 0,
+    "children": [
+      {
+        "type": "image",
+        "url": "{{product.imageUrl}}",
+        "height": 200,
+        "width": "100%",
+        "fit": "cover"
+      },
+      {
+        "type": "layout.column",
+        "padding": 16,
+        "spacing": 8,
+        "children": [
+          {
+            "type": "text",
+            "content": "{{product.name}}",
+            "style": "titleMedium"
+          },
+          {
+            "type": "text",
+            "content": "{{product.price}}",
+            "style": "bodyLarge",
+            "fontWeight": "bold"
+          }
+        ]
+      }
+    ]
+  }
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Elevation Levels</h4>
+          <p>Use elevation 0 for flat cards, 1 for resting state, 2-3 for hover/focus, and 4-5 for dragged states. Higher elevation creates more visual separation.</p>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Interactive Cards</h4>
+          <p>When adding <code>onPress</code> to a card, it automatically becomes interactive with hover and press states. Perfect for list items and navigation.</p>
+        </div>
+      </section>
+
+      <!-- Input Component Section -->
+      <section class="doc-section" id="input">
+        <h2>Input Component</h2>
+        <p>
+          Text input fields allow users to enter and edit text. They follow Material Design 3
+          text field specifications with support for labels, hints, validation, and various input types.
+        </p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">type</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">"input"</span></td>
+              <td>Component type identifier</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">statePath</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Path in state where value is stored (e.g., "username")</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">label</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Floating label text</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">placeholder</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Hint text shown when input is empty</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">helperText</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Supporting text below input field</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">errorText</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Error message to display. Supports {{bindings}}</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">inputType</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>"text", "email", "password", "number", "tel", "url". Default: "text"</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">maxLength</span></td>
+              <td><span class="property-type">number</span></td>
+              <td>Maximum character length</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">multiline</span></td>
+              <td><span class="property-type">boolean</span></td>
+              <td>Enable multi-line text area. Default: false</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">rows</span></td>
+              <td><span class="property-type">number</span></td>
+              <td>Number of visible rows (for multiline). Default: 3</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">disabled</span></td>
+              <td><span class="property-type">boolean</span></td>
+              <td>Disable input interaction. Can use {{bindings}}</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">required</span></td>
+              <td><span class="property-type">boolean</span></td>
+              <td>Mark field as required (shows * in label)</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">onChange</span></td>
+              <td><span class="property-type">Action | Action[]</span></td>
+              <td>Action(s) to execute when value changes</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Examples</h3>
+
+        <h4>Basic Text Input</h4>
+        <pre>{
+  "type": "input",
+  "statePath": "username",
+  "label": "Username",
+  "placeholder": "Enter your username"
+}</pre>
+
+        <h4>Email Input with Validation</h4>
+        <pre>{
+  "type": "input",
+  "statePath": "email",
+  "label": "Email Address",
+  "inputType": "email",
+  "required": true,
+  "errorText": "{{state.emailError}}",
+  "helperText": "We'll never share your email"
+}</pre>
+
+        <h4>Password Input</h4>
+        <pre>{
+  "type": "input",
+  "statePath": "password",
+  "label": "Password",
+  "inputType": "password",
+  "required": true,
+  "minLength": 8,
+  "helperText": "At least 8 characters"
+}</pre>
+
+        <h4>Multi-line Text Area</h4>
+        <pre>{
+  "type": "input",
+  "statePath": "description",
+  "label": "Description",
+  "multiline": true,
+  "rows": 5,
+  "maxLength": 500,
+  "helperText": "{{state.description.length || 0}}/500 characters"
+}</pre>
+
+        <h4>Input with Change Handler</h4>
+        <pre>{
+  "type": "input",
+  "statePath": "searchQuery",
+  "label": "Search",
+  "placeholder": "Search items...",
+  "onChange": {
+    "intent": "searchItems",
+    "props": {
+      "query": "{{state.searchQuery}}"
+    }
+  }
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 State Binding</h4>
+          <p>The input automatically updates the state at <code>statePath</code> as the user types. Access the value elsewhere with <code>{{state.username}}</code>.</p>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Validation</h4>
+          <p>Use <code>errorText</code> with state bindings to show validation errors: <code>"errorText": "{{state.errors.email}}"</code></p>
+        </div>
+      </section>
+
+      <!-- Image Component Section -->
+      <section class="doc-section" id="image">
+        <h2>Image Component</h2>
+        <p>
+          Display images from URLs with support for sizing, object fit, and loading states.
+          Perfect for photos, illustrations, and icons.
+        </p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">type</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">"image"</span></td>
+              <td>Component type identifier</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">url</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Image URL. Supports {{bindings}}</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">width</span></td>
+              <td><span class="property-type">number | string</span></td>
+              <td>Width in pixels or percentage (e.g., "100%")</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">height</span></td>
+              <td><span class="property-type">number | string</span></td>
+              <td>Height in pixels or percentage</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">fit</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>"cover", "contain", "fill", "none", "scaleDown". Default: "cover"</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">borderRadius</span></td>
+              <td><span class="property-type">number</span></td>
+              <td>Corner radius in pixels</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">alt</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Alternative text for accessibility</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">onPress</span></td>
+              <td><span class="property-type">Action | Action[]</span></td>
+              <td>Action(s) to execute when image is tapped</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Examples</h3>
+
+        <h4>Basic Image</h4>
+        <pre>{
+  "type": "image",
+  "url": "https://example.com/photo.jpg",
+  "width": "100%",
+  "height": 200,
+  "fit": "cover",
+  "borderRadius": 8
+}</pre>
+
+        <h4>Profile Image</h4>
+        <pre>{
+  "type": "image",
+  "url": "{{user.profilePhoto}}",
+  "width": 120,
+  "height": 120,
+  "fit": "cover",
+  "borderRadius": 60,
+  "alt": "{{user.name}} profile photo"
+}</pre>
+
+        <h4>Product Image with Click</h4>
+        <pre>{
+  "type": "image",
+  "url": "{{product.imageUrl}}",
+  "width": "100%",
+  "height": 300,
+  "fit": "contain",
+  "onPress": {
+    "type": "action.overlay.open",
+    "overlayId": "imageGallery",
+    "props": {
+      "images": "{{product.images}}"
+    }
+  }
+}</pre>
+
+        <h4>Thumbnail Image</h4>
+        <pre>{
+  "type": "image",
+  "url": "{{item.thumbnail}}",
+  "width": 80,
+  "height": 80,
+  "fit": "cover",
+  "borderRadius": 4
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Object Fit Guide</h4>
+          <ul>
+            <li><code>cover</code> - Fills entire area, may crop image (best for backgrounds)</li>
+            <li><code>contain</code> - Shows entire image, may have empty space (best for logos)</li>
+            <li><code>fill</code> - Stretches to fill area, may distort image</li>
+          </ul>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Performance</h4>
+          <p>Always specify width and height to prevent layout shift when images load. Use appropriate image sizes to reduce bandwidth.</p>
+        </div>
+      </section>
+
+      <!-- Avatar Component Section -->
+      <section class="doc-section" id="avatar">
+        <h2>Avatar Component</h2>
+        <p>
+          Avatars display user profile images or initials in a circular format. They're commonly
+          used in lists, headers, and user profiles.
+        </p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">type</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">"avatar"</span></td>
+              <td>Component type identifier</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">url</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Avatar image URL. Supports {{bindings}}</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">initials</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Initials to display if no image URL. Supports {{bindings}}</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">size</span></td>
+              <td><span class="property-type">number</span></td>
+              <td>Avatar diameter in pixels. Default: 40</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">backgroundColor</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Background color for initials (hex or Material color token)</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">textColor</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Color for initials text</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">onPress</span></td>
+              <td><span class="property-type">Action | Action[]</span></td>
+              <td>Action(s) to execute when avatar is tapped</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Examples</h3>
+
+        <h4>Avatar with Image</h4>
+        <pre>{
+  "type": "avatar",
+  "url": "{{user.avatarUrl}}",
+  "size": 48
+}</pre>
+
+        <h4>Avatar with Initials</h4>
+        <pre>{
+  "type": "avatar",
+  "initials": "{{user.name.substring(0, 2).toUpperCase()}}",
+  "size": 40,
+  "backgroundColor": "#6750A4",
+  "textColor": "#FFFFFF"
+}</pre>
+
+        <h4>Large Profile Avatar</h4>
+        <pre>{
+  "type": "avatar",
+  "url": "{{state.currentUser.photo}}",
+  "size": 120,
+  "onPress": {
+    "type": "action.overlay.open",
+    "overlayId": "editProfile"
+  }
+}</pre>
+
+        <h4>Small Avatar in List</h4>
+        <pre>{
+  "type": "layout.row",
+  "spacing": 12,
+  "crossAxisAlignment": "center",
+  "children": [
+    {
+      "type": "avatar",
+      "url": "{{item.userAvatar}}",
+      "initials": "{{item.userInitials}}",
+      "size": 32
+    },
+    {
+      "type": "text",
+      "content": "{{item.userName}}",
+      "style": "bodyMedium"
+    }
+  ]
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Fallback Behavior</h4>
+          <p>If <code>url</code> fails to load or is empty, the avatar will display <code>initials</code> instead. Always provide initials as a fallback.</p>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Size Guidelines</h4>
+          <ul>
+            <li>24-32px: Tiny avatars in dense lists or chips</li>
+            <li>40-48px: Standard list items and comments</li>
+            <li>64-80px: User profiles and cards</li>
+            <li>120px+: Large profile headers</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Collection Component Section -->
+      <section class="doc-section" id="collection">
+        <h2>Collection Component</h2>
+        <p>
+          Collections render lists of data by repeating a template for each item. They support
+          data binding, item actions, and automatic updates when the underlying data changes.
+        </p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">type</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">"collection"</span></td>
+              <td>Component type identifier</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">data</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>State path to array of items (e.g., "items" or "users")</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">template</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">ComponentNode</span></td>
+              <td>Component template to render for each item</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">spacing</span></td>
+              <td><span class="property-type">number</span></td>
+              <td>Gap between items in pixels. Default: 0</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">emptyState</span></td>
+              <td><span class="property-type">ComponentNode</span></td>
+              <td>Component to show when data array is empty</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">loadingState</span></td>
+              <td><span class="property-type">ComponentNode</span></td>
+              <td>Component to show while data is loading</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Item Context</h3>
+        <p>Within the template, you can access:</p>
+        <ul>
+          <li><code>{{item.propertyName}}</code> - Properties of the current item</li>
+          <li><code>{{index}}</code> - Zero-based index of the current item</li>
+        </ul>
+
+        <h3>Examples</h3>
+
+        <h4>Basic List</h4>
+        <pre>{
+  "type": "collection",
+  "data": "users",
+  "spacing": 8,
+  "template": {
+    "type": "card",
+    "padding": 16,
+    "child": {
+      "type": "text",
+      "content": "{{item.name}}",
+      "style": "bodyLarge"
+    }
+  }
+}</pre>
+
+        <h4>User List with Avatars</h4>
+        <pre>{
+  "type": "collection",
+  "data": "users",
+  "spacing": 12,
+  "template": {
+    "type": "card",
+    "padding": 16,
+    "onPress": {
+      "intent": "viewProfile",
+      "props": {
+        "userId": "{{item.id}}"
+      }
+    },
+    "child": {
+      "type": "layout.row",
+      "spacing": 12,
+      "crossAxisAlignment": "center",
+      "children": [
+        {
+          "type": "avatar",
+          "url": "{{item.avatar}}",
+          "initials": "{{item.initials}}",
+          "size": 48
+        },
+        {
+          "type": "layout.column",
+          "spacing": 4,
+          "children": [
+            {
+              "type": "text",
+              "content": "{{item.name}}",
+              "style": "titleMedium"
+            },
+            {
+              "type": "text",
+              "content": "{{item.email}}",
+              "style": "bodySmall",
+              "color": "#79747E"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}</pre>
+
+        <h4>Product Grid with Empty State</h4>
+        <pre>{
+  "type": "collection",
+  "data": "products",
+  "spacing": 16,
+  "emptyState": {
+    "type": "layout.column",
+    "padding": 32,
+    "spacing": 16,
+    "mainAxisAlignment": "center",
+    "crossAxisAlignment": "center",
+    "children": [
+      {
+        "type": "text",
+        "content": "No products found",
+        "style": "titleMedium"
+      },
+      {
+        "type": "text",
+        "content": "Try adjusting your filters",
+        "style": "bodyMedium",
+        "color": "#79747E"
+      }
+    ]
+  },
+  "template": {
+    "type": "card",
+    "elevation": 2,
+    "child": {
+      "type": "layout.column",
+      "spacing": 12,
+      "children": [
+        {
+          "type": "image",
+          "url": "{{item.imageUrl}}",
+          "width": "100%",
+          "height": 200,
+          "fit": "cover"
+        },
+        {
+          "type": "layout.column",
+          "padding": 16,
+          "spacing": 8,
+          "children": [
+            {
+              "type": "text",
+              "content": "{{item.name}}",
+              "style": "titleMedium"
+            },
+            {
+              "type": "text",
+              "content": "${{item.price}}",
+              "style": "bodyLarge",
+              "fontWeight": "bold",
+              "color": "#6750A4"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}</pre>
+
+        <h4>List with Index</h4>
+        <pre>{
+  "type": "collection",
+  "data": "tasks",
+  "spacing": 4,
+  "template": {
+    "type": "layout.row",
+    "spacing": 8,
+    "padding": 12,
+    "children": [
+      {
+        "type": "text",
+        "content": "{{index + 1}}.",
+        "style": "bodyMedium",
+        "color": "#79747E"
+      },
+      {
+        "type": "text",
+        "content": "{{item.title}}",
+        "style": "bodyMedium"
+      }
+    ]
+  }
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Data Reactivity</h4>
+          <p>Collections automatically update when the data array changes. Add, remove, or modify items using <code>action.state.patch</code> and the UI updates instantly.</p>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Performance</h4>
+          <p>Collections use virtualization for large lists, rendering only visible items. This ensures smooth scrolling even with thousands of items.</p>
+        </div>
+      </section>
+
+      <!-- Conditional Render Section -->
+      <section class="doc-section" id="conditional">
+        <h2>Conditional Render</h2>
+        <p>
+          Conditionally show or hide components based on state values. Perfect for showing
+          loading states, error messages, or content that depends on user permissions.
+        </p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">type</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">"conditional"</span></td>
+              <td>Component type identifier</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">condition</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Expression to evaluate (e.g., "{{state.isLoggedIn}}")</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">child</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">ComponentNode</span></td>
+              <td>Component to render when condition is true</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">fallback</span></td>
+              <td><span class="property-type">ComponentNode</span></td>
+              <td>Component to render when condition is false</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Examples</h3>
+
+        <h4>Show/Hide Based on State</h4>
+        <pre>{
+  "type": "conditional",
+  "condition": "{{state.isLoggedIn}}",
+  "child": {
+    "type": "text",
+    "content": "Welcome, {{state.user.name}}!",
+    "style": "titleMedium"
+  },
+  "fallback": {
+    "type": "button.filled",
+    "label": "Login",
+    "onPress": {
+      "type": "action.overlay.open",
+      "overlayId": "loginModal"
+    }
+  }
+}</pre>
+
+        <h4>Loading State</h4>
+        <pre>{
+  "type": "conditional",
+  "condition": "{{state.loading}}",
+  "child": {
+    "type": "text",
+    "content": "Loading...",
+    "style": "bodyMedium"
+  },
+  "fallback": {
+    "type": "collection",
+    "data": "items",
+    "template": {...}
+  }
+}</pre>
+
+        <h4>Error Handling</h4>
+        <pre>{
+  "type": "conditional",
+  "condition": "{{state.error}}",
+  "child": {
+    "type": "card",
+    "backgroundColor": "#FEE2E2",
+    "padding": 16,
+    "child": {
+      "type": "text",
+      "content": "Error: {{state.error}}",
+      "color": "#BA1A1A"
+    }
+  },
+  "fallback": {
+    "type": "text",
+    "content": "{{state.data}}",
+    "style": "bodyMedium"
+  }
+}</pre>
+
+        <h4>Comparison Condition</h4>
+        <pre>{
+  "type": "conditional",
+  "condition": "{{state.cart.items.length > 0}}",
+  "child": {
+    "type": "button.filled",
+    "label": "Checkout ({{state.cart.items.length}} items)",
+    "onPress": {
+      "intent": "checkout"
+    }
+  },
+  "fallback": {
+    "type": "text",
+    "content": "Your cart is empty",
+    "style": "bodyMedium",
+    "color": "#79747E"
+  }
+}</pre>
+
+        <h4>Multiple Conditions</h4>
+        <pre>{
+  "type": "conditional",
+  "condition": "{{state.user.role === 'admin'}}",
+  "child": {
+    "type": "button.filled",
+    "label": "Admin Panel",
+    "icon": "settings",
+    "onPress": {
+      "intent": "openAdminPanel"
+    }
+  }
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Condition Expressions</h4>
+          <p>Conditions support JavaScript expressions:</p>
+          <ul>
+            <li>Boolean: <code>{{state.isActive}}</code></li>
+            <li>Comparison: <code>{{state.count > 10}}</code></li>
+            <li>Equality: <code>{{state.status === 'complete'}}</code></li>
+            <li>Logical: <code>{{state.a && state.b}}</code></li>
+            <li>Negation: <code>{{!state.isEmpty}}</code></li>
+          </ul>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Nested Conditionals</h4>
+          <p>You can nest conditional components to handle complex scenarios with multiple states.</p>
+        </div>
+      </section>
+
+      <!-- HTTP Action Section -->
+      <section class="doc-section" id="action-http">
+        <h2>HTTP Request Action</h2>
+        <p>
+          Make HTTP requests to REST APIs. Supports GET, POST, PUT, DELETE methods with
+          headers, request bodies, and automatic state mapping of responses.
+        </p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">type</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">"action.http"</span></td>
+              <td>Action type identifier</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">method</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>"GET", "POST", "PUT", "PATCH", "DELETE"</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">url</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>API endpoint URL. Supports {{bindings}}</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">headers</span></td>
+              <td><span class="property-type">object</span></td>
+              <td>HTTP headers as key-value pairs</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">body</span></td>
+              <td><span class="property-type">object</span></td>
+              <td>Request body (for POST, PUT, PATCH). Supports {{bindings}}</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">responseMapping</span></td>
+              <td><span class="property-type">object</span></td>
+              <td>Map response data to state. Keys are state paths, values are {{response.path}}</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">onSuccess</span></td>
+              <td><span class="property-type">Action | Action[]</span></td>
+              <td>Actions to execute on successful response (2xx status)</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">onError</span></td>
+              <td><span class="property-type">Action | Action[]</span></td>
+              <td>Actions to execute on error response (non-2xx status)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Examples</h3>
+
+        <h4>GET Request</h4>
+        <pre>{
+  "type": "action.http",
+  "method": "GET",
+  "url": "https://api.example.com/users",
+  "responseMapping": {
+    "users": "{{response.data}}",
+    "loading": false
+  },
+  "onError": {
+    "type": "action.state.patch",
+    "path": "error",
+    "value": "Failed to load users"
+  }
+}</pre>
+
+        <h4>POST Request with Body</h4>
+        <pre>{
+  "type": "action.http",
+  "method": "POST",
+  "url": "https://api.example.com/users",
+  "headers": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer {{state.authToken}}"
+  },
+  "body": {
+    "name": "{{state.form.name}}",
+    "email": "{{state.form.email}}",
+    "role": "user"
+  },
+  "onSuccess": [
+    {
+      "type": "action.snackbar.show",
+      "message": "User created successfully!"
+    },
+    {
+      "intent": "loadUsers"
+    }
+  ],
+  "onError": {
+    "type": "action.snackbar.show",
+    "message": "Error creating user",
+    "severity": "error"
+  }
+}</pre>
+
+        <h4>DELETE Request</h4>
+        <pre>{
+  "type": "action.http",
+  "method": "DELETE",
+  "url": "https://api.example.com/users/{{props.userId}}",
+  "headers": {
+    "Authorization": "Bearer {{state.authToken}}"
+  },
+  "onSuccess": {
+    "intent": "refreshUserList"
+  }
+}</pre>
+
+        <h4>PUT Request with Response Mapping</h4>
+        <pre>{
+  "type": "action.http",
+  "method": "PUT",
+  "url": "https://api.example.com/profile",
+  "body": {
+    "name": "{{state.profile.name}}",
+    "bio": "{{state.profile.bio}}"
+  },
+  "responseMapping": {
+    "profile": "{{response.user}}",
+    "lastUpdated": "{{response.timestamp}}"
+  },
+  "onSuccess": {
+    "type": "action.snackbar.show",
+    "message": "Profile updated!"
+  }
+}</pre>
+
+        <h4>Search with Dynamic URL</h4>
+        <pre>{
+  "type": "action.http",
+  "method": "GET",
+  "url": "https://api.example.com/search?q={{state.searchQuery}}&limit=20",
+  "responseMapping": {
+    "searchResults": "{{response.results}}",
+    "totalCount": "{{response.total}}"
+  }
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Response Mapping</h4>
+          <p>Use <code>responseMapping</code> to automatically update state with API response data. The response is available as <code>{{response}}</code>.</p>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Error Handling</h4>
+          <p>Always provide <code>onError</code> handlers to gracefully handle API failures and show user-friendly error messages.</p>
+        </div>
+      </section>
+
+      <!-- State Patch Action Section -->
+      <section class="doc-section" id="action-state">
+        <h2>State Patch Action</h2>
+        <p>
+          Update application state reactively. When state changes, all components that reference
+          the updated values automatically re-render.
+        </p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">type</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">"action.state.patch"</span></td>
+              <td>Action type identifier</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">path</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>State path to update (e.g., "counter", "user.name", "items[0].status")</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">value</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">any</span></td>
+              <td>New value. Supports {{bindings}} and expressions</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Examples</h3>
+
+        <h4>Update Simple Value</h4>
+        <pre>{
+  "type": "action.state.patch",
+  "path": "counter",
+  "value": "{{state.counter + 1}}"
+}</pre>
+
+        <h4>Update Nested Property</h4>
+        <pre>{
+  "type": "action.state.patch",
+  "path": "user.settings.darkMode",
+  "value": true
+}</pre>
+
+        <h4>Update from Input</h4>
+        <pre>{
+  "type": "action.state.patch",
+  "path": "form.email",
+  "value": "{{state.email}}"
+}</pre>
+
+        <h4>Toggle Boolean</h4>
+        <pre>{
+  "type": "action.state.patch",
+  "path": "isExpanded",
+  "value": "{{!state.isExpanded}}"
+}</pre>
+
+        <h4>Update Array Element</h4>
+        <pre>{
+  "type": "action.state.patch",
+  "path": "todos[{{index}}].completed",
+  "value": true
+}</pre>
+
+        <h4>Set Multiple Values</h4>
+        <pre>[
+  {
+    "type": "action.state.patch",
+    "path": "loading",
+    "value": false
+  },
+  {
+    "type": "action.state.patch",
+    "path": "error",
+    "value": null
+  },
+  {
+    "type": "action.state.patch",
+    "path": "data",
+    "value": "{{response.data}}"
+  }
+]</pre>
+
+        <h4>Update with Calculation</h4>
+        <pre>{
+  "type": "action.state.patch",
+  "path": "cart.total",
+  "value": "{{state.cart.items.reduce((sum, item) => sum + item.price, 0)}}"
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Dot Notation</h4>
+          <p>Use dot notation to update nested properties: <code>"user.profile.name"</code>. PineUI will create missing intermediate objects automatically.</p>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Expressions</h4>
+          <p>The <code>value</code> field supports JavaScript expressions. You can perform calculations, concatenations, and transformations.</p>
+        </div>
+      </section>
+
+      <!-- Overlay Action Section -->
+      <section class="doc-section" id="action-overlay">
+        <h2>Overlay Control Actions</h2>
+        <p>
+          Open and close modals, dialogs, and bottom sheets. Overlays are defined in the schema's
+          <code>overlays</code> section and controlled with these actions.
+        </p>
+
+        <h3>action.overlay.open</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">type</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">"action.overlay.open"</span></td>
+              <td>Action type identifier</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">overlayId</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>ID of the overlay to open (defined in overlays section)</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">props</span></td>
+              <td><span class="property-type">object</span></td>
+              <td>Data to pass to the overlay. Accessible via {{props.key}}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>action.overlay.close</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">type</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">"action.overlay.close"</span></td>
+              <td>Action type identifier</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">overlayId</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Specific overlay to close. If omitted, closes the topmost overlay</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Examples</h3>
+
+        <h4>Open Modal</h4>
+        <pre>{
+  "type": "action.overlay.open",
+  "overlayId": "confirmDialog",
+  "props": {
+    "title": "Delete Item",
+    "message": "Are you sure you want to delete this item?",
+    "itemId": "{{item.id}}"
+  }
+}</pre>
+
+        <h4>Close Current Overlay</h4>
+        <pre>{
+  "type": "action.overlay.close"
+}</pre>
+
+        <h4>Close Specific Overlay</h4>
+        <pre>{
+  "type": "action.overlay.close",
+  "overlayId": "editModal"
+}</pre>
+
+        <h4>Open Then Close After Action</h4>
+        <pre>[
+  {
+    "type": "action.http",
+    "method": "POST",
+    "url": "/api/save",
+    "body": "{{state.formData}}"
+  },
+  {
+    "type": "action.overlay.close"
+  },
+  {
+    "type": "action.snackbar.show",
+    "message": "Saved successfully!"
+  }
+]</pre>
+
+        <h4>Overlay Definition Example</h4>
+        <pre>{
+  "overlays": {
+    "confirmDialog": {
+      "type": "dialog",
+      "content": {
+        "type": "layout.column",
+        "padding": 24,
+        "spacing": 16,
+        "children": [
+          {
+            "type": "text",
+            "content": "{{props.title}}",
+            "style": "titleLarge"
+          },
+          {
+            "type": "text",
+            "content": "{{props.message}}",
+            "style": "bodyMedium"
+          },
+          {
+            "type": "layout.row",
+            "spacing": 8,
+            "mainAxisAlignment": "end",
+            "children": [
+              {
+                "type": "button.text",
+                "label": "Cancel",
+                "onPress": {
+                  "type": "action.overlay.close"
+                }
+              },
+              {
+                "type": "button.filled",
+                "label": "Delete",
+                "onPress": [
+                  {
+                    "intent": "deleteItem",
+                    "props": {
+                      "id": "{{props.itemId}}"
+                    }
+                  },
+                  {
+                    "type": "action.overlay.close"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Props Passing</h4>
+          <p>Use <code>props</code> to pass data to overlays. Access inside the overlay with <code>{{props.propertyName}}</code>.</p>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Auto Close</h4>
+          <p>Calling <code>action.overlay.close</code> without an ID closes the most recently opened overlay, perfect for "Cancel" buttons.</p>
+        </div>
+      </section>
+
+      <!-- Snackbar Action Section -->
+      <section class="doc-section" id="action-snackbar">
+        <h2>Snackbar Action</h2>
+        <p>
+          Display brief messages at the bottom of the screen. Snackbars (also called toasts)
+          are perfect for confirmation messages, errors, and notifications.
+        </p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">type</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">"action.snackbar.show"</span></td>
+              <td>Action type identifier</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">message</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>Message to display. Supports {{bindings}}</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">duration</span></td>
+              <td><span class="property-type">number</span></td>
+              <td>Duration in milliseconds. Default: 3000</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">severity</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>"success", "error", "warning", "info". Default: "info"</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">action</span></td>
+              <td><span class="property-type">object</span></td>
+              <td>Optional action button with label and onPress</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Examples</h3>
+
+        <h4>Simple Snackbar</h4>
+        <pre>{
+  "type": "action.snackbar.show",
+  "message": "Item added to cart"
+}</pre>
+
+        <h4>Success Message</h4>
+        <pre>{
+  "type": "action.snackbar.show",
+  "message": "Profile updated successfully!",
+  "severity": "success",
+  "duration": 2000
+}</pre>
+
+        <h4>Error Message</h4>
+        <pre>{
+  "type": "action.snackbar.show",
+  "message": "Failed to save changes",
+  "severity": "error",
+  "duration": 5000
+}</pre>
+
+        <h4>With Action Button</h4>
+        <pre>{
+  "type": "action.snackbar.show",
+  "message": "Item deleted",
+  "severity": "info",
+  "action": {
+    "label": "Undo",
+    "onPress": {
+      "intent": "undoDelete"
+    }
+  }
+}</pre>
+
+        <h4>Dynamic Message</h4>
+        <pre>{
+  "type": "action.snackbar.show",
+  "message": "{{state.items.length}} items in your cart",
+  "duration": 2000
+}</pre>
+
+        <h4>Warning Message</h4>
+        <pre>{
+  "type": "action.snackbar.show",
+  "message": "You have unsaved changes",
+  "severity": "warning",
+  "duration": 4000
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Severity Colors</h4>
+          <ul>
+            <li><code>success</code> - Green background, for completed actions</li>
+            <li><code>error</code> - Red background, for failures</li>
+            <li><code>warning</code> - Orange background, for cautions</li>
+            <li><code>info</code> - Blue/gray background, for neutral messages</li>
+          </ul>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Duration Guidelines</h4>
+          <p>Keep messages brief and readable. Use 2-3 seconds for success, 4-5 seconds for errors users need to read carefully.</p>
+        </div>
+      </section>
+
+      <!-- Delay Action Section -->
+      <section class="doc-section" id="action-delay">
+        <h2>Delay Action</h2>
+        <p>
+          Add a time delay before executing the next action in a sequence. Useful for creating
+          animations, debouncing, or timing-based workflows.
+        </p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">type</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">"action.delay"</span></td>
+              <td>Action type identifier</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">duration</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">number</span></td>
+              <td>Delay duration in milliseconds</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Examples</h3>
+
+        <h4>Simple Delay</h4>
+        <pre>[
+  {
+    "type": "action.snackbar.show",
+    "message": "Processing..."
+  },
+  {
+    "type": "action.delay",
+    "duration": 1000
+  },
+  {
+    "type": "action.snackbar.show",
+    "message": "Complete!",
+    "severity": "success"
+  }
+]</pre>
+
+        <h4>Loading State with Delay</h4>
+        <pre>[
+  {
+    "type": "action.state.patch",
+    "path": "loading",
+    "value": true
+  },
+  {
+    "type": "action.http",
+    "method": "GET",
+    "url": "/api/data"
+  },
+  {
+    "type": "action.delay",
+    "duration": 500
+  },
+  {
+    "type": "action.state.patch",
+    "path": "loading",
+    "value": false
+  }
+]</pre>
+
+        <h4>Debounced Search</h4>
+        <pre>{
+  "onChange": [
+    {
+      "type": "action.state.patch",
+      "path": "searchQuery",
+      "value": "{{state.input}}"
+    },
+    {
+      "type": "action.delay",
+      "duration": 300
+    },
+    {
+      "intent": "performSearch"
+    }
+  ]
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Action Sequences</h4>
+          <p>Delays are most useful in action arrays where you need to pace operations. Without delay, all actions execute immediately.</p>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 User Experience</h4>
+          <p>Use delays sparingly. Long delays can make your app feel sluggish. Most delays should be 100-500ms.</p>
+        </div>
+      </section>
+
+      <!-- Custom Components Section -->
+      <section class="doc-section" id="custom-components">
+        <h2>Custom Components</h2>
+        <p>
+          Create reusable component templates that can be instantiated multiple times with
+          different properties. Custom components help you build a consistent design system
+          and reduce duplication in your schemas.
+        </p>
+
+        <h3>Defining Custom Components</h3>
+        <p>Custom components are defined in the schema's <code>components</code> section:</p>
+        <pre>{
+  "components": {
+    "userCard": {
+      "props": ["name", "email", "avatar"],
+      "template": {
+        "type": "card",
+        "padding": 16,
+        "child": {
+          "type": "layout.row",
+          "spacing": 12,
+          "crossAxisAlignment": "center",
+          "children": [
+            {
+              "type": "avatar",
+              "url": "{{props.avatar}}",
+              "size": 48
+            },
+            {
+              "type": "layout.column",
+              "spacing": 4,
+              "children": [
+                {
+                  "type": "text",
+                  "content": "{{props.name}}",
+                  "style": "titleMedium"
+                },
+                {
+                  "type": "text",
+                  "content": "{{props.email}}",
+                  "style": "bodySmall"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}</pre>
+
+        <h3>Using Custom Components</h3>
+        <pre>{
+  "type": "custom.userCard",
+  "props": {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "avatar": "https://example.com/avatar.jpg"
+  }
+}</pre>
+
+        <h3>Examples</h3>
+
+        <h4>Product Card Component</h4>
+        <pre>{
+  "components": {
+    "productCard": {
+      "props": ["name", "price", "image", "onBuy"],
+      "template": {
+        "type": "card",
+        "elevation": 2,
+        "child": {
+          "type": "layout.column",
+          "spacing": 12,
+          "children": [
+            {
+              "type": "image",
+              "url": "{{props.image}}",
+              "width": "100%",
+              "height": 200,
+              "fit": "cover"
+            },
+            {
+              "type": "layout.column",
+              "padding": 16,
+              "spacing": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "content": "{{props.name}}",
+                  "style": "titleMedium"
+                },
+                {
+                  "type": "layout.row",
+                  "mainAxisAlignment": "spaceBetween",
+                  "crossAxisAlignment": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "content": "${{props.price}}",
+                      "style": "titleLarge",
+                      "fontWeight": "bold",
+                      "color": "#6750A4"
+                    },
+                    {
+                      "type": "button.filled",
+                      "label": "Buy",
+                      "onPress": "{{props.onBuy}}"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}</pre>
+
+        <h4>Using Product Card</h4>
+        <pre>{
+  "type": "collection",
+  "data": "products",
+  "spacing": 16,
+  "template": {
+    "type": "custom.productCard",
+    "props": {
+      "name": "{{item.name}}",
+      "price": "{{item.price}}",
+      "image": "{{item.imageUrl}}",
+      "onBuy": {
+        "intent": "addToCart",
+        "props": {
+          "productId": "{{item.id}}"
+        }
+      }
+    }
+  }
+}</pre>
+
+        <h4>Stat Card Component</h4>
+        <pre>{
+  "components": {
+    "statCard": {
+      "props": ["label", "value", "icon", "color"],
+      "template": {
+        "type": "card",
+        "padding": 20,
+        "backgroundColor": "{{props.color || '#F7F2FA'}}",
+        "child": {
+          "type": "layout.column",
+          "spacing": 8,
+          "children": [
+            {
+              "type": "layout.row",
+              "mainAxisAlignment": "spaceBetween",
+              "crossAxisAlignment": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "content": "{{props.label}}",
+                  "style": "bodyMedium"
+                },
+                {
+                  "type": "button.icon",
+                  "icon": "{{props.icon}}"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "content": "{{props.value}}",
+              "style": "headlineSmall",
+              "fontWeight": "bold"
+            }
+          ]
+        }
+      }
+    }
+  }
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Props Access</h4>
+          <p>Inside custom component templates, access passed properties with <code>{{props.propertyName}}</code>. This keeps components reusable and flexible.</p>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Component Library</h4>
+          <p>Build a library of custom components for your app: buttons, cards, headers, etc. This ensures visual consistency and speeds up development.</p>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Default Values</h4>
+          <p>Use the <code>||</code> operator for default prop values: <code>"{{props.color || '#6750A4'}}"</code></p>
+        </div>
+      </section>
+
+      <!-- Overlays & Modals Section -->
+      <section class="doc-section" id="overlays">
+        <h2>Overlays & Modals</h2>
+        <p>
+          Overlays display content above the main screen. PineUI supports three overlay types:
+          dialogs (centered modals), bottom sheets (slide-up panels), and modals (full-screen overlays).
+        </p>
+
+        <h3>Overlay Types</h3>
+        <ul>
+          <li><code>dialog</code> - Centered modal for confirmations and forms</li>
+          <li><code>bottomSheet</code> - Slide-up panel from the bottom</li>
+          <li><code>modal</code> - Full-screen overlay for complex workflows</li>
+        </ul>
+
+        <h3>Overlay Properties</h3>
+        <table class="property-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="property-name">type</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">string</span></td>
+              <td>"dialog", "bottomSheet", or "modal"</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">content</span> <span class="badge badge-required">required</span></td>
+              <td><span class="property-type">ComponentNode</span></td>
+              <td>Component to render inside the overlay</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">dismissible</span></td>
+              <td><span class="property-type">boolean</span></td>
+              <td>Allow closing by tapping outside or back button. Default: true</td>
+            </tr>
+            <tr>
+              <td><span class="property-name">maxWidth</span></td>
+              <td><span class="property-type">number</span></td>
+              <td>Maximum width in pixels (dialog only)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Examples</h3>
+
+        <h4>Confirm Dialog</h4>
+        <pre>{
+  "overlays": {
+    "deleteConfirm": {
+      "type": "dialog",
+      "maxWidth": 400,
+      "content": {
+        "type": "layout.column",
+        "padding": 24,
+        "spacing": 20,
+        "children": [
+          {
+            "type": "text",
+            "content": "Delete Item?",
+            "style": "titleLarge"
+          },
+          {
+            "type": "text",
+            "content": "This action cannot be undone.",
+            "style": "bodyMedium",
+            "color": "#49454F"
+          },
+          {
+            "type": "layout.row",
+            "spacing": 12,
+            "mainAxisAlignment": "end",
+            "children": [
+              {
+                "type": "button.text",
+                "label": "Cancel",
+                "onPress": {
+                  "type": "action.overlay.close"
+                }
+              },
+              {
+                "type": "button.filled",
+                "label": "Delete",
+                "color": "#BA1A1A",
+                "onPress": [
+                  {
+                    "intent": "deleteItem"
+                  },
+                  {
+                    "type": "action.overlay.close"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}</pre>
+
+        <h4>Bottom Sheet Menu</h4>
+        <pre>{
+  "overlays": {
+    "optionsMenu": {
+      "type": "bottomSheet",
+      "content": {
+        "type": "layout.column",
+        "padding": 16,
+        "spacing": 8,
+        "children": [
+          {
+            "type": "text",
+            "content": "Options",
+            "style": "titleMedium",
+            "padding": 8
+          },
+          {
+            "type": "button.text",
+            "label": "Share",
+            "icon": "share",
+            "fullWidth": true,
+            "onPress": {
+              "intent": "shareItem"
+            }
+          },
+          {
+            "type": "button.text",
+            "label": "Edit",
+            "icon": "edit",
+            "fullWidth": true,
+            "onPress": {
+              "intent": "editItem"
+            }
+          },
+          {
+            "type": "button.text",
+            "label": "Delete",
+            "icon": "delete",
+            "fullWidth": true,
+            "color": "#BA1A1A",
+            "onPress": {
+              "type": "action.overlay.open",
+              "overlayId": "deleteConfirm"
+            }
+          }
+        ]
+      }
+    }
+  }
+}</pre>
+
+        <h4>Form Modal</h4>
+        <pre>{
+  "overlays": {
+    "createUserModal": {
+      "type": "modal",
+      "dismissible": false,
+      "content": {
+        "type": "layout.column",
+        "padding": 24,
+        "spacing": 20,
+        "height": "100%",
+        "children": [
+          {
+            "type": "layout.row",
+            "mainAxisAlignment": "spaceBetween",
+            "crossAxisAlignment": "center",
+            "children": [
+              {
+                "type": "text",
+                "content": "Create User",
+                "style": "titleLarge"
+              },
+              {
+                "type": "button.icon",
+                "icon": "close",
+                "onPress": {
+                  "type": "action.overlay.close"
+                }
+              }
+            ]
+          },
+          {
+            "type": "layout.column",
+            "spacing": 16,
+            "children": [
+              {
+                "type": "input",
+                "statePath": "newUser.name",
+                "label": "Full Name",
+                "required": true
+              },
+              {
+                "type": "input",
+                "statePath": "newUser.email",
+                "label": "Email",
+                "inputType": "email",
+                "required": true
+              },
+              {
+                "type": "input",
+                "statePath": "newUser.role",
+                "label": "Role"
+              }
+            ]
+          },
+          {
+            "type": "layout.row",
+            "spacing": 12,
+            "mainAxisAlignment": "end",
+            "children": [
+              {
+                "type": "button.outlined",
+                "label": "Cancel",
+                "onPress": {
+                  "type": "action.overlay.close"
+                }
+              },
+              {
+                "type": "button.filled",
+                "label": "Create",
+                "onPress": [
+                  {
+                    "intent": "createUser"
+                  },
+                  {
+                    "type": "action.overlay.close"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}</pre>
+
+        <h4>Opening an Overlay</h4>
+        <pre>{
+  "type": "button.filled",
+  "label": "New User",
+  "icon": "add",
+  "onPress": {
+    "type": "action.overlay.open",
+    "overlayId": "createUserModal"
+  }
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 When to Use Each Type</h4>
+          <ul>
+            <li><strong>Dialog:</strong> Quick confirmations, alerts, simple forms</li>
+            <li><strong>Bottom Sheet:</strong> Action menus, filters, settings</li>
+            <li><strong>Modal:</strong> Multi-step forms, detailed views, complex workflows</li>
+          </ul>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Passing Data</h4>
+          <p>Use the <code>props</code> parameter in <code>action.overlay.open</code> to pass data to overlays. Access it in the overlay with <code>{{props.propertyName}}</code>.</p>
+        </div>
+      </section>
+
+      <!-- Data Bindings Section -->
+      <section class="doc-section" id="bindings">
+        <h2>Data Bindings</h2>
+        <p>
+          Data bindings connect your UI to dynamic values using the <code>{{}}</code> syntax.
+          Bindings automatically update when the underlying data changes, creating a reactive UI.
+        </p>
+
+        <h3>Binding Types</h3>
+        <ul>
+          <li><code>{{state.propertyName}}</code> - Access application state</li>
+          <li><code>{{props.propertyName}}</code> - Access component/overlay props</li>
+          <li><code>{{item.propertyName}}</code> - Access collection item data</li>
+          <li><code>{{index}}</code> - Access collection item index</li>
+          <li><code>{{response.propertyName}}</code> - Access HTTP response data</li>
+        </ul>
+
+        <h3>State Bindings</h3>
+        <pre>{
+  "state": {
+    "username": "John",
+    "count": 42,
+    "user": {
+      "name": "Jane",
+      "email": "jane@example.com"
+    }
+  }
+}
+
+// Usage:
+{
+  "type": "text",
+  "content": "Hello, {{state.username}}!"
+}
+
+{
+  "type": "text",
+  "content": "Count: {{state.count}}"
+}
+
+{
+  "type": "text",
+  "content": "{{state.user.name}} ({{state.user.email}})"
+}</pre>
+
+        <h3>Props Bindings</h3>
+        <p>In custom components or overlays:</p>
+        <pre>{
+  "type": "custom.userCard",
+  "props": {
+    "name": "Alice",
+    "role": "Admin"
+  }
+}
+
+// Inside component template:
+{
+  "type": "text",
+  "content": "{{props.name}} - {{props.role}}"
+}</pre>
+
+        <h3>Collection Item Bindings</h3>
+        <pre>{
+  "type": "collection",
+  "data": "products",
+  "template": {
+    "type": "card",
+    "child": {
+      "type": "layout.column",
+      "spacing": 8,
+      "children": [
+        {
+          "type": "text",
+          "content": "#{{index + 1}}: {{item.name}}"
+        },
+        {
+          "type": "text",
+          "content": "Price: ${{item.price}}"
+        }
+      ]
+    }
+  }
+}</pre>
+
+        <h3>Expressions</h3>
+        <p>Bindings support JavaScript expressions:</p>
+        <pre>// Math
+"{{state.count + 10}}"
+"{{state.price * 1.1}}"
+
+// String operations
+"{{state.firstName + ' ' + state.lastName}}"
+"{{state.text.toUpperCase()}}"
+
+// Conditionals
+"{{state.count > 10 ? 'High' : 'Low'}}"
+"{{state.user.role === 'admin' ? 'Administrator' : 'User'}}"
+
+// Boolean logic
+"{{state.isActive && state.isVerified}}"
+"{{!state.isEmpty}}"
+
+// Array operations
+"{{state.items.length}}"
+"{{state.users.map(u => u.name).join(', ')}}"
+
+// Object access
+"{{state.settings.theme || 'light'}}"</pre>
+
+        <h3>Examples</h3>
+
+        <h4>Dynamic Text</h4>
+        <pre>{
+  "type": "text",
+  "content": "You have {{state.notifications.length}} new notifications",
+  "style": "bodyMedium"
+}</pre>
+
+        <h4>Conditional Styling</h4>
+        <pre>{
+  "type": "text",
+  "content": "{{state.status}}",
+  "color": "{{state.status === 'active' ? '#00695C' : '#BA1A1A'}}"
+}</pre>
+
+        <h4>Dynamic Button State</h4>
+        <pre>{
+  "type": "button.filled",
+  "label": "{{state.loading ? 'Loading...' : 'Submit'}}",
+  "disabled": "{{state.loading || !state.formValid}}"
+}</pre>
+
+        <h4>URL Construction</h4>
+        <pre>{
+  "type": "action.http",
+  "method": "GET",
+  "url": "https://api.example.com/users/{{state.selectedUserId}}/profile"
+}</pre>
+
+        <h4>Complex Expression</h4>
+        <pre>{
+  "type": "text",
+  "content": "Total: ${{state.cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}}"
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Reactivity</h4>
+          <p>When state changes, all components using bindings to that state automatically update. No manual refresh needed!</p>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Type Safety</h4>
+          <p>Bindings are evaluated at runtime. Use safe navigation: <code>{{state.user?.name || 'Guest'}}</code> to avoid errors when data is missing.</p>
+        </div>
+
+        <div class="example-box">
+          <h4>💡 Performance</h4>
+          <p>Keep expressions simple. Complex calculations in bindings that appear many times (like in collections) can impact performance.</p>
+        </div>
+      </section>
+
     </main>
   </div>
 
