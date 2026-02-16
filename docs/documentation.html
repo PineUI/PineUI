@@ -791,68 +791,41 @@
         </p>
         <p>This guide contains everything an LLM needs to know about PineUI: schema structure, all available components, state management, actions, data bindings, design system, and complete working examples.</p>
 
-        <details style="margin: 24px 0; background: #FAFAFA; border: 1px solid #E7E0EC; border-radius: 8px; padding: 16px;">
+        <details id="prompt-details" style="margin: 24px 0; background: #FAFAFA; border: 1px solid #E7E0EC; border-radius: 8px; padding: 16px;">
           <summary style="cursor: pointer; font-weight: 600; color: #6750A4; font-size: 14px; user-select: none;">
             📄 View Complete PROMPT.md Content (Click to expand)
           </summary>
-          <div style="margin-top: 16px; max-height: 600px; overflow-y: auto; background: white; padding: 16px; border-radius: 4px; border: 1px solid #E7E0EC;">
-            <pre style="white-space: pre-wrap; font-size: 12px; line-height: 1.6; color: #1D1B20; margin: 0;"># PineUI - LLM Context Guide
-
-> Use this guide as context when asking LLMs to build applications with PineUI
-
-## What is PineUI?
-
-PineUI is a Server-Driven UI framework for building dynamic, cross-platform interfaces from JSON schemas. It's designed to be AI-friendly - LLMs can generate complete, working UIs without specific training.
-
-## CDN Links
-
-```html
-&lt;!-- CSS --&gt;
-&lt;link rel="stylesheet" href="https://unpkg.com/@pineui/react@latest/dist/style.css"&gt;
-
-&lt;!-- JavaScript (Standalone - includes React) --&gt;
-&lt;script src="https://unpkg.com/@pineui/react@latest/dist/pineui.standalone.js"&gt;&lt;/script&gt;
-```
-
-## Basic Usage
-
-```html
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-  &lt;link rel="stylesheet" href="https://unpkg.com/@pineui/react@latest/dist/style.css"&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;div id="app"&gt;&lt;/div&gt;
-
-  &lt;script src="https://unpkg.com/@pineui/react@latest/dist/pineui.standalone.js"&gt;&lt;/script&gt;
-  &lt;script&gt;
-    PineUI.render({
-      target: '#app',
-      schema: {
-        // Your schema here
-      }
-    });
-  &lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-```
-
-<strong>📚 For the complete guide with all components, actions, state management, design system, patterns and examples, visit:</strong>
-<a href="https://github.com/PineUI/PineUI/blob/main/PROMPT.md" target="_blank" style="color: #6750A4;">https://github.com/PineUI/PineUI/blob/main/PROMPT.md</a>
-
-The complete guide includes:
-• All layout components (column, row, grid, scaffold)
-• Text, buttons, inputs, cards, images, avatars
-• Chips, badges, collections, conditionals, modals
-• All actions (state.patch, http.request, snackbar, overlay, sequence, delay)
-• Intents system for reusable actions
-• Data bindings and expressions
-• Material Design 3 color system
-• Best practices and common patterns
-• Complete working examples</pre>
+          <div id="prompt-content" style="margin-top: 16px; max-height: 600px; overflow-y: auto; background: white; padding: 16px; border-radius: 4px; border: 1px solid #E7E0EC;">
+            <div style="text-align: center; padding: 32px; color: #79747E;">
+              <div style="font-size: 24px; margin-bottom: 8px;">⏳</div>
+              <div>Loading PROMPT.md...</div>
+            </div>
           </div>
         </details>
+
+        <script>
+          (function() {
+            const details = document.getElementById('prompt-details');
+            const contentDiv = document.getElementById('prompt-content');
+            let loaded = false;
+
+            details.addEventListener('toggle', function() {
+              if (this.open && !loaded) {
+                fetch('./PROMPT.md')
+                  .then(response => response.text())
+                  .then(text => {
+                    contentDiv.innerHTML = '<pre style="white-space: pre-wrap; font-size: 13px; line-height: 1.6; color: #1D1B20; margin: 0; font-family: ui-monospace, SFMono-Regular, Consolas, monospace;">' +
+                      text.replace(/</g, '&lt;').replace(/>/g, '&gt;') +
+                      '</pre>';
+                    loaded = true;
+                  })
+                  .catch(err => {
+                    contentDiv.innerHTML = '<div style="text-align: center; padding: 32px; color: #BA1A1A;"><div style="font-size: 24px; margin-bottom: 8px;">❌</div><div>Failed to load PROMPT.md</div><div style="margin-top: 8px;"><a href="https://github.com/PineUI/PineUI/blob/main/PROMPT.md" target="_blank" style="color: #6750A4;">View on GitHub</a></div></div>';
+                  });
+              }
+            });
+          })();
+        </script>
 
         <h3>Quick Example Prompt</h3>
         <p>Copy and paste this prompt into ChatGPT, Claude, or any LLM:</p>
