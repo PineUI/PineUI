@@ -319,6 +319,11 @@
       </div>
 
       <div class="sidebar-section">
+        <div class="sidebar-section-title">Customization</div>
+        <a class="sidebar-item" data-section="design-system">Design System</a>
+      </div>
+
+      <div class="sidebar-section">
         <div class="sidebar-section-title">Advanced</div>
         <a class="sidebar-item" data-section="custom-components">Custom Components</a>
         <a class="sidebar-item" data-section="overlays">Overlays & Modals</a>
@@ -3368,6 +3373,313 @@
           <h4>💡 Passing Data</h4>
           <p>Use the <code>props</code> parameter in <code>action.overlay.open</code> to pass data to overlays. Access it in the overlay with <code>{{props.propertyName}}</code>.</p>
         </div>
+      </section>
+
+      <!-- Design System Section -->
+      <section class="doc-section" id="design-system">
+        <h2>Design System</h2>
+        <p>
+          PineUI uses <strong>Material Design 3</strong> as its foundation, providing a comprehensive
+          design system with customizable colors, typography, spacing, and components.
+        </p>
+
+        <h3>Color System</h3>
+        <p>
+          PineUI supports Material Design 3 color tokens. You can customize colors at the component level
+          using standard color values (hex, rgb, named colors) or Material Design 3 semantic tokens.
+        </p>
+
+        <h4>Common Color Properties</h4>
+        <pre>{
+  "type": "text",
+  "content": "Custom colored text",
+  "color": "#6750A4",           // Hex color
+  "backgroundColor": "#F7F2FA"   // Background color
+}</pre>
+
+        <h4>Material Design 3 Semantic Colors</h4>
+        <div class="example-box">
+          <h4>Primary Colors</h4>
+          <ul>
+            <li><code>#6750A4</code> - Primary</li>
+            <li><code>#E8DEF8</code> - Primary Container</li>
+            <li><code>#FFFFFF</code> - On Primary</li>
+            <li><code>#21005D</code> - On Primary Container</li>
+          </ul>
+        </div>
+
+        <div class="example-box">
+          <h4>Secondary Colors</h4>
+          <ul>
+            <li><code>#625B71</code> - Secondary</li>
+            <li><code>#E8DEF8</code> - Secondary Container</li>
+            <li><code>#FFFFFF</code> - On Secondary</li>
+            <li><code>#1D192B</code> - On Secondary Container</li>
+          </ul>
+        </div>
+
+        <div class="example-box">
+          <h4>Surface & Background</h4>
+          <ul>
+            <li><code>#FFFBFE</code> - Surface / Background</li>
+            <li><code>#1C1B1F</code> - On Surface</li>
+            <li><code>#E7E0EC</code> - Surface Variant</li>
+            <li><code>#49454F</code> - On Surface Variant</li>
+            <li><code>#CAC4D0</code> - Outline</li>
+          </ul>
+        </div>
+
+        <div class="example-box">
+          <h4>Error & Status</h4>
+          <ul>
+            <li><code>#BA1A1A</code> - Error</li>
+            <li><code>#F9DEDC</code> - Error Container</li>
+            <li><code>#FFFFFF</code> - On Error</li>
+            <li><code>#410E0B</code> - On Error Container</li>
+          </ul>
+        </div>
+
+        <h4>Example: Custom Button Colors</h4>
+        <pre>{
+  "type": "button.filled",
+  "label": "Custom Button",
+  "backgroundColor": "#6750A4",
+  "color": "#FFFFFF"
+}</pre>
+
+        <h3>Typography</h3>
+        <p>
+          PineUI implements Material Design 3 type scale with predefined text styles.
+          Each style has specific size, weight, and line height optimized for readability.
+        </p>
+
+        <h4>Display Styles (Large Headlines)</h4>
+        <pre>{
+  "type": "text",
+  "content": "Display Text",
+  "style": "displayLarge"    // 57sp, Regular
+  // or "displayMedium"      // 45sp, Regular
+  // or "displaySmall"       // 36sp, Regular
+}</pre>
+
+        <h4>Headline Styles (Section Headers)</h4>
+        <pre>{
+  "type": "text",
+  "content": "Headline",
+  "style": "headlineLarge"   // 32sp, Regular
+  // or "headlineMedium"     // 28sp, Regular
+  // or "headlineSmall"      // 24sp, Regular
+}</pre>
+
+        <h4>Title Styles (Emphasis)</h4>
+        <pre>{
+  "type": "text",
+  "content": "Title",
+  "style": "titleLarge"      // 22sp, Regular
+  // or "titleMedium"        // 16sp, Medium (500)
+  // or "titleSmall"         // 14sp, Medium (500)
+}</pre>
+
+        <h4>Body Styles (Content)</h4>
+        <pre>{
+  "type": "text",
+  "content": "Body text for reading",
+  "style": "bodyLarge"       // 16sp, Regular
+  // or "bodyMedium"         // 14sp, Regular (default)
+  // or "bodySmall"          // 12sp, Regular
+}</pre>
+
+        <h4>Label Styles (UI Elements)</h4>
+        <pre>{
+  "type": "text",
+  "content": "Label",
+  "style": "labelLarge"      // 14sp, Medium (500)
+  // or "labelMedium"        // 12sp, Medium (500)
+  // or "labelSmall"         // 11sp, Medium (500)
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Typography Best Practices</h4>
+          <ul>
+            <li>Use <strong>displayLarge</strong> for hero sections and main titles</li>
+            <li>Use <strong>headlineMedium</strong> for page titles</li>
+            <li>Use <strong>titleMedium</strong> for card titles and list headers</li>
+            <li>Use <strong>bodyMedium</strong> for main content (default)</li>
+            <li>Use <strong>labelMedium</strong> for buttons and small UI elements</li>
+          </ul>
+        </div>
+
+        <h3>Spacing & Layout</h3>
+        <p>
+          PineUI uses an 8-point grid system for consistent spacing. All spacing values should be
+          multiples of 4 (4, 8, 12, 16, 20, 24, 32, 40, 48, etc.) for visual harmony.
+        </p>
+
+        <h4>Common Spacing Values</h4>
+        <div class="example-box">
+          <ul>
+            <li><code>4px</code> - Extra small (tight spacing)</li>
+            <li><code>8px</code> - Small (compact elements)</li>
+            <li><code>12px</code> - Medium-small (list items)</li>
+            <li><code>16px</code> - Medium (default padding)</li>
+            <li><code>24px</code> - Large (section spacing)</li>
+            <li><code>32px</code> - Extra large (major sections)</li>
+            <li><code>48px</code> - XXL (hero spacing)</li>
+          </ul>
+        </div>
+
+        <h4>Layout Spacing Example</h4>
+        <pre>{
+  "type": "layout.column",
+  "padding": 16,           // Internal padding (all sides)
+  "spacing": 12,           // Space between children
+  "children": [
+    {
+      "type": "text",
+      "content": "Item 1"
+    },
+    {
+      "type": "text",
+      "content": "Item 2"
+    }
+  ]
+}</pre>
+
+        <h4>Card Spacing Example</h4>
+        <pre>{
+  "type": "card",
+  "padding": 16,           // Internal padding
+  "child": {
+    "type": "layout.column",
+    "spacing": 8,          // Tight spacing for card content
+    "children": [...]
+  }
+}</pre>
+
+        <h3>Customizing Theme</h3>
+        <p>
+          You can customize the entire theme by overriding CSS variables or by setting
+          colors directly on components.
+        </p>
+
+        <h4>Method 1: CSS Variables (Global Theme)</h4>
+        <pre>&lt;style&gt;
+  :root {
+    --pineui-primary: #6750A4;
+    --pineui-primary-container: #E8DEF8;
+    --pineui-on-primary: #FFFFFF;
+    --pineui-secondary: #625B71;
+    --pineui-surface: #FFFBFE;
+    --pineui-on-surface: #1C1B1F;
+    --pineui-outline: #CAC4D0;
+    --pineui-error: #BA1A1A;
+  }
+&lt;/style&gt;</pre>
+
+        <h4>Method 2: Component-Level Customization</h4>
+        <pre>{
+  "type": "button.filled",
+  "label": "Custom Button",
+  "backgroundColor": "#1976D2",  // Custom blue
+  "color": "#FFFFFF"
+}</pre>
+
+        <h4>Method 3: Custom CSS Classes</h4>
+        <p>
+          You can add custom CSS classes to any component using the <code>className</code> property:
+        </p>
+        <pre>// In your schema:
+{
+  "type": "card",
+  "className": "my-custom-card",
+  "child": {...}
+}
+
+// In your CSS:
+.my-custom-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 2px solid #6750A4;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}</pre>
+
+        <h3>Dark Mode Support</h3>
+        <p>
+          PineUI components automatically adapt to dark mode when you define dark theme colors.
+          Use CSS media queries or theme switching logic:
+        </p>
+        <pre>&lt;style&gt;
+  /* Light theme (default) */
+  :root {
+    --pineui-surface: #FFFBFE;
+    --pineui-on-surface: #1C1B1F;
+  }
+
+  /* Dark theme */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --pineui-surface: #1C1B1F;
+      --pineui-on-surface: #E6E1E5;
+      --pineui-primary: #D0BCFF;
+      --pineui-outline: #938F99;
+    }
+  }
+&lt;/style&gt;</pre>
+
+        <h3>Responsive Design</h3>
+        <p>
+          PineUI components are responsive by default. Use layout components to create
+          adaptive designs:
+        </p>
+
+        <h4>Flexible Layouts</h4>
+        <pre>{
+  "type": "layout.row",
+  "mainAxisAlignment": "spaceBetween",  // space-between, center, start, end
+  "crossAxisAlignment": "center",       // center, start, end, stretch
+  "wrap": true,                         // Wrap to next line on small screens
+  "children": [...]
+}</pre>
+
+        <h4>Responsive Card Grid</h4>
+        <pre>{
+  "type": "layout.row",
+  "wrap": true,
+  "spacing": 16,
+  "children": [
+    {
+      "type": "card",
+      "padding": 16,
+      "child": {...}
+    },
+    {
+      "type": "card",
+      "padding": 16,
+      "child": {...}
+    }
+  ]
+}</pre>
+
+        <div class="example-box">
+          <h4>💡 Design Tips</h4>
+          <ul>
+            <li><strong>Consistency:</strong> Stick to the 8-point grid for spacing</li>
+            <li><strong>Hierarchy:</strong> Use typography scale to establish visual hierarchy</li>
+            <li><strong>Contrast:</strong> Ensure sufficient contrast between text and background (WCAG AA minimum)</li>
+            <li><strong>Touch Targets:</strong> Minimum 48px height for buttons on mobile</li>
+            <li><strong>Whitespace:</strong> Don't be afraid of empty space - it improves readability</li>
+          </ul>
+        </div>
+
+        <h3>Material Design Resources</h3>
+        <p>
+          For more information about Material Design 3, visit:
+        </p>
+        <ul>
+          <li><a href="https://m3.material.io/" target="_blank">Material Design 3 Guidelines</a></li>
+          <li><a href="https://m3.material.io/theme-builder" target="_blank">Material Theme Builder</a></li>
+          <li><a href="https://m3.material.io/styles/color/overview" target="_blank">Color System</a></li>
+          <li><a href="https://m3.material.io/styles/typography/overview" target="_blank">Typography Scale</a></li>
+        </ul>
       </section>
 
       <!-- Data Bindings Section -->
