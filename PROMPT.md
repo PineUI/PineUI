@@ -1,6 +1,7 @@
 # PineUI - LLM Context Guide
 
-> Use this guide as context when asking LLMs to build applications with PineUI
+> Use this guide as context when asking LLMs to build applications with PineUI.
+> All component types, action names, and examples here are verified against the runtime.
 
 ## What is PineUI?
 
@@ -10,10 +11,10 @@ PineUI is a Server-Driven UI framework for building dynamic, cross-platform inte
 
 ```html
 <!-- CSS -->
-<link rel="stylesheet" href="https://unpkg.com/@pineui/react@latest/dist/style.css">
+<link rel="stylesheet" href="https://pineui.github.io/PineUI/pineui.css">
 
 <!-- JavaScript (Standalone - includes React) -->
-<script src="https://unpkg.com/@pineui/react@latest/dist/pineui.standalone.js"></script>
+<script src="https://pineui.github.io/PineUI/pineui.standalone.js"></script>
 ```
 
 ## Basic Usage
@@ -22,18 +23,15 @@ PineUI is a Server-Driven UI framework for building dynamic, cross-platform inte
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="https://unpkg.com/@pineui/react@latest/dist/style.css">
+  <link rel="stylesheet" href="https://pineui.github.io/PineUI/pineui.css">
 </head>
 <body>
   <div id="app"></div>
-
-  <script src="https://unpkg.com/@pineui/react@latest/dist/pineui.standalone.js"></script>
+  <script src="https://pineui.github.io/PineUI/pineui.standalone.js"></script>
   <script>
     PineUI.render({
       target: '#app',
-      schema: {
-        // Your schema here
-      }
+      schema: { /* Your schema here */ }
     });
   </script>
 </body>
@@ -42,67 +40,61 @@ PineUI is a Server-Driven UI framework for building dynamic, cross-platform inte
 
 ## Schema Structure
 
-Every PineUI app is defined by a JSON schema:
+Every PineUI app is a JSON schema:
 
 ```json
 {
   "schemaVersion": "1.0.0",
-  "state": {
-    // Initial state (optional)
-  },
-  "intents": {
-    // Named actions (optional)
-  },
-  "screen": {
-    // Root component (required)
-  }
+  "state": { },
+  "intents": { },
+  "overlays": { },
+  "components": { },
+  "screen": { }
 }
 ```
 
-## State Management
+- `state` — initial reactive state (optional)
+- `intents` — named, reusable action handlers (optional)
+- `overlays` — modals and bottom sheets (optional)
+- `components` — reusable custom components (optional)
+- `screen` — root component (required)
 
-### Defining State
+---
 
-```json
-{
-  "state": {
-    "counter": 0,
-    "selectedTab": "home",
-    "items": ["apple", "banana", "orange"],
-    "user": {
-      "name": "John",
-      "email": "john@example.com"
-    }
-  }
-}
-```
+## Data Bindings
 
-### Data Bindings
+Use `{{expression}}` to bind data. Supported contexts:
 
-Use `{{expression}}` syntax to bind data:
-
-```json
-{
-  "type": "text",
-  "content": "Hello {{state.user.name}}!"
-}
-```
+| Context | Available in | Example |
+|---------|-------------|---------|
+| `state` | Anywhere | `{{state.user.name}}` |
+| `item` | Inside `collection` / `collection.map` itemTemplate | `{{item.title}}` |
+| `index` | Inside `collection` / `collection.map` itemTemplate | `{{index}}` |
+| `props` | Inside `components` definition | `{{props.card.title}}` |
+| `response` | Inside `collection.data.onSuccess` only | `{{response}}` |
 
 **Supported expressions:**
-- State access: `{{state.counter}}`
-- Array access: `{{state.items[0]}}`
-- Object properties: `{{state.user.name}}`
-- Arithmetic: `{{state.price * 1.1}}`
-- Comparisons: `{{state.age >= 18}}`
-- String concat: `{{state.firstName + ' ' + state.lastName}}`
-- Ternary: `{{state.isActive ? 'Active' : 'Inactive'}}`
+```
+{{state.counter}}                          Simple access
+{{state.items[0]}}                         Array index
+{{state.user.name}}                        Nested property
+{{state.price * 1.1}}                      Arithmetic
+{{state.age >= 18}}                        Comparison
+{{state.isActive ? 'Active' : 'Inactive'}} Ternary
+{{state.firstName + ' ' + state.lastName}} String concat
+{{state.tab == 'home'}}                    Equality
+{{!state.loading}}                         Negation
+{{item.badge != null}}                     Null check
+{{item.score | number}}                    Filter
+```
+
+---
 
 ## Components
 
-### Layout Components
+### layout.column / layout.row
 
-#### layout.column
-Vertical stack of children
+Vertical or horizontal stack.
 
 ```json
 {
@@ -116,125 +108,104 @@ Vertical stack of children
 ```
 
 **Props:**
-- `padding`: number (all sides) or object `{top, bottom, left, right}`
+- `padding`: number (all sides) or `{top, bottom, left, right}`
 - `spacing`: number (gap between children)
-- `mainAxisAlignment`: "start" | "center" | "end" | "spaceBetween" | "spaceAround"
-- `crossAxisAlignment`: "start" | "center" | "end" | "stretch"
-- `width`, `height`: number | "100%"
+- `mainAxisAlignment`: `"start"` | `"center"` | `"end"` | `"spaceBetween"` | `"spaceAround"`
+- `crossAxisAlignment`: `"start"` | `"center"` | `"end"` | `"stretch"`
+- `flex`: number (for proportional sizing in a parent row/column)
 
-#### layout.row
-Horizontal stack of children
+### layout.scaffold
 
-```json
-{
-  "type": "layout.row",
-  "spacing": 12,
-  "mainAxisAlignment": "spaceBetween",
-  "children": [...]
-}
-```
-
-Same props as `layout.column`
-
-#### layout.grid
-Responsive grid layout
-
-```json
-{
-  "type": "layout.grid",
-  "columns": 3,
-  "spacing": 16,
-  "children": [...]
-}
-```
-
-**Props:**
-- `columns`: number (default: 3)
-- `spacing`: number
-- `responsive`: boolean (auto-adjusts columns on mobile)
-
-#### layout.scaffold
-App structure with app bar, bottom nav, and FAB
+App structure with optional app bar, bottom navigation, and FAB.
 
 ```json
 {
   "type": "layout.scaffold",
   "appBar": {
     "title": "My App",
-    "leading": {...},
-    "actions": [...]
+    "leading": { "type": "button.icon", "icon": "☰", "onPress": {...} },
+    "actions": [
+      { "type": "button.icon", "icon": "🔍", "onPress": {...} }
+    ]
   },
-  "bottomNav": {...},
-  "floatingActionButton": {...},
-  "body": {...}
+  "body": { "type": "layout.column", "children": [...] },
+  "bottomNav": {
+    "items": [
+      { "label": "Home", "icon": "🏠", "tab": "home" },
+      { "label": "Search", "icon": "🔍", "tab": "search" }
+    ],
+    "activeTab": "{{state.activeTab}}",
+    "onTabChange": { "type": "action.state.patch", "path": "activeTab", "value": "{{tab}}" }
+  },
+  "floatingActionButton": {
+    "icon": "✏️",
+    "onPress": { "type": "action.overlay.open", "overlayId": "composeModal" }
+  }
 }
 ```
 
-### Text Components
+### grid
 
-#### text
-Display text with Material Design styles
+Static grid with fixed children.
+
+```json
+{
+  "type": "grid",
+  "columns": 3,
+  "spacing": 16,
+  "children": [...]
+}
+```
+
+> Use `collection` with `layout: "grid"` instead when data comes from an API.
+
+### text
 
 ```json
 {
   "type": "text",
-  "content": "Hello World",
+  "content": "Hello {{state.user.name}}",
   "style": "titleLarge",
   "color": "#6750A4",
   "align": "center"
 }
 ```
 
-**Text Styles:**
-- `displayLarge`, `displayMedium`, `displaySmall`
-- `headlineLarge`, `headlineMedium`, `headlineSmall`
-- `titleLarge`, `titleMedium`, `titleSmall`
-- `bodyLarge`, `bodyMedium`, `bodySmall`
-- `labelLarge`, `labelMedium`, `labelSmall`
+**Text Styles (MD3):**
+- `headlineLarge` (32px) | `headlineMedium` (28px) | `headlineSmall` (24px)
+- `titleLarge` (22px) | `titleMedium` (16px) | `titleSmall` (14px)
+- `bodyLarge` (16px) | `bodyMedium` (14px) | `bodySmall` (12px)
+- `labelLarge` (14px) | `labelMedium` (12px) | `labelSmall` (11px)
 
-### Button Components
-
-#### button.filled
-Primary action button
+### button.filled / button.text / button.outlined / button.icon / button.fab
 
 ```json
 {
   "type": "button.filled",
-  "label": "Click Me",
-  "icon": "add",
-  "onPress": {
-    "type": "action.snackbar.show",
-    "message": "Clicked!"
-  }
+  "label": "Save",
+  "icon": "💾",
+  "disabled": "{{!state.isValid}}",
+  "fullWidth": true,
+  "onPress": { "intent": "form.submit" }
 }
 ```
 
-**Button Types:**
-- `button.filled` - Primary (filled background)
-- `button.outlined` - Secondary (outline only)
-- `button.text` - Tertiary (no background)
-- `button.elevated` - Raised with shadow
-- `button.tonal` - Filled with tonal color
+**Button types:**
+- `button.filled` — primary (filled background)
+- `button.outlined` — secondary (border only)
+- `button.text` — tertiary (no background)
+- `button.icon` — icon only (square, no label)
+- `button.fab` — floating action button
 
-**Props:**
-- `label`: string (required)
-- `icon`: string (Material Icons name)
-- `iconPosition`: "start" | "end"
-- `disabled`: boolean
-- `fullWidth`: boolean
-- `onPress`: action object
-
-### Input Components
-
-#### input.text
-Text input field
+### input.text / input.email / input.password / input.number / input.search
 
 ```json
 {
-  "type": "input.text",
-  "label": "Email",
-  "placeholder": "Enter your email",
+  "type": "input.email",
+  "label": "E-mail",
+  "placeholder": "your@email.com",
   "value": "{{state.email}}",
+  "error": "{{state.emailError}}",
   "onChange": {
     "type": "action.state.patch",
     "path": "email",
@@ -243,460 +214,616 @@ Text input field
 }
 ```
 
-**Input Types:**
-- `input.text` - Single-line text
-- `input.email` - Email validation
-- `input.password` - Masked input
-- `input.number` - Numeric input
-- `input.textarea` - Multi-line text
-
 **Props:**
-- `label`: string
+- `label`: string — label displayed above the input
 - `placeholder`: string
-- `value`: string (with binding)
-- `required`: boolean
-- `disabled`: boolean
-- `error`: string (error message)
-- `helperText`: string
-- `onChange`: action object
+- `value`: binding to state — `"{{state.fieldName}}"`
+- `error`: string — error message displayed below (red)
+- `multiline`: boolean — turns into textarea
+- `maxLines`: number — textarea height (multiline only)
+- `maxLength`: number
+- `autofocus`: boolean
+- `onChange` or `onChanged`: action triggered on each keystroke; use `{{event.value}}` for the current value
 
-### Card Components
+> `input.textarea` does NOT exist. Use `input.text` with `multiline: true`.
 
-#### card
-Material Design card
+### card
 
 ```json
 {
   "type": "card",
-  "variant": "elevated",
+  "elevation": 1,
   "padding": 16,
-  "onPress": {...},
-  "children": [...]
+  "onPress": { "intent": "item.open", "id": "{{item.id}}" },
+  "child": {
+    "type": "layout.column",
+    "children": [...]
+  }
 }
 ```
 
-**Variants:**
-- `elevated` - Raised with shadow
-- `filled` - Filled background
-- `outlined` - Border only
+**Props:**
+- `elevation`: `0` | `1` — shadow level
+- `variant`: `"elevated"` | `"filled"` | `"outlined"`
+- `padding`: number
+- `onPress`: action
+- `child`: single child component (preferred)
+- `children`: array of children (also supported)
 
-### Image Components
-
-#### image
-Display images
+### image
 
 ```json
 {
   "type": "image",
-  "src": "https://picsum.photos/400/300",
-  "alt": "Description",
-  "fit": "cover",
-  "width": "100%",
-  "height": 200,
-  "borderRadius": 8
+  "src": "{{item.imageUrl}}",
+  "borderRadius": 12,
+  "aspectRatio": 1.78,
+  "style": { "width": "100%", "objectFit": "cover" }
 }
 ```
 
-**Fit options:**
-- `cover` - Fill container, crop if needed
-- `contain` - Fit inside container
-- `fill` - Stretch to fill
-
-#### avatar
-Circular user avatar
+### avatar
 
 ```json
 {
   "type": "avatar",
-  "src": "https://i.pravatar.cc/150",
-  "alt": "User name",
-  "size": 40,
-  "fallback": "JD"
+  "src": "{{state.user.avatar}}",
+  "size": 40
 }
 ```
 
-### Chip Components
+### chip
 
-#### chip
-Compact selectable element
+Selectable filter chip.
 
 ```json
 {
   "type": "chip",
-  "label": "Filter",
-  "variant": "outlined",
-  "selected": "{{state.category === 'design'}}",
-  "icon": "design_services",
-  "onPress": {...}
+  "label": "Design",
+  "selected": "{{state.selectedCategory == 'Design'}}",
+  "onPress": {
+    "intent": "category.select",
+    "category": "Design"
+  }
 }
 ```
 
-**Variants:**
-- `outlined` - Border only
-- `filled` - Filled background
-
-### Badge Components
-
-#### badge
-Small status indicator
+### badge
 
 ```json
 {
   "type": "badge",
   "label": "New",
+  "color": "success"
+}
+```
+
+**Colors:** `default` | `success` | `warning` | `error` | `info`
+
+### progress
+
+Linear progress bar.
+
+```json
+{
+  "type": "progress",
+  "value": "{{state.uploadProgress}}",
+  "label": "{{state.uploadProgress}}% complete",
   "color": "primary"
 }
 ```
 
-**Colors:**
-- `primary`, `secondary`, `error`, `success`, `warning`, `info`
+**Colors:** `primary` | `success` | `error`
 
-### Collection Components
+> `progress.circular` and `progress.linear` do NOT exist. Use `progress`.
 
-#### collection.map
-Render array of items
+### divider
 
 ```json
-{
-  "type": "collection.map",
-  "data": "{{state.items}}",
-  "template": {
-    "type": "card",
-    "children": [
-      {
-        "type": "text",
-        "content": "{{item.title}}"
-      }
-    ]
-  }
-}
+{ "type": "divider", "spacing": 16 }
 ```
 
-**Context variables:**
-- `{{item}}` - Current item
-- `{{index}}` - Current index
-
-### Conditional Components
-
-#### conditional.render
-Show/hide based on condition
-
-```json
-{
-  "type": "conditional.render",
-  "condition": "{{state.isLoggedIn}}",
-  "children": [
-    {
-      "type": "text",
-      "content": "Welcome back!"
-    }
-  ]
-}
-```
-
-### Modal Components
-
-#### modal
-Overlay dialog
-
-```json
-{
-  "type": "modal",
-  "id": "confirm-dialog",
-  "title": "Confirm Action",
-  "fullScreen": false,
-  "children": [...]
-}
-```
-
-### Icon Components
-
-#### icon
-Material Design icon
+### icon
 
 ```json
 {
   "type": "icon",
-  "name": "favorite",
+  "name": "⭐",
   "size": 24,
   "color": "#E91E63"
 }
 ```
 
-Find icons at: https://fonts.google.com/icons
-
-### Progress Components
-
-#### progress.circular
-Circular loading indicator
+### tabs
 
 ```json
 {
-  "type": "progress.circular",
-  "size": 40,
-  "color": "primary"
-}
-```
-
-#### progress.linear
-Linear progress bar
-
-```json
-{
-  "type": "progress.linear",
-  "value": 75,
-  "color": "primary"
-}
-```
-
-### Divider Component
-
-#### divider
-Visual separator
-
-```json
-{
-  "type": "divider",
-  "spacing": 16
-}
-```
-
-## Actions
-
-Actions define what happens when users interact with your app.
-
-### action.state.patch
-Update state values
-
-```json
-{
-  "type": "action.state.patch",
-  "path": "counter",
-  "value": "{{state.counter + 1}}"
-}
-```
-
-**Props:**
-- `path`: string (dot notation for nested: "user.name")
-- `value`: any (supports bindings)
-
-### action.http.request
-Make HTTP requests
-
-```json
-{
-  "type": "action.http.request",
-  "url": "https://api.example.com/data",
-  "method": "GET",
-  "onSuccess": {
+  "type": "tabs",
+  "activeTab": "{{state.activeTab}}",
+  "onTabChange": {
     "type": "action.state.patch",
-    "path": "data",
-    "value": "{{response.data}}"
+    "path": "activeTab",
+    "value": "{{tab}}"
   },
-  "onError": {
-    "type": "action.snackbar.show",
-    "message": "Failed to load data"
-  }
-}
-```
-
-**Methods:** GET, POST, PUT, DELETE, PATCH
-
-**Context variables:**
-- `{{response}}` - Response data (in onSuccess)
-- `{{error}}` - Error object (in onError)
-
-### action.snackbar.show
-Show temporary message
-
-```json
-{
-  "type": "action.snackbar.show",
-  "message": "Item saved successfully!",
-  "duration": 3000,
-  "action": {
-    "label": "Undo",
-    "onPress": {...}
-  }
-}
-```
-
-### action.overlay.show
-Open modal/dialog
-
-```json
-{
-  "type": "action.overlay.show",
-  "overlayId": "settings-modal"
-}
-```
-
-### action.overlay.hide
-Close modal/dialog
-
-```json
-{
-  "type": "action.overlay.hide",
-  "overlayId": "settings-modal"
-}
-```
-
-### action.sequence
-Run multiple actions in order
-
-```json
-{
-  "type": "action.sequence",
-  "actions": [
+  "tabs": [
     {
-      "type": "action.state.patch",
-      "path": "loading",
-      "value": true
+      "id": "home",
+      "label": "Home",
+      "content": { "type": "layout.column", "children": [...] }
     },
     {
-      "type": "action.http.request",
-      "url": "https://api.example.com/save",
-      "method": "POST"
-    },
-    {
-      "type": "action.state.patch",
-      "path": "loading",
-      "value": false
+      "id": "profile",
+      "label": "Profile",
+      "content": { "type": "layout.column", "children": [...] }
     }
   ]
 }
 ```
 
-### action.delay
-Wait before next action
+### table
 
 ```json
 {
-  "type": "action.delay",
-  "duration": 1000,
-  "then": {
-    "type": "action.snackbar.show",
-    "message": "Delayed message"
+  "type": "table",
+  "columns": [
+    { "key": "name", "label": "Name" },
+    { "key": "email", "label": "Email" },
+    { "key": "role", "label": "Role", "width": "120px" }
+  ],
+  "data": {
+    "type": "action.http",
+    "method": "GET",
+    "url": "/api/users"
   }
 }
 ```
+
+### collection — HTTP data source
+
+Fetches data from an API and renders each item with a template.
+Supports pagination, loading/empty/error states.
+
+```json
+{
+  "type": "collection",
+  "layout": "list",
+  "data": {
+    "type": "action.http",
+    "method": "GET",
+    "url": "/api/posts?category={{state.selectedCategory}}",
+    "onSuccess": {
+      "type": "action.state.patch",
+      "path": "postList",
+      "value": "{{response}}"
+    }
+  },
+  "itemTemplate": {
+    "type": "component.postCard",
+    "props": { "post": "{{item}}" }
+  },
+  "loadingState": { "type": "text", "content": "Loading..." },
+  "emptyState": { "type": "text", "content": "No results." },
+  "errorState": { "type": "text", "content": "Error loading." }
+}
+```
+
+**Props:**
+- `layout`: `"list"` | `"grid"` | `"table"`
+- `columns`: number (grid only, default 3)
+- `spacing`: number (grid gap)
+- `itemSpacing`: number (list gap between items)
+- `data`: `action.http` object
+- `itemTemplate`: component rendered for each item
+- `loadingState`, `emptyState`, `errorState`: optional fallback components
+
+**`onSuccess`:** executed after a successful fetch. Use `{{response}}` to access the returned array.
+Collection reloads automatically when state values used in the URL change.
+
+**Context variables in `itemTemplate`:**
+- `{{item}}` — current item object
+- `{{index}}` — 0-based index
+
+### collection.map — static array from state
+
+Renders an array already in state (no HTTP call).
+
+```json
+{
+  "type": "collection.map",
+  "data": "{{state.items}}",
+  "layout": "list",
+  "spacing": 12,
+  "template": {
+    "type": "card",
+    "child": { "type": "text", "content": "{{item.title}}" }
+  }
+}
+```
+
+| | `collection` | `collection.map` |
+|---|---|---|
+| Data source | HTTP (action.http) | State (`{{state.xxx}}`) |
+| Pagination | Yes | No |
+| Use when | Data comes from API | Data already in state |
+
+### conditionalRender — multiple cases
+
+Show different content based on multiple conditions.
+
+```json
+{
+  "type": "conditionalRender",
+  "conditions": [
+    {
+      "when": "{{state.tab == 'home'}}",
+      "render": { "type": "text", "content": "Home" }
+    },
+    {
+      "when": "{{state.tab == 'profile'}}",
+      "render": { "type": "text", "content": "Profile" }
+    }
+  ]
+}
+```
+
+### conditional.render — simple condition
+
+Show/hide a single child based on one condition.
+
+```json
+{
+  "type": "conditional.render",
+  "condition": "{{state.isLoggedIn}}",
+  "child": {
+    "type": "text",
+    "content": "Welcome back!"
+  }
+}
+```
+
+Also supports `children` (array):
+```json
+{
+  "type": "conditional.render",
+  "condition": "{{item.progress > 0}}",
+  "children": [
+    { "type": "text", "content": "In progress" },
+    { "type": "progress", "value": "{{item.progress}}" }
+  ]
+}
+```
+
+> `conditional.render` has NO `fallback` prop. For if/else use `conditionalRender` with multiple conditions.
+
+---
+
+## Overlays (Modals & Sheets)
+
+Overlays are defined at the schema level in `overlays`, not inline as components.
+
+```json
+{
+  "overlays": {
+    "settingsModal": {
+      "type": "modal",
+      "presentation": "modal",
+      "dismissible": true,
+      "child": {
+        "type": "layout.column",
+        "padding": 24,
+        "spacing": 16,
+        "children": [
+          { "type": "text", "content": "Settings", "style": "titleLarge" },
+          { "type": "button.filled", "label": "Close",
+            "onPress": { "type": "action.overlay.close", "overlayId": "settingsModal" }
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+**Presentation modes:**
+- `"modal"` — centered modal (default)
+- `"bottomSheet"` — slides up from bottom
+- `"dialog"` — small centered dialog (400px)
+- `"fullscreen"` — 95vw × 95vh, rounded corners
+
+**Open/close:**
+```json
+{ "type": "action.overlay.open", "overlayId": "settingsModal" }
+{ "type": "action.overlay.close", "overlayId": "settingsModal" }
+```
+
+---
+
+## Actions
+
+### action.state.patch
+
+Update a value in state (supports nested paths).
+
+```json
+{
+  "type": "action.state.patch",
+  "path": "user.name",
+  "value": "{{event.value}}"
+}
+```
+
+### action.http
+
+Make an HTTP request.
+
+```json
+{
+  "type": "action.http",
+  "method": "POST",
+  "url": "/api/posts",
+  "body": {
+    "text": "{{state.composer.text}}"
+  }
+}
+```
+
+> The action type is `action.http`, NOT `action.http.request`.
+
+### action.snackbar.show
+
+Show a temporary notification.
+
+```json
+{
+  "type": "action.snackbar.show",
+  "message": "Saved! {{state.itemName}}",
+  "duration": 3000,
+  "action": {
+    "label": "Undo",
+    "onPress": { "intent": "item.undo" }
+  }
+}
+```
+
+### action.overlay.open / action.overlay.close
+
+```json
+{ "type": "action.overlay.open", "overlayId": "myModal" }
+{ "type": "action.overlay.close", "overlayId": "myModal" }
+```
+
+> Do NOT use `action.overlay.show` or `action.overlay.hide` — they don't exist.
+
+### action.sequence
+
+Run multiple actions sequentially (awaits each one).
+
+```json
+{
+  "type": "action.sequence",
+  "actions": [
+    { "type": "action.state.patch", "path": "loading", "value": true },
+    { "type": "action.http", "method": "POST", "url": "/api/save", "body": {...} },
+    { "type": "action.state.patch", "path": "loading", "value": false },
+    { "type": "action.snackbar.show", "message": "Saved!" }
+  ]
+}
+```
+
+### action.delay
+
+Wait a fixed amount of time. Use inside `action.sequence`.
+
+```json
+{
+  "type": "action.sequence",
+  "actions": [
+    { "type": "action.snackbar.show", "message": "Processing..." },
+    { "type": "action.delay", "duration": 1500 },
+    { "type": "action.snackbar.show", "message": "Done!" }
+  ]
+}
+```
+
+> `action.delay` has NO `then` field. Always wrap it in `action.sequence`.
+
+---
 
 ## Intents
 
-Intents are named, reusable actions:
+Named, reusable handlers. Keep business semantics out of UI nodes.
 
+**Defining:**
 ```json
 {
   "intents": {
-    "incrementCounter": {
+    "category.select": {
       "handler": {
         "type": "action.state.patch",
-        "path": "counter",
-        "value": "{{state.counter + 1}}"
+        "path": "selectedCategory",
+        "value": "{{category}}"
       }
     },
-    "loadData": {
+    "post.like": {
       "handler": {
-        "type": "action.http.request",
-        "url": "https://api.example.com/data",
-        "method": "GET",
-        "onSuccess": {
-          "type": "action.state.patch",
-          "path": "items",
-          "value": "{{response}}"
-        }
+        "type": "action.sequence",
+        "actions": [
+          { "type": "action.http", "method": "POST", "url": "/api/posts/{{postId}}/like" },
+          { "type": "action.snackbar.show", "message": "Liked!" }
+        ]
       }
-    }
-  },
-  "screen": {
-    "type": "button.filled",
-    "label": "Load",
-    "onPress": {
-      "type": "intent",
-      "name": "loadData"
     }
   }
 }
 ```
 
-## Design System
-
-### Colors
-
-Material Design 3 color tokens:
-
-```javascript
-// Primary
---md-sys-color-primary: #6750A4
---md-sys-color-on-primary: #FFFFFF
-
-// Secondary
---md-sys-color-secondary: #625B71
---md-sys-color-on-secondary: #FFFFFF
-
-// Surface
---md-sys-color-surface: #FFFBFE
---md-sys-color-on-surface: #1D1B20
-```
-
-Use hex colors directly in components:
+**Dispatching (short syntax — preferred):**
 ```json
 {
-  "type": "text",
-  "color": "#6750A4"
+  "intent": "category.select",
+  "category": "Design"
 }
 ```
 
-### Spacing
+Parameters defined alongside `intent` are passed to the handler and can be used with `{{paramName}}`.
 
-Use 8-point grid: 8, 16, 24, 32, 40, 48...
+**Alternative syntax (also valid):**
+```json
+{ "type": "intent", "name": "category.select", "category": "Design" }
+```
 
-### Typography Scale
+---
 
-- Display: Hero text (45-57px)
-- Headline: Section headers (24-32px)
-- Title: Card/list titles (14-22px)
-- Body: Paragraphs (12-16px)
-- Label: Buttons, chips (11-14px)
+## Custom Components
 
-## Complete Example: Course Gallery
+Define reusable component templates with props.
+
+```json
+{
+  "components": {
+    "component.courseCard": {
+      "definition": {
+        "type": "card",
+        "elevation": 1,
+        "onPress": { "intent": "course.open", "courseData": "{{item}}", "courseIndex": "{{index}}" },
+        "child": {
+          "type": "layout.column",
+          "spacing": 0,
+          "children": [
+            {
+              "type": "image",
+              "src": "{{props.course.image}}",
+              "borderRadius": 12,
+              "aspectRatio": 1.33
+            },
+            {
+              "type": "layout.column",
+              "padding": 12,
+              "spacing": 8,
+              "children": [
+                { "type": "text", "content": "{{props.course.title}}", "style": "titleSmall" },
+                { "type": "text", "content": "{{props.course.instructor}}", "style": "bodySmall" }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+```
+
+**Using a custom component:**
+```json
+{
+  "type": "component.courseCard",
+  "props": {
+    "course": "{{item}}"
+  }
+}
+```
+
+Inside the definition, use `{{props.fieldName}}` to access passed props.
+
+---
+
+## Complete Example: Course Gallery with Navigation
 
 ```json
 {
   "schemaVersion": "1.0.0",
   "state": {
     "selectedCategory": "All",
-    "courses": [
-      {
-        "id": 1,
-        "title": "UI/UX Design Masterclass",
-        "category": "Design",
-        "instructor": "Sarah Johnson",
-        "rating": 4.8,
-        "price": "$49.99",
-        "image": "https://picsum.photos/seed/course1/400/225"
-      },
-      {
-        "id": 2,
-        "title": "React Development",
-        "category": "Development",
-        "instructor": "Mike Chen",
-        "rating": 4.9,
-        "price": "$59.99",
-        "image": "https://picsum.photos/seed/course2/400/225"
+    "courseList": [],
+    "selectedCourse": null,
+    "selectedCourseIndex": 0
+  },
+  "intents": {
+    "category.select": {
+      "handler": {
+        "type": "action.state.patch",
+        "path": "selectedCategory",
+        "value": "{{category}}"
       }
-    ]
+    },
+    "course.open": {
+      "handler": {
+        "type": "action.sequence",
+        "actions": [
+          { "type": "action.state.patch", "path": "selectedCourse", "value": "{{courseData}}" },
+          { "type": "action.state.patch", "path": "selectedCourseIndex", "value": "{{courseIndex}}" },
+          { "type": "action.overlay.open", "overlayId": "courseModal" }
+        ]
+      }
+    },
+    "course.next": {
+      "handler": {
+        "type": "action.sequence",
+        "actions": [
+          {
+            "type": "action.state.patch",
+            "path": "selectedCourseIndex",
+            "value": "{{(state.selectedCourseIndex + 1) % state.courseList.length}}"
+          },
+          {
+            "type": "action.state.patch",
+            "path": "selectedCourse",
+            "value": "{{state.courseList[(state.selectedCourseIndex + 1) % state.courseList.length]}}"
+          }
+        ]
+      }
+    }
+  },
+  "overlays": {
+    "courseModal": {
+      "type": "modal",
+      "presentation": "fullscreen",
+      "dismissible": true,
+      "child": {
+        "type": "layout.column",
+        "children": [
+          {
+            "type": "layout.row",
+            "mainAxisAlignment": "spaceBetween",
+            "padding": 16,
+            "children": [
+              { "type": "text", "content": "{{state.selectedCourse.title}}", "style": "titleLarge" },
+              { "type": "button.text", "label": "✕",
+                "onPress": { "type": "action.overlay.close", "overlayId": "courseModal" } }
+            ]
+          },
+          { "type": "image", "src": "{{state.selectedCourse.image}}", "style": { "width": "100%" } },
+          {
+            "type": "layout.column",
+            "padding": 16,
+            "spacing": 12,
+            "children": [
+              { "type": "text", "content": "{{state.selectedCourse.instructor}}", "style": "bodyLarge" },
+              { "type": "progress", "value": "{{state.selectedCourse.progress}}", "color": "primary" }
+            ]
+          },
+          {
+            "type": "layout.row",
+            "mainAxisAlignment": "spaceBetween",
+            "padding": 16,
+            "children": [
+              { "type": "button.outlined", "label": "← Prev", "onPress": { "intent": "course.prev" } },
+              { "type": "text", "content": "{{state.selectedCourseIndex + 1}} / {{state.courseList.length}}" },
+              { "type": "button.outlined", "label": "Next →", "onPress": { "intent": "course.next" } }
+            ]
+          }
+        ]
+      }
+    }
   },
   "screen": {
     "type": "layout.scaffold",
-    "appBar": {
-      "title": "Course Gallery"
-    },
     "body": {
       "type": "layout.column",
       "padding": 16,
-      "spacing": 24,
+      "spacing": 16,
       "children": [
+        { "type": "text", "content": "Courses", "style": "titleLarge" },
         {
           "type": "layout.row",
           "spacing": 8,
@@ -704,314 +831,125 @@ Use 8-point grid: 8, 16, 24, 32, 40, 48...
             {
               "type": "chip",
               "label": "All",
-              "variant": "{{state.selectedCategory === 'All' ? 'filled' : 'outlined'}}",
-              "onPress": {
-                "type": "action.state.patch",
-                "path": "selectedCategory",
-                "value": "All"
-              }
+              "selected": "{{state.selectedCategory == 'All'}}",
+              "onPress": { "intent": "category.select", "category": "All" }
             },
             {
               "type": "chip",
               "label": "Design",
-              "variant": "{{state.selectedCategory === 'Design' ? 'filled' : 'outlined'}}",
-              "onPress": {
-                "type": "action.state.patch",
-                "path": "selectedCategory",
-                "value": "Design"
-              }
+              "selected": "{{state.selectedCategory == 'Design'}}",
+              "onPress": { "intent": "category.select", "category": "Design" }
             }
           ]
         },
         {
-          "type": "layout.grid",
+          "type": "collection",
+          "layout": "grid",
           "columns": 3,
           "spacing": 16,
+          "data": {
+            "type": "action.http",
+            "method": "GET",
+            "url": "/api/courses?category={{state.selectedCategory}}",
+            "onSuccess": {
+              "type": "action.state.patch",
+              "path": "courseList",
+              "value": "{{response}}"
+            }
+          },
+          "itemTemplate": {
+            "type": "component.courseCard",
+            "props": { "course": "{{item}}", "index": "{{index}}" }
+          }
+        }
+      ]
+    }
+  },
+  "components": {
+    "component.courseCard": {
+      "definition": {
+        "type": "card",
+        "elevation": 1,
+        "padding": 0,
+        "onPress": {
+          "intent": "course.open",
+          "courseData": "{{item}}",
+          "courseIndex": "{{index}}"
+        },
+        "child": {
+          "type": "layout.column",
+          "spacing": 0,
           "children": [
+            { "type": "image", "src": "{{props.course.image}}", "borderRadius": 12, "aspectRatio": 1.33 },
             {
-              "type": "collection.map",
-              "data": "{{state.courses.filter(c => state.selectedCategory === 'All' || c.category === state.selectedCategory)}}",
-              "template": {
-                "type": "card",
-                "variant": "elevated",
-                "children": [
-                  {
-                    "type": "image",
-                    "src": "{{item.image}}",
-                    "height": 160,
-                    "fit": "cover"
-                  },
-                  {
-                    "type": "layout.column",
-                    "padding": 16,
-                    "spacing": 8,
-                    "children": [
-                      {
-                        "type": "badge",
-                        "label": "{{item.category}}",
-                        "color": "primary"
-                      },
-                      {
-                        "type": "text",
-                        "content": "{{item.title}}",
-                        "style": "titleMedium"
-                      },
-                      {
-                        "type": "text",
-                        "content": "{{item.instructor}}",
-                        "style": "bodySmall",
-                        "color": "#79747E"
-                      },
-                      {
-                        "type": "layout.row",
-                        "mainAxisAlignment": "spaceBetween",
-                        "children": [
-                          {
-                            "type": "text",
-                            "content": "⭐ {{item.rating}}",
-                            "style": "bodySmall"
-                          },
-                          {
-                            "type": "text",
-                            "content": "{{item.price}}",
-                            "style": "titleMedium",
-                            "color": "#6750A4"
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
+              "type": "layout.column",
+              "padding": 12,
+              "spacing": 4,
+              "children": [
+                { "type": "text", "content": "{{props.course.title}}", "style": "titleSmall" },
+                { "type": "text", "content": "{{props.course.instructor}}", "style": "bodySmall" }
+              ]
             }
           ]
         }
-      ]
-    }
-  }
-}
-```
-
-## Best Practices
-
-### 1. Use Meaningful State Keys
-```json
-// Good
-"state": {
-  "selectedCategory": "All",
-  "isLoading": false,
-  "userProfile": {...}
-}
-
-// Avoid
-"state": {
-  "cat": "All",
-  "loading": false,
-  "profile": {...}
-}
-```
-
-### 2. Leverage Intents for Reusability
-```json
-"intents": {
-  "selectCategory": {
-    "handler": {
-      "type": "action.sequence",
-      "actions": [
-        {
-          "type": "action.state.patch",
-          "path": "selectedCategory",
-          "value": "{{event.category}}"
-        },
-        {
-          "type": "action.state.patch",
-          "path": "currentPage",
-          "value": 1
-        }
-      ]
-    }
-  }
-}
-```
-
-### 3. Use Conditional Rendering for Dynamic UIs
-```json
-{
-  "type": "conditional.render",
-  "condition": "{{state.items.length === 0}}",
-  "children": [
-    {
-      "type": "text",
-      "content": "No items found",
-      "style": "bodyLarge",
-      "color": "#79747E"
-    }
-  ]
-}
-```
-
-### 4. Proper Error Handling
-```json
-{
-  "type": "action.http.request",
-  "url": "{{state.apiUrl}}",
-  "onError": {
-    "type": "action.sequence",
-    "actions": [
-      {
-        "type": "action.state.patch",
-        "path": "error",
-        "value": "{{error.message}}"
-      },
-      {
-        "type": "action.snackbar.show",
-        "message": "Failed to load data. Please try again."
-      }
-    ]
-  }
-}
-```
-
-### 5. Responsive Layouts
-```json
-{
-  "type": "layout.grid",
-  "columns": 3,
-  "responsive": true,
-  "spacing": 16,
-  "children": [...]
-}
-```
-
-## Common Patterns
-
-### Loading State
-```json
-{
-  "state": {
-    "isLoading": false
-  },
-  "screen": {
-    "type": "conditional.render",
-    "condition": "{{state.isLoading}}",
-    "children": [
-      {
-        "type": "layout.column",
-        "mainAxisAlignment": "center",
-        "crossAxisAlignment": "center",
-        "padding": 48,
-        "children": [
-          {
-            "type": "progress.circular"
-          }
-        ]
-      }
-    ],
-    "fallback": [
-      {
-        "type": "text",
-        "content": "Content loaded!"
-      }
-    ]
-  }
-}
-```
-
-### Form Validation
-```json
-{
-  "state": {
-    "email": "",
-    "emailError": ""
-  },
-  "intents": {
-    "validateEmail": {
-      "handler": {
-        "type": "action.state.patch",
-        "path": "emailError",
-        "value": "{{state.email.includes('@') ? '' : 'Invalid email'}}"
       }
     }
-  },
-  "screen": {
-    "type": "input.email",
-    "label": "Email",
-    "value": "{{state.email}}",
-    "error": "{{state.emailError}}",
-    "onChange": {
-      "type": "action.sequence",
-      "actions": [
-        {
-          "type": "action.state.patch",
-          "path": "email",
-          "value": "{{event.value}}"
-        },
-        {
-          "type": "intent",
-          "name": "validateEmail"
-        }
-      ]
-    }
   }
 }
 ```
-
-### Pagination
-```json
-{
-  "state": {
-    "currentPage": 1,
-    "itemsPerPage": 10,
-    "totalItems": 100
-  },
-  "screen": {
-    "type": "layout.row",
-    "spacing": 8,
-    "children": [
-      {
-        "type": "button.outlined",
-        "label": "Previous",
-        "disabled": "{{state.currentPage <= 1}}",
-        "onPress": {
-          "type": "action.state.patch",
-          "path": "currentPage",
-          "value": "{{state.currentPage - 1}}"
-        }
-      },
-      {
-        "type": "text",
-        "content": "Page {{state.currentPage}}"
-      },
-      {
-        "type": "button.outlined",
-        "label": "Next",
-        "disabled": "{{state.currentPage * state.itemsPerPage >= state.totalItems}}",
-        "onPress": {
-          "type": "action.state.patch",
-          "path": "currentPage",
-          "value": "{{state.currentPage + 1}}"
-        }
-      }
-    ]
-  }
-}
-```
-
-## Tips for LLM Integration
-
-1. **Be Specific**: Describe exact components, layouts, and interactions
-2. **Reference This Guide**: Paste relevant sections as context
-3. **Provide CDN Links**: Always include the unpkg links
-4. **Use Examples**: Reference the course gallery or other examples
-5. **Iterate**: Ask the LLM to refine or add features incrementally
-
-## Resources
-
-- **Documentation**: https://pineui.github.io/PineUI/documentation.html
-- **NPM Package**: https://www.npmjs.com/package/@pineui/react
-- **GitHub**: https://github.com/PineUI/PineUI
-- **Material Icons**: https://fonts.google.com/icons
 
 ---
 
-**Created by David Ruiz (wupsbr)** - CPTO at Ingresse
+## ✅ Dos and ❌ Don'ts
+
+### Actions
+
+| ✅ Correct | ❌ Wrong |
+|-----------|---------|
+| `"type": "action.http"` | `"type": "action.http.request"` |
+| `"type": "action.overlay.open"` | `"type": "action.overlay.show"` |
+| `"type": "action.overlay.close"` | `"type": "action.overlay.hide"` |
+| `action.delay` inside `action.sequence` | `action.delay` with `"then": {...}` |
+
+### Components
+
+| ✅ Correct | ❌ Wrong |
+|-----------|---------|
+| `"type": "progress"` | `"type": "progress.circular"` or `"progress.linear"` |
+| `"type": "grid"` | `"type": "layout.grid"` |
+| `"type": "input.text"` + `"multiline": true` | `"type": "input.textarea"` |
+| `card` with `"child": {...}` | `card` with `"content": {...}` |
+
+### Bindings
+
+| ✅ Correct | ❌ Wrong |
+|-----------|---------|
+| `{{response}}` in `collection.data.onSuccess` | `{{response.data}}` |
+| `{{event.value}}` in `onChange` | `{{value}}` in `onChange` |
+| `{{item.field}}` in `itemTemplate` | `{{item.field}}` outside collection context |
+
+### Overlays
+
+| ✅ Correct | ❌ Wrong |
+|-----------|---------|
+| Define in top-level `"overlays": { ... }` | Define as `{ "type": "modal", ... }` inline |
+| Open with `action.overlay.open` + `overlayId` | No inline modal rendering |
+
+### Intents
+
+| ✅ Correct | ❌ Wrong |
+|-----------|---------|
+| `{ "intent": "name", "param": "val" }` | `{ "type": "intent.name" }` (legacy, avoid) |
+| Intent handler receives params by name | Don't use `event.` prefix for intent params |
+
+---
+
+## Resources
+
+- **Live Demos**: https://pineui.github.io/PineUI/
+- **Full Documentation**: https://pineui.github.io/PineUI/documentation.html
+- **GitHub**: https://github.com/PineUI/PineUI
+
+---
+
+*Created by David Ruiz (wupsbr) — CPTO at Ingresse*
