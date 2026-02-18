@@ -144,6 +144,34 @@ cd docs && python3 -m http.server 8080
 
 **NUNCA** diga que algo está pronto sem testar localmente primeiro.
 
+## ⚠️ Regra Crítica: Consistência de Exemplos
+
+**Sempre que mudar qualquer API, componente, action ou binding:**
+
+1. Verificar e corrigir **TODOS** os arquivos afetados:
+   - `PROMPT.md` e `docs/PROMPT.md` (sempre iguais — copiar após editar)
+   - `README.md`
+   - `simple-example.json` e `case-example.json`
+   - `docs/demos/*/ui.json` — todas as demos
+   - `docs/demos/*/components/*.json` — componentes das demos
+   - `case-example.json`
+
+2. **Nunca deixar código errado no repositório**, mesmo que seja um exemplo.
+   Exemplos incorretos ensinam o LLM a gerar schemas quebrados.
+
+3. **API atual correta** (consultar sempre que houver dúvida):
+   - `onPress` (não `onTap`, não `onClick`)
+   - `action.http` (não `action.http.request`)
+   - `action.overlay.open` / `action.overlay.close` (não `.show` / `.hide`)
+   - `progress` (não `progress.circular` / `progress.linear`)
+   - `grid` (não `layout.grid`)
+   - `input.text` + `multiline: true` (não `input.textarea`)
+   - `"path": "fieldName"` sem prefixo `state.`
+   - `"value": "{{event.value}}"` (não `{{value}}`)
+   - `{{response}}` apenas em `collection.data.onSuccess`
+   - Overlays definidos em `"overlays": {}` no schema, nunca inline
+   - Intent curto: `{ "intent": "name", "param": "val" }`
+
 ## 🚫 Evitar
 
 - Lógica de negócio no cliente
