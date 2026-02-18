@@ -24,17 +24,22 @@ export function resolveBindings(obj: any, context: any): any {
 }
 
 function resolveString(str: string, context: any): any {
-  // Check if entire string is a binding
-  const fullMatch = str.match(/^\{\{(.+)\}\}$/);
-  if (fullMatch) {
-    const expr = fullMatch[1].trim();
+  // Check if entire string is a single binding (no }} before the final one)
+  const firstClose = str.indexOf('}}');
+  const isFullBinding = str.startsWith('{{') && str.endsWith('}}') && firstClose === str.length - 2;
+  if (isFullBinding) {
+    const expr = str.slice(2, -2).trim();
 
-    // IMPORTANT: If binding references 'item' but item is not in context, keep the binding
-    // This allows itemTemplate to be resolved later when item is available
-    if (expr === 'item' || expr.startsWith('item.')) {
-      if (!('item' in context) || context.item === undefined) {
-        return str; // Keep the original binding string
-      }
+    // Keep binding unresolved if it references context vars not yet available
+    if ((expr === 'item' || expr.startsWith('item.')) && (!('item' in context) || context.item === undefined)) {
+      return str;
+    }
+    if ((expr === 'props' || expr.startsWith('props.')) && (!('props' in context) || context.props === undefined)) {
+      return str;
+    }
+    // 'response' só existe no momento do fetch (Collection.onSuccess) — preservar fora desse contexto
+    if ((expr === 'response' || expr.startsWith('response.')) && !('response' in context)) {
+      return str;
     }
 
     const result = evaluateExpression(expr, context);
@@ -50,22 +55,22 @@ function resolveString(str: string, context: any): any {
 
 function evaluateExpression(expr: string, context: any): any {
   try {
-    // Handle simple property access: item.author.name
+    // Fast path: simple property access like item.author.name
     if (/^[\w.]+$/.test(expr)) {
       return getNestedValue(context, expr);
     }
 
-    // Handle operators: !value, value != null
-    if (expr.includes('!') || expr.includes('==') || expr.includes('!=')) {
-      return evaluateCondition(expr, context);
-    }
-
-    // Handle filters: value | filter
-    if (expr.includes('|')) {
+    // Handle filters: value | filter (must check before Function fallback)
+    if (expr.includes('|') && !expr.includes('||')) {
       return evaluateFilter(expr, context);
     }
 
-    return getNestedValue(context, expr);
+    // General case: evaluate as JS expression with context variables injected
+    // Handles array access, arithmetic, ternary, comparisons, etc.
+    const keys = Object.keys(context).filter(k => /^[a-zA-Z_$][\w$]*$/.test(k));
+    const values = keys.map(k => context[k]);
+    const fn = new Function(...keys, `"use strict"; try { return (${expr}); } catch(e) { return undefined; }`);
+    return fn(...values);
   } catch (error) {
     console.warn(`Failed to evaluate expression: ${expr}`, error);
     return undefined;
@@ -84,32 +89,6 @@ function getNestedValue(obj: any, path: string): any {
   return value;
 }
 
-function evaluateCondition(expr: string, context: any): boolean {
-  // Handle negation: !value
-  if (expr.startsWith('!')) {
-    const value = getNestedValue(context, expr.slice(1).trim());
-    return !value;
-  }
-
-  // Handle != null
-  if (expr.includes('!= null')) {
-    const varName = expr.split('!=')[0].trim();
-    const value = getNestedValue(context, varName);
-    return value != null;
-  }
-
-  // Handle == comparison
-  if (expr.includes('==')) {
-    const [left, right] = expr.split('==').map(s => s.trim());
-    const leftValue = getNestedValue(context, left);
-    const rightValue = right.startsWith("'") || right.startsWith('"')
-      ? right.slice(1, -1)
-      : getNestedValue(context, right);
-    return leftValue == rightValue;
-  }
-
-  return false;
-}
 
 function evaluateFilter(expr: string, context: any): any {
   const [value, filter] = expr.split('|').map(s => s.trim());

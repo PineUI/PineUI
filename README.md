@@ -1,9 +1,14 @@
 # 🍍 PineUI
 
 [![License](https://img.shields.io/badge/License-Apache%202.0%20with%20Commons%20Clause-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](package.json)
+[![Version](https://img.shields.io/badge/version-0.1.0--alpha-orange.svg)](package.json)
+[![Status](https://img.shields.io/badge/status-alpha-red.svg)](#)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18.2-61dafb.svg)](https://reactjs.org/)
+
+> ⚠️ **Alpha Software — Not production-ready**
+>
+> PineUI is under active development. APIs, schema contracts, and component behavior **will change without notice**. Use for experimentation and feedback only. See the [Roadmap](#️-roadmap) for what's planned before v1.0.
 
 **Server-Driven UI Protocol and SDK for AI-Native Applications**
 
@@ -415,14 +420,15 @@ Botões seguindo MD3 com variantes.
 
 **Variantes:**
 - `button.filled` - Botão preenchido (call-to-action principal)
-- `button.text` - Botão de texto (ações secundárias)
+- `button.outlined` - Botão com borda (ações secundárias)
+- `button.text` - Botão de texto (ações terciárias)
 - `button.icon` - Botão apenas com ícone
 - `button.fab` - Floating Action Button
 
 **Props:**
 ```typescript
 {
-  type: "button.filled" | "button.text" | "button.icon" | "button.fab"
+  type: "button.filled" | "button.outlined" | "button.text" | "button.icon" | "button.fab"
   label?: string              // Texto do botão
   icon?: string               // Emoji ou ícone
   enabled?: boolean           // Habilitado/desabilitado
@@ -470,17 +476,26 @@ Botões seguindo MD3 com variantes.
 
 Campos de texto para entrada de dados.
 
+**Variantes:**
+- `input.text` - Campo de texto simples
+- `input.email` - Campo de e-mail (validação nativa do browser)
+- `input.password` - Campo de senha (caracteres ocultos)
+- `input.number` - Campo numérico
+- `input.search` - Campo de busca
+
 **Props:**
 ```typescript
 {
-  type: "input.text"
+  type: "input.text" | "input.email" | "input.password" | "input.number" | "input.search"
 
   // Identity
   id?: string                       // ID do input
+  label?: string                    // Label acima do input
 
   // Content
   placeholder?: string              // Texto placeholder
   value?: string                    // Binding para state: {{state.fieldName}}
+  error?: string                    // Mensagem de erro abaixo do input
 
   // Type
   multiline?: boolean               // Textarea vs input (padrão: false)
@@ -489,11 +504,8 @@ Campos de texto para entrada de dados.
 
   // Behavior
   autofocus?: boolean               // Auto-focus (padrão: false)
-  onChanged?: ActionNode            // Disparado ao digitar
-
-  // Layout
-  flex?: number                     // Flex grow
-  borderRadius?: number             // Border radius em pixels
+  onChanged?: ActionNode            // Disparado ao digitar ({{value}} ou {{event.value}})
+  onChange?: ActionNode             // Alias de onChanged
 }
 ```
 
@@ -506,7 +518,23 @@ Campos de texto para entrada de dados.
   "onChanged": {
     "type": "action.state.patch",
     "path": "messageText",
-    "value": "{{value}}"
+    "value": "{{event.value}}"
+  }
+}
+```
+
+**Exemplo com email e senha:**
+```json
+{
+  "type": "input.email",
+  "label": "E-mail",
+  "placeholder": "seu@email.com",
+  "value": "{{state.email}}",
+  "error": "{{state.emailError}}",
+  "onChange": {
+    "type": "action.state.patch",
+    "path": "email",
+    "value": "{{event.value}}"
   }
 }
 ```
@@ -1098,23 +1126,17 @@ Actions são instruções técnicas diretas:
 
 ### Intents (High-Level)
 
-Intents expressam **intenção do usuário**:
+Intents expressam **intenção do usuário**. Há três formas de disparar uma intent:
 
 ```json
-{
-  "type": "intent.post.like",
-  "postId": "123"
-}
+// Formato 1: campo "intent" (preferido)
+{ "intent": "post.like", "postId": "123" }
 
-{
-  "type": "intent.conversation.select",
-  "conversationId": "456"
-}
+// Formato 2: "type": "intent" com "name"
+{ "type": "intent", "name": "post.like", "postId": "123" }
 
-{
-  "type": "intent.category.select",
-  "category": "Design"
-}
+// Formato 3: "type": "intent.xxx" (legado)
+{ "type": "intent.post.like", "postId": "123" }
 ```
 
 **Definindo Intents no Schema:**
@@ -1356,6 +1378,28 @@ Global, acessível em qualquer lugar:
 }
 ```
 
+**4. Collection Response (`response`)**
+
+Exclusivo dentro de `data.onSuccess` de uma collection. Contém o array retornado pelo fetch.
+Use para sincronizar dados da collection no state global (ex: para navegação fora da collection):
+
+```json
+{
+  "type": "collection",
+  "data": {
+    "type": "action.http",
+    "url": "/api/courses",
+    "onSuccess": {
+      "type": "action.state.patch",
+      "path": "courseList",
+      "value": "{{response}}"
+    }
+  }
+}
+```
+
+> ⚠️ `{{response}}` só é válido em `data.onSuccess`. Em qualquer outro contexto, o binding é preservado como literal `"{{response}}"` para evitar corrupção prematura de dados.
+
 ### Expressões Condicionais
 
 ```json
@@ -1509,6 +1553,38 @@ Collections renderizam listas com virtualização automática.
 }
 ```
 
+### collection.map — Iterar sobre Estado
+
+Use `collection.map` para renderizar arrays que já estão no estado (sem chamadas HTTP):
+
+```json
+{
+  "type": "collection.map",
+  "data": "{{state.items}}",
+  "layout": "list",
+  "spacing": 12,
+  "template": {
+    "type": "card",
+    "child": {
+      "type": "text",
+      "content": "{{item.title}}"
+    }
+  }
+}
+```
+
+**Diferença entre `collection` e `collection.map`:**
+| | `collection` | `collection.map` |
+|---|---|---|
+| Fonte de dados | HTTP (action.http) | Estado local (`{{state.xxx}}`) |
+| Paginação | Sim | Não |
+| Loading state | Sim | Não |
+| Use quando | Dados vem da API | Dados já estão no state |
+
+**Context variables em `template`:**
+- `{{item}}` — item atual
+- `{{index}}` — índice (0-based)
+
 ### Collection com HTTP
 
 ```json
@@ -1640,6 +1716,29 @@ Collection automaticamente adiciona botão "Carregar mais".
   }
 }
 ```
+
+### onSuccess — Sincronizar Resposta no State
+
+`data.onSuccess` é executado após o fetch com sucesso. O binding `{{response}}` contém o array retornado.
+Útil para guardar a lista carregada no state global, habilitando features como navegação entre itens:
+
+```json
+{
+  "type": "collection",
+  "data": {
+    "type": "action.http",
+    "url": "/api/courses?category={{state.selectedCategory}}",
+    "onSuccess": {
+      "type": "action.state.patch",
+      "path": "courseList",
+      "value": "{{response}}"
+    }
+  },
+  "itemTemplate": { ... }
+}
+```
+
+Após o fetch, `state.courseList` conterá o array completo. Isso permite intents externos à collection usarem essa lista (ex: `course.next` que navega por índice no state).
 
 ### Reload Automático
 
@@ -2190,7 +2289,7 @@ PineUI é mobile-first por padrão. Use media queries CSS para customizar:
 
 **Arquivo:** `docs/demos/gallery/ui.json`
 
-**Demonstra:** Grid de cursos com filtros interativos e state-driven reload
+**Demonstra:** Grid de cursos com filtros interativos, state-driven reload e modal de navegação estilo Instagram
 
 **Features:**
 - ✅ Grid 3-column de cursos
@@ -2198,16 +2297,20 @@ PineUI é mobile-first por padrão. Use media queries CSS para customizar:
 - ✅ Progress bars
 - ✅ Badges (New, Completed)
 - ✅ State-driven filtering
+- ✅ Modal fullscreen de detalhes do curso
+- ✅ Navegação ← → entre cursos (estilo Instagram/lightbox)
+- ✅ `onSuccess` sincroniza lista de cursos no state global
 
 **Arquitetura:**
 - Collection grid com `columns: 3`, `spacing: 16`
 - Custom component: `component.courseCard`
-- State: `selectedCategory`
-- Intent: `category.select`
+- State: `selectedCategory`, `courseList`, `selectedCourse`, `selectedCourseIndex`
+- Intents: `category.select`, `course.open`, `course.close`, `course.next`, `course.prev`
+- Overlay: `courseModal` (fullscreen com split-view)
 
 **Features Destacadas:**
 
-**1. Selectable Chips (linha 34):**
+**1. Selectable Chips:**
 ```json
 {
   "type": "chip",
@@ -2220,18 +2323,53 @@ PineUI é mobile-first por padrão. Use media queries CSS para customizar:
 }
 ```
 
-**2. State-Driven URL (linha 86):**
+**2. State-Driven URL com onSuccess:**
+
+`onSuccess` é executado após o fetch da collection com o resultado disponível via `{{response}}`.
+Isso permite sincronizar os itens carregados no state global para uso fora da collection (ex: navegação).
+
 ```json
 {
   "type": "collection",
   "data": {
     "type": "action.http",
-    "url": "/api/gallery/courses?category={{state.selectedCategory}}"
+    "url": "/api/gallery/courses?category={{state.selectedCategory}}",
+    "onSuccess": {
+      "type": "action.state.patch",
+      "path": "courseList",
+      "value": "{{response}}"
+    }
   }
 }
 ```
 
-**3. Image with AspectRatio (linha 112):**
+**3. Navegação entre itens (course.next/prev):**
+
+Os intents `course.next` e `course.prev` navegam pela `courseList` no state usando expressões matemáticas com mod circular:
+
+```json
+{
+  "course.next": {
+    "handler": {
+      "type": "action.sequence",
+      "actions": [
+        {
+          "type": "action.state.patch",
+          "path": "selectedCourseIndex",
+          "value": "{{state.courseList.length > 1 ? (state.selectedCourseIndex + 1) % state.courseList.length : state.selectedCourseIndex}}"
+        },
+        {
+          "type": "action.state.patch",
+          "path": "selectedCourse",
+          "value": "{{state.courseList[(state.selectedCourseIndex + 1) % state.courseList.length]}}"
+        }
+      ]
+    }
+  }
+}
+```
+
+**4. Image with AspectRatio:**
 ```json
 {
   "type": "image",
@@ -2241,7 +2379,7 @@ PineUI é mobile-first por padrão. Use media queries CSS para customizar:
 }
 ```
 
-**4. Conditional Progress (linha 129):**
+**5. Conditional Progress:**
 ```json
 {
   "type": "conditionalRender",
@@ -2258,10 +2396,16 @@ PineUI é mobile-first por padrão. Use media queries CSS para customizar:
 
 **Fluxo de Filtro:**
 1. User clica chip "Design"
-2. Intent `category.select` dispara
-3. `state.selectedCategory` → "Design"
-4. URL resolve: `/api/courses?category=Design`
-5. Collection recarrega automaticamente
+2. Intent `category.select` dispara → `state.selectedCategory` → "Design"
+3. URL resolve: `/api/courses?category=Design`
+4. Collection recarrega → `onSuccess` salva itens em `state.courseList`
+
+**Fluxo de Navegação no Modal:**
+1. User clica em um card → Intent `course.open` dispara
+2. `state.selectedCourse` e `state.selectedCourseIndex` são setados
+3. Overlay `courseModal` abre com split-view (imagem + detalhes)
+4. User clica "→" → Intent `course.next` calcula próximo índice (circular)
+5. `state.selectedCourse` e `state.selectedCourseIndex` atualizam → UI re-renderiza
 
 **Ver código:** `/docs/demos/gallery/ui.json`
 

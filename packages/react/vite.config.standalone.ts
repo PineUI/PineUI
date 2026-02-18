@@ -24,6 +24,6 @@ export default defineConfig({
         globals: {},
       },
     },
-    minify: 'esbuild', // Use esbuild minification (built-in)
+    minify: 'esbuild',
   },
 });

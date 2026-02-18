@@ -4,19 +4,19 @@ import { RenderContext, ActionNode } from '../types';
 interface AvatarProps {
   src: string;
   size?: number;
-  onTap?: ActionNode;
+  onPress?: ActionNode;
   context?: RenderContext;
 }
 
 export const Avatar: React.FC<AvatarProps> = ({
   src,
   size = 40,
-  onTap,
+  onPress,
   context,
 }) => {
   const handleClick = async () => {
-    if (onTap && context) {
-      await context.executeAction(onTap);
+    if (onPress && context) {
+      await context.executeAction(onPress);
     }
   };
 
@@ -25,7 +25,7 @@ export const Avatar: React.FC<AvatarProps> = ({
     height: `${size}px`,
     borderRadius: '50%',
     objectFit: 'cover',
-    cursor: onTap ? 'pointer' : undefined,
+    cursor: onPress ? 'pointer' : undefined,
   };
 
   return (
@@ -34,7 +34,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       src={src}
       alt="Avatar"
       style={styles}
-      onClick={onTap ? handleClick : undefined}
+      onClick={onPress ? handleClick : undefined}
     />
   );
 };

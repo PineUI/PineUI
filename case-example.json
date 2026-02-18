@@ -189,7 +189,7 @@
         "type": "card",
         "elevation": 0,
         "padding": 16,
-        "onTap": {
+        "onPress": {
           "type": "intent.post.view",
           "postId": "{{props.post.id}}"
         },
@@ -206,7 +206,7 @@
                   "type": "avatar",
                   "src": "{{props.post.author.avatar}}",
                   "size": 48,
-                  "onTap": {
+                  "onPress": {
                     "type": "intent.profile.view",
                     "userId": "{{props.post.author.id}}"
                   }
@@ -383,7 +383,7 @@
                   "borderRadius": 12,
                   "loading": "lazy",
                   "alt": "{{props.media[0].alt}}",
-                  "onTap": {
+                  "onPress": {
                     "type": "intent.media.view",
                     "mediaUrl": "{{props.media[0].url}}",
                     "mediaType": "image"
@@ -397,7 +397,7 @@
                   "columns": 2,
                   "spacing": 4,
                   "aspectRatio": 1,
-                  "children": "{{props.media | map: (item) => { type: 'image', src: item.thumbnail, borderRadius: 8, onTap: { type: 'intent.media.view', mediaUrl: item.url } }}}"
+                  "children": "{{props.media | map: (item) => { type: 'image', src: item.thumbnail, borderRadius: 8, onPress: { type: 'intent.media.view', mediaUrl: item.url } }}}"
                 }
               },
               {

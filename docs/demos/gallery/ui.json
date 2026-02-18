@@ -3,7 +3,8 @@
   "state": {
     "selectedCategory": "All",
     "selectedCourseIndex": 0,
-    "courses": []
+    "selectedCourse": null,
+    "courseList": []
   },
   "intents": {
     "category.select": {
@@ -17,6 +18,11 @@
       "handler": {
         "type": "action.sequence",
         "actions": [
+          {
+            "type": "action.state.patch",
+            "path": "selectedCourse",
+            "value": "{{courseData}}"
+          },
           {
             "type": "action.state.patch",
             "path": "selectedCourseIndex",
@@ -37,26 +43,49 @@
     },
     "course.next": {
       "handler": {
-        "type": "action.state.patch",
-        "path": "selectedCourseIndex",
-        "value": "{{(state.selectedCourseIndex + 1) % state.courses.length}}"
+        "type": "action.sequence",
+        "actions": [
+          {
+            "type": "action.state.patch",
+            "path": "selectedCourseIndex",
+            "value": "{{state.courseList.length > 1 ? (state.selectedCourseIndex + 1) % state.courseList.length : state.selectedCourseIndex}}"
+          },
+          {
+            "type": "action.state.patch",
+            "path": "selectedCourse",
+            "value": "{{state.courseList.length > 1 ? state.courseList[(state.selectedCourseIndex + 1) % state.courseList.length] : state.selectedCourse}}"
+          }
+        ]
       }
     },
     "course.prev": {
       "handler": {
-        "type": "action.state.patch",
-        "path": "selectedCourseIndex",
-        "value": "{{state.selectedCourseIndex === 0 ? state.courses.length - 1 : state.selectedCourseIndex - 1}}"
+        "type": "action.sequence",
+        "actions": [
+          {
+            "type": "action.state.patch",
+            "path": "selectedCourseIndex",
+            "value": "{{state.courseList.length > 1 ? (state.selectedCourseIndex === 0 ? state.courseList.length - 1 : state.selectedCourseIndex - 1) : state.selectedCourseIndex}}"
+          },
+          {
+            "type": "action.state.patch",
+            "path": "selectedCourse",
+            "value": "{{state.courseList.length > 1 ? state.courseList[state.selectedCourseIndex === 0 ? state.courseList.length - 1 : state.selectedCourseIndex - 1] : state.selectedCourse}}"
+          }
+        ]
       }
     }
   },
   "overlays": {
     "courseModal": {
       "type": "modal",
-      "presentation": "modal",
+      "presentation": "fullscreen",
       "dismissible": true,
       "child": {
         "type": "layout.column",
+        "style": {
+          "height": "100%"
+        },
         "children": [
           {
             "type": "layout.row",
@@ -84,7 +113,8 @@
           {
             "type": "layout.row",
             "style": {
-              "minHeight": "calc(100vh - 80px)"
+              "flex": "1",
+              "overflow": "hidden"
             },
             "children": [
               {
@@ -129,7 +159,7 @@
                         "children": [
                           {
                             "type": "image",
-                            "src": "{{state.courses[state.selectedCourseIndex].image}}",
+                            "src": "{{state.selectedCourse.image}}",
                             "style": {
                               "borderRadius": "12px",
                               "width": "100%",
@@ -139,13 +169,13 @@
                           },
                           {
                             "type": "text",
-                            "content": "{{state.selectedCourseIndex + 1}} / {{state.courses.length}}",
-                            "style": "bodySmall",
-                            "color": "white",
+                            "content": "{{state.selectedCourseIndex + 1}} / {{state.courseList.length}}",
                             "align": "center",
                             "style": {
                               "marginTop": "16px",
-                              "color": "rgba(255,255,255,0.7)"
+                              "color": "rgba(255,255,255,0.7)",
+                              "fontSize": "14px",
+                              "textAlign": "center"
                             }
                           }
                         ]
@@ -180,17 +210,17 @@
                 "children": [
                   {
                     "type": "text",
-                    "content": "{{state.courses[state.selectedCourseIndex].title}}",
-                    "style": "headlineMedium"
+                    "content": "{{state.selectedCourse.title}}",
+                    "style": "titleLarge"
                   },
                   {
                     "type": "badge",
-                    "label": "{{state.courses[state.selectedCourseIndex].category}}",
-                    "color": "primary"
+                    "label": "{{state.selectedCourse.category}}",
+                    "color": "info"
                   },
                   {
                     "type": "text",
-                    "content": "Instructor: {{state.courses[state.selectedCourseIndex].instructor || 'Not specified'}}",
+                    "content": "Instructor: {{state.selectedCourse.instructor}}",
                     "style": "bodyLarge"
                   },
                   {
@@ -199,14 +229,14 @@
                   },
                   {
                     "type": "text",
-                    "content": "{{state.courses[state.selectedCourseIndex].description || 'Complete course covering all fundamentals and advanced topics. Perfect for beginners and intermediate learners looking to level up their skills.'}}",
+                    "content": "{{state.selectedCourse.description}}",
                     "style": "bodyMedium"
                   },
                   {
                     "type": "conditionalRender",
                     "conditions": [
                       {
-                        "when": "{{state.courses[state.selectedCourseIndex].progress > 0}}",
+                        "when": "{{state.selectedCourse.progress > 0}}",
                         "render": {
                           "type": "layout.column",
                           "spacing": 8,
@@ -217,12 +247,12 @@
                             {
                               "type": "text",
                               "content": "Your Progress",
-                              "style": "labelLarge"
+                              "style": "titleSmall"
                             },
                             {
                               "type": "progress",
-                              "value": "{{state.courses[state.selectedCourseIndex].progress}}",
-                              "label": "{{state.courses[state.selectedCourseIndex].progress}}% complete",
+                              "value": "{{state.selectedCourse.progress}}",
+                              "label": "{{state.selectedCourse.progress}}% complete",
                               "color": "primary"
                             }
                           ]
@@ -332,7 +362,7 @@
             "url": "/api/gallery/courses?category={{state.selectedCategory}}",
             "onSuccess": {
               "type": "action.state.patch",
-              "path": "courses",
+              "path": "courseList",
               "value": "{{response}}"
             }
           },
@@ -353,9 +383,10 @@
       "definition": {
         "type": "card",
         "elevation": 1,
-        "onTap": {
+        "onPress": {
           "intent": "course.open",
-          "courseIndex": "{{props.index}}"
+          "courseData": "{{item}}",
+          "courseIndex": "{{index}}"
         },
         "child": {
           "type": "layout.column",

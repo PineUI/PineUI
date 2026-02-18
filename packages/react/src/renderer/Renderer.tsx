@@ -11,12 +11,14 @@ import { Image } from '../components/Image';
 import { Avatar } from '../components/Avatar';
 import { Icon } from '../components/Icon';
 import { Collection } from '../components/Collection';
+import { CollectionMap } from '../components/CollectionMap';
 import { Scaffold } from '../components/Scaffold';
 import { AppBar } from '../components/AppBar';
 import { BottomNav } from '../components/BottomNav';
 import { Input } from '../components/Input';
 import { Divider } from '../components/Divider';
 import { ConditionalRender } from '../components/ConditionalRender';
+import { ConditionalMap } from '../components/ConditionalMap';
 import { Tabs } from '../components/Tabs';
 import { Badge } from '../components/Badge';
 import { Chip } from '../components/Chip';
@@ -29,6 +31,7 @@ const COMPONENT_MAP: Record<string, React.ComponentType<any>> = {
   'text': Text,
   'button.filled': Button,
   'button.text': Button,
+  'button.outlined': Button,
   'button.icon': Button,
   'button.fab': Button,
   'layout.column': Layout,
@@ -41,9 +44,15 @@ const COMPONENT_MAP: Record<string, React.ComponentType<any>> = {
   'avatar': Avatar,
   'icon': Icon,
   'collection': Collection,
+  'collection.map': CollectionMap,
   'input.text': Input,
+  'input.email': Input,
+  'input.password': Input,
+  'input.number': Input,
+  'input.search': Input,
   'divider': Divider,
   'conditionalRender': ConditionalRender,
+  'conditional.render': ConditionalMap,
   'tabs': Tabs,
   'badge': Badge,
   'chip': Chip,
@@ -71,6 +80,8 @@ export const Renderer: React.FC<RendererProps> = ({ node, context, parentData })
 
   // IMPORTANT: For Collection component, don't resolve bindings in itemTemplate
   // The Collection will handle item data directly
+  // collection.map DOES get resolved (data binding "{{state.xxx}}" needs to resolve),
+  // but {{item.*}} bindings in template are preserved by the item guard in resolveString
   const shouldResolveBindings = node.type !== 'collection';
 
   const resolvedNode = shouldResolveBindings

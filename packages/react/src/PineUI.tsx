@@ -15,6 +15,7 @@ import { SnackbarContainer, SnackbarMessage } from './components/Snackbar';
 import { ModalContainer } from './components/Modal';
 import { loadImports } from './loader/imports';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { resolveBindings } from './renderer/bindings';
 
 // Helper function to get nested values from objects
 function getNestedValue(obj: any, path: string): any {
@@ -111,18 +112,11 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
   };
 
   const executeAction = async (action: ActionNode, params?: any): Promise<void> => {
-    console.log('Executing action:', action, 'with params:', params);
-
-    // Resolve bindings in action using params
-    let resolvedAction = action;
-    if (params) {
-      const actionStr = JSON.stringify(action);
-      const resolvedStr = actionStr.replace(/\{\{([^}]+)\}\}/g, (_, key) => {
-        const trimmed = key.trim();
-        return params[trimmed] !== undefined ? String(params[trimmed]) : '';
-      });
-      resolvedAction = JSON.parse(resolvedStr);
+    // Resolve bindings in action using state + params as context
+    if (action.type === 'action.sequence' || (action.intent && action.intent.startsWith('course'))) {
+      console.log(`[executeAction] type=${action.intent || action.type}, courseList.length=${state.courseList?.length ?? 'N/A'}, selectedCourseIndex=${state.selectedCourseIndex}`);
     }
+    const resolvedAction = resolveBindings(action, { state, ...params }) as ActionNode;
 
     // Handle intent (new syntax with "intent" field)
     if (resolvedAction.intent) {
@@ -130,6 +124,14 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
       const intentParams = { ...params, ...resolvedAction };
       delete intentParams.intent;
       return executeIntent(intentName, intentParams);
+    }
+
+    // Handle { "type": "intent", "name": "xxx" } syntax
+    if (resolvedAction.type === 'intent' && resolvedAction.name) {
+      const intentParams = { ...params, ...resolvedAction };
+      delete intentParams.type;
+      delete intentParams.name;
+      return executeIntent(resolvedAction.name, intentParams);
     }
 
     // Handle legacy intent.* type syntax (backwards compatibility)
@@ -160,6 +162,10 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
       }
 
       case 'action.state.patch': {
+        const patchValue = resolvedAction.value;
+        console.log(`[patch] ${resolvedAction.path} =`, typeof patchValue === 'object' && patchValue !== null
+          ? (Array.isArray(patchValue) ? `Array(${patchValue.length})` : `{id: ${patchValue?.id}, title: ${patchValue?.title}}`)
+          : patchValue);
         setState((prev) => {
           const newState = { ...prev };
           setNestedValue(newState, resolvedAction.path, resolvedAction.value);
@@ -225,6 +231,13 @@ export const PineUI: React.FC<PineUIProps> = ({ schema: initialSchema, schemaUrl
       case 'action.delay': {
         const duration = resolvedAction.duration || 1000;
         await new Promise(resolve => setTimeout(resolve, duration));
+        break;
+      }
+
+      case 'action.sequence': {
+        for (const step of resolvedAction.actions ?? []) {
+          await executeAction(step, params);
+        }
         break;
       }
 

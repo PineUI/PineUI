@@ -18,6 +18,16 @@ interface CollectionProps {
   renderer?: React.ComponentType<any>;
 }
 
+/** Substitui recursivamente a string literal "{{response}}" pelo valor real dos itens. */
+function substituteResponseBinding(node: any, items: any[]): any {
+  if (node === '{{response}}') return items;
+  if (typeof node !== 'object' || node === null) return node;
+  if (Array.isArray(node)) return node.map(n => substituteResponseBinding(n, items));
+  return Object.fromEntries(
+    Object.entries(node).map(([k, v]) => [k, substituteResponseBinding(v, items)])
+  );
+}
+
 export const Collection: React.FC<CollectionProps> = ({
   id,
   layout = 'list',
@@ -39,9 +49,24 @@ export const Collection: React.FC<CollectionProps> = ({
   const [hasMore, setHasMore] = useState(true);
   const [cursor, setCursor] = useState<string | null>(null);
 
+  // Resolve URL bindings to a string key — only changes when URL params change.
+  // Using this instead of context?.state prevents infinite loops when onSuccess
+  // updates state fields that are not part of the URL (e.g. state.courses).
+  const fetchKey = dataAction.type === 'action.http' && context
+    ? dataAction.url.replace(/\{\{state\.([^}]+)\}\}/g, (_: string, path: string) => {
+        const keys = path.split('.');
+        let value: any = context.state;
+        for (const key of keys) {
+          if (value == null) return '';
+          value = value[key];
+        }
+        return value != null ? String(value) : '';
+      })
+    : '';
+
   useEffect(() => {
     loadData();
-  }, [context?.state]); // Reload when state changes
+  }, [fetchKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadData = async (append = false) => {
     if (!context) return;
@@ -50,7 +75,6 @@ export const Collection: React.FC<CollectionProps> = ({
       append ? setLoadingMore(true) : setLoading(true);
       setError(null);
 
-      // Execute data action
       if (dataAction.type === 'action.http') {
         let url = dataAction.url;
 
@@ -77,12 +101,22 @@ export const Collection: React.FC<CollectionProps> = ({
         const newItems = result.data || result;
         setItems(prev => append ? [...prev, ...newItems] : newItems);
 
+        // Execute onSuccess to sync items into global state
+        if (dataAction.onSuccess && context) {
+          console.log(`[Collection] onSuccess called with ${newItems.length} items`);
+          // Pre-resolve {{response}} before calling executeAction.
+          // The params-based binding resolution is unreliable inside async closures;
+          // substituting the value directly is the safest approach.
+          const resolvedOnSuccess = substituteResponseBinding(dataAction.onSuccess, newItems);
+          await context.executeAction(resolvedOnSuccess);
+          console.log(`[Collection] onSuccess done`);
+        }
+
         // Handle pagination
         if (result.pagination) {
           setHasMore(result.pagination.hasMore);
           setCursor(result.pagination.cursor);
         } else {
-          // Se não retornou pagination, assume que é dataset completo (sem paginação)
           setHasMore(false);
         }
       }
@@ -130,55 +164,10 @@ export const Collection: React.FC<CollectionProps> = ({
         } : undefined}
       >
         {items.map((item, index) => {
-          // If itemTemplate is a pattern with {{item}} binding, resolve it directly
-          let template = itemTemplate;
-
-          if (itemTemplate.type?.startsWith('pattern.') && itemTemplate.props?.post === '{{item}}') {
-            // Pass item data directly as props.post
-            template = {
-              ...itemTemplate,
-              props: {
-                ...itemTemplate.props,
-                post: item
-              }
-            };
-          } else if (itemTemplate.type?.startsWith('pattern.') && itemTemplate.props?.course === '{{item}}') {
-            template = {
-              ...itemTemplate,
-              props: {
-                ...itemTemplate.props,
-                course: item
-              }
-            };
-          } else if (itemTemplate.type?.startsWith('pattern.') && itemTemplate.props?.conversation === '{{item}}') {
-            template = {
-              ...itemTemplate,
-              props: {
-                ...itemTemplate.props,
-                conversation: item
-              }
-            };
-          } else if (itemTemplate.type?.startsWith('pattern.') && itemTemplate.props?.message === '{{item}}') {
-            template = {
-              ...itemTemplate,
-              props: {
-                ...itemTemplate.props,
-                message: item
-              }
-            };
-          } else if (itemTemplate.type?.startsWith('pattern.') && itemTemplate.props?.profile === '{{item}}') {
-            template = {
-              ...itemTemplate,
-              props: {
-                ...itemTemplate.props,
-                profile: item
-              }
-            };
-          }
-
+          const itemContext = { ...context, item, index };
           return (
             <div key={item.id || index} className={`pineui-collection__item ${layout === 'grid' ? 'pineui-collection__item--grid' : ''}`}>
-              <Renderer node={template} context={context} parentData={item} />
+              <Renderer node={itemTemplate} context={itemContext} />
             </div>
           );
         })}

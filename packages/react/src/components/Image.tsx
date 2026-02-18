@@ -8,7 +8,7 @@ interface ImageProps {
   aspectRatio?: number | string;
   borderRadius?: number;
   loading?: 'eager' | 'lazy';
-  onTap?: ActionNode;
+  onPress?: ActionNode;
   context?: RenderContext;
 }
 
@@ -18,12 +18,12 @@ export const Image: React.FC<ImageProps> = ({
   aspectRatio,
   borderRadius = 0,
   loading = 'lazy',
-  onTap,
+  onPress,
   context,
 }) => {
   const handleClick = async () => {
-    if (onTap && context) {
-      await context.executeAction(onTap);
+    if (onPress && context) {
+      await context.executeAction(onPress);
     }
   };
 
@@ -32,7 +32,7 @@ export const Image: React.FC<ImageProps> = ({
     aspectRatio: typeof aspectRatio === 'number' ? aspectRatio : aspectRatio,
     borderRadius: `${borderRadius}px`,
     objectFit: 'cover',
-    cursor: onTap ? 'pointer' : undefined,
+    cursor: onPress ? 'pointer' : undefined,
   };
 
   return (
@@ -42,7 +42,7 @@ export const Image: React.FC<ImageProps> = ({
       alt={alt}
       loading={loading}
       style={styles}
-      onClick={onTap ? handleClick : undefined}
+      onClick={onPress ? handleClick : undefined}
     />
   );
 };
