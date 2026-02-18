@@ -353,7 +353,7 @@
       "definition": {
         "type": "card",
         "elevation": 1,
-        "onPress": {
+        "onTap": {
           "intent": "course.open",
           "courseIndex": "{{props.index}}"
         },
