@@ -30,17 +30,27 @@ function resolveString(str: string, context: any): any {
   if (isFullBinding) {
     const expr = str.slice(2, -2).trim();
 
-    // Keep binding unresolved if it references context vars not yet available.
-    // Use word-boundary check so expressions like {{state.tasks.map(t => t.id === item.id ? {...})}}
-    // are preserved as strings when item isn't in context, instead of silently returning undefined.
+    // Keep bindings unresolved when they reference context vars not yet available.
+    // Using word-boundary checks so mixed expressions like
+    //   {{state.tasks.map(t => t.id === item.id ? {...t} : t)}}
+    // are preserved as strings (instead of silently becoming undefined) until
+    // the variable is injected into context at the right time.
+
+    // `item` — injected per-item by collection.map
     const hasItemRef = expr === 'item' || expr.startsWith('item.') || /\bitem\b/.test(expr);
     if (hasItemRef && (!('item' in context) || context.item === undefined)) {
       return str;
     }
+    // `event` — injected at interaction time (Input onChange, etc.)
+    const hasEventRef = expr === 'event' || expr.startsWith('event.') || /\bevent\b/.test(expr);
+    if (hasEventRef && !('event' in context)) {
+      return str;
+    }
+    // `props` — injected for component definitions
     if ((expr === 'props' || expr.startsWith('props.')) && (!('props' in context) || context.props === undefined)) {
       return str;
     }
-    // 'response' só existe no momento do fetch (Collection.onSuccess) — preservar fora desse contexto
+    // `response` — injected inside Collection.onSuccess
     if ((expr === 'response' || expr.startsWith('response.')) && !('response' in context)) {
       return str;
     }

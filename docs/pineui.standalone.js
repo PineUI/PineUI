@@ -6995,6 +6995,10 @@
       if (hasItemRef && (!("item" in context) || context.item === void 0)) {
         return str;
       }
+      const hasEventRef = expr === "event" || expr.startsWith("event.") || /\bevent\b/.test(expr);
+      if (hasEventRef && !("event" in context)) {
+        return str;
+      }
       if ((expr === "props" || expr.startsWith("props.")) && (!("props" in context) || context.props === void 0)) {
         return str;
       }
@@ -8375,7 +8379,7 @@
       render
     };
   }
-  console.log("%c🍍 PineUI v0.1.6%c — Server-Driven UI for AI-Native Apps", "color:#6750A4;font-weight:700;font-size:14px", "color:#79747E;font-size:12px");
+  console.log("%c🍍 PineUI v0.1.7%c — Server-Driven UI for AI-Native Apps", "color:#6750A4;font-weight:700;font-size:14px", "color:#79747E;font-size:12px");
   exports2.PineUI = PineUI;
   exports2.render = render;
   Object.defineProperty(exports2, Symbol.toStringTag, { value: "Module" });

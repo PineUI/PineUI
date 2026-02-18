@@ -1,6 +1,6 @@
 {
   "name": "@pineui/react",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Server-Driven UI framework for AI-native applications. Build dynamic, multi-platform interfaces from JSON schemas.",
   "keywords": [
     "server-driven-ui",
