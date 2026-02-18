@@ -440,6 +440,19 @@ Renders an array already in state (no HTTP call).
 }
 ```
 
+**Filtering with state:** the `data` expression is re-evaluated on every state change, so you can inline `.filter()` to react to state:
+
+```json
+{
+  "type": "collection.map",
+  "data": "{{state.selectedCategory == 'All' ? state.tasks : state.tasks.filter(t => t.category == state.selectedCategory)}}",
+  "template": { ... }
+}
+```
+
+> ⚠️ `"data": "{{state.tasks}}"` always returns ALL items — it ignores any filter state.
+> The filter **must** be part of the `data` expression itself.
+
 | | `collection` | `collection.map` |
 |---|---|---|
 | Data source | HTTP (action.http) | State (`{{state.xxx}}`) |
