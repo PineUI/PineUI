@@ -1,420 +1,74 @@
 {
   "schemaVersion": "1.0.0",
-  "screen": {
-    "id": "home_feed",
-    "type": "layout.scaffold",
-    "appBar": {
-      "type": "layout.appBar",
-      "title": {
-        "type": "text",
-        "content": "Home",
-        "style": "titleLarge"
-      },
-      "leading": {
-        "type": "button.icon",
-        "icon": "menu",
-        "onPress": {
-          "type": "intent.navigation.openDrawer"
-        }
-      },
-      "actions": [
-        {
-          "type": "button.icon",
-          "icon": "notifications",
-          "badge": 3,
-          "onPress": {
-            "type": "intent.navigation.navigate",
-            "destination": "notifications"
-          }
-        }
-      ]
+  "state": {
+    "activeTab": "home",
+    "currentUser": {
+      "id": "user_1",
+      "username": "mariasilva",
+      "displayName": "Maria Silva",
+      "avatar": "https://i.pravatar.cc/150?img=5"
     },
-    "body": {
-      "type": "layout.column",
-      "children": [
-        {
-          "type": "collection",
-          "id": "feed_posts",
-          "layout": "list",
-          "virtualized": true,
-          "itemSpacing": 0,
-          "divider": {
-            "type": "divider",
-            "thickness": 1,
-            "color": "surfaceVariant"
-          },
-          "data": {
-            "type": "action.http",
-            "method": "GET",
-            "url": "/api/feed",
-            "pagination": {
-              "type": "cursor",
-              "cursorParam": "after",
-              "limitParam": "limit",
-              "limit": 20
-            },
-            "cache": {
-              "strategy": "stale-while-revalidate",
-              "ttl": 300
-            }
-          },
-          "itemTemplate": {
-            "type": "pattern.postCard",
-            "props": {
-              "post": "{{item}}"
-            }
-          },
-          "loadingState": {
-            "type": "layout.column",
-            "children": [
-              {
-                "type": "pattern.postCard.skeleton",
-                "count": 3
-              }
-            ]
-          },
-          "emptyState": {
-            "type": "layout.column",
-            "mainAxisAlignment": "center",
-            "crossAxisAlignment": "center",
-            "padding": 32,
-            "children": [
-              {
-                "type": "image",
-                "src": "/assets/empty-feed.svg",
-                "width": 200,
-                "height": 200
-              },
-              {
-                "type": "text",
-                "content": "Seu feed está vazio",
-                "style": "headlineSmall",
-                "color": "onSurfaceVariant"
-              },
-              {
-                "type": "text",
-                "content": "Siga pessoas para ver posts aqui",
-                "style": "bodyMedium",
-                "color": "onSurfaceVariant"
-              },
-              {
-                "type": "button.filled",
-                "label": "Descobrir pessoas",
-                "onPress": {
-                  "type": "intent.navigation.navigate",
-                  "destination": "discover"
-                }
-              }
-            ]
-          },
-          "errorState": {
-            "type": "layout.column",
-            "mainAxisAlignment": "center",
-            "crossAxisAlignment": "center",
-            "padding": 32,
-            "children": [
-              {
-                "type": "text",
-                "content": "Erro ao carregar feed",
-                "style": "titleMedium",
-                "color": "error"
-              },
-              {
-                "type": "button.text",
-                "label": "Tentar novamente",
-                "onPress": {
-                  "type": "action.collection.retry",
-                  "collectionId": "feed_posts"
-                }
-              }
-            ]
-          },
-          "refreshable": true,
-          "onRefresh": {
-            "type": "action.collection.refresh",
-            "collectionId": "feed_posts"
-          }
-        }
-      ]
-    },
-    "floatingActionButton": {
-      "type": "button.fab",
-      "icon": "add",
-      "label": "Novo post",
-      "onPress": {
-        "type": "intent.post.compose"
-      }
-    },
-    "bottomNavigationBar": {
-      "type": "layout.bottomNav",
-      "currentIndex": 0,
-      "items": [
-        {
-          "icon": "home",
-          "label": "Home",
-          "destination": "home"
-        },
-        {
-          "icon": "search",
-          "label": "Buscar",
-          "destination": "search"
-        },
-        {
-          "icon": "notifications",
-          "label": "Notificações",
-          "badge": 3,
-          "destination": "notifications"
-        },
-        {
-          "icon": "mail",
-          "label": "Mensagens",
-          "destination": "messages"
-        },
-        {
-          "icon": "person",
-          "label": "Perfil",
-          "destination": "profile"
-        }
-      ],
-      "onItemTap": {
-        "type": "intent.navigation.navigate",
-        "destination": "{{item.destination}}"
-      }
+    "composer": {
+      "text": "",
+      "posting": false
     }
   },
-  "patterns": {
-    "postCard": {
-      "type": "pattern.postCard",
-      "definition": {
-        "type": "card",
-        "elevation": 0,
-        "padding": 16,
-        "onPress": {
-          "type": "intent.post.view",
-          "postId": "{{props.post.id}}"
-        },
-        "child": {
-          "type": "layout.column",
-          "spacing": 12,
-          "children": [
-            {
-              "type": "layout.row",
-              "spacing": 12,
-              "crossAxisAlignment": "start",
-              "children": [
-                {
-                  "type": "avatar",
-                  "src": "{{props.post.author.avatar}}",
-                  "size": 48,
-                  "onPress": {
-                    "type": "intent.profile.view",
-                    "userId": "{{props.post.author.id}}"
-                  }
-                },
-                {
-                  "type": "layout.column",
-                  "flex": 1,
-                  "spacing": 4,
-                  "children": [
-                    {
-                      "type": "layout.row",
-                      "mainAxisAlignment": "spaceBetween",
-                      "children": [
-                        {
-                          "type": "layout.row",
-                          "spacing": 4,
-                          "children": [
-                            {
-                              "type": "text",
-                              "content": "{{props.post.author.displayName}}",
-                              "style": "titleSmall",
-                              "fontWeight": "bold"
-                            },
-                            {
-                              "type": "icon",
-                              "name": "verified",
-                              "size": 16,
-                              "color": "primary",
-                              "visible": "{{props.post.author.verified}}"
-                            },
-                            {
-                              "type": "text",
-                              "content": "@{{props.post.author.username}}",
-                              "style": "bodySmall",
-                              "color": "onSurfaceVariant"
-                            },
-                            {
-                              "type": "text",
-                              "content": "·",
-                              "style": "bodySmall",
-                              "color": "onSurfaceVariant"
-                            },
-                            {
-                              "type": "text",
-                              "content": "{{props.post.createdAt | timeAgo}}",
-                              "style": "bodySmall",
-                              "color": "onSurfaceVariant"
-                            }
-                          ]
-                        },
-                        {
-                          "type": "button.icon",
-                          "icon": "moreVert",
-                          "size": "small",
-                          "onPress": {
-                            "type": "intent.post.openMenu",
-                            "postId": "{{props.post.id}}"
-                          }
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "content": "{{props.post.content.text}}",
-                      "style": "bodyMedium",
-                      "linkify": true,
-                      "maxLines": null
-                    },
-                    {
-                      "type": "pattern.postMedia",
-                      "props": {
-                        "media": "{{props.post.media}}"
-                      },
-                      "visible": "{{props.post.media != null}}"
-                    },
-                    {
-                      "type": "layout.row",
-                      "mainAxisAlignment": "spaceBetween",
-                      "spacing": 16,
-                      "children": [
-                        {
-                          "type": "button.icon",
-                          "icon": "chatBubbleOutline",
-                          "size": "small",
-                          "color": "onSurfaceVariant",
-                          "label": "{{props.post.metrics.comments}}",
-                          "onPress": {
-                            "type": "intent.post.comment",
-                            "postId": "{{props.post.id}}"
-                          }
-                        },
-                        {
-                          "type": "button.icon",
-                          "icon": "repeat",
-                          "size": "small",
-                          "color": "{{props.post.userActions.retweeted ? 'success' : 'onSurfaceVariant'}}",
-                          "label": "{{props.post.metrics.retweets}}",
-                          "onPress": {
-                            "type": "intent.post.retweet",
-                            "postId": "{{props.post.id}}"
-                          }
-                        },
-                        {
-                          "type": "button.icon",
-                          "icon": "{{props.post.userActions.liked ? 'favorite' : 'favoriteBorder'}}",
-                          "size": "small",
-                          "color": "{{props.post.userActions.liked ? 'error' : 'onSurfaceVariant'}}",
-                          "label": "{{props.post.metrics.likes}}",
-                          "haptic": "light",
-                          "animation": "heartBeat",
-                          "onPress": {
-                            "type": "intent.post.like",
-                            "postId": "{{props.post.id}}",
-                            "optimistic": {
-                              "type": "action.state.patch",
-                              "path": "props.post.userActions.liked",
-                              "value": "{{!props.post.userActions.liked}}",
-                              "rollbackOnError": true
-                            }
-                          }
-                        },
-                        {
-                          "type": "button.icon",
-                          "icon": "{{props.post.userActions.bookmarked ? 'bookmark' : 'bookmarkBorder'}}",
-                          "size": "small",
-                          "color": "onSurfaceVariant",
-                          "onPress": {
-                            "type": "intent.post.bookmark",
-                            "postId": "{{props.post.id}}",
-                            "optimistic": {
-                              "type": "action.state.patch",
-                              "path": "props.post.userActions.bookmarked",
-                              "value": "{{!props.post.userActions.bookmarked}}",
-                              "rollbackOnError": true
-                            }
-                          }
-                        },
-                        {
-                          "type": "button.icon",
-                          "icon": "iosShare",
-                          "size": "small",
-                          "color": "onSurfaceVariant",
-                          "onPress": {
-                            "type": "intent.post.share",
-                            "postId": "{{props.post.id}}"
-                          }
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
+  "intents": {
+    "post.compose": {
+      "handler": {
+        "type": "action.overlay.open",
+        "overlayId": "composer"
       }
     },
-    "postMedia": {
-      "type": "pattern.postMedia",
-      "definition": {
-        "type": "layout.column",
-        "spacing": 8,
-        "children": [
+    "post.like": {
+      "handler": {
+        "type": "action.http",
+        "method": "POST",
+        "url": "/api/posts/{{postId}}/like"
+      }
+    },
+    "composer.updateText": {
+      "handler": {
+        "type": "action.state.patch",
+        "path": "composer.text",
+        "value": "{{text}}"
+      }
+    },
+    "composer.post": {
+      "handler": {
+        "type": "action.sequence",
+        "actions": [
           {
-            "type": "conditionalRender",
-            "conditions": [
-              {
-                "when": "{{props.media.length == 1 && props.media[0].type == 'image'}}",
-                "render": {
-                  "type": "image",
-                  "src": "{{props.media[0].url}}",
-                  "thumbnail": "{{props.media[0].thumbnail}}",
-                  "aspectRatio": "{{props.media[0].width / props.media[0].height}}",
-                  "borderRadius": 12,
-                  "loading": "lazy",
-                  "alt": "{{props.media[0].alt}}",
-                  "onPress": {
-                    "type": "intent.media.view",
-                    "mediaUrl": "{{props.media[0].url}}",
-                    "mediaType": "image"
-                  }
-                }
-              },
-              {
-                "when": "{{props.media.length > 1}}",
-                "render": {
-                  "type": "layout.grid",
-                  "columns": 2,
-                  "spacing": 4,
-                  "aspectRatio": 1,
-                  "children": "{{props.media | map: (item) => { type: 'image', src: item.thumbnail, borderRadius: 8, onPress: { type: 'intent.media.view', mediaUrl: item.url } }}}"
-                }
-              },
-              {
-                "when": "{{props.media[0].type == 'video'}}",
-                "render": {
-                  "type": "video",
-                  "src": "{{props.media[0].url}}",
-                  "thumbnail": "{{props.media[0].thumbnail}}",
-                  "aspectRatio": "16:9",
-                  "borderRadius": 12,
-                  "controls": true,
-                  "autoplay": false,
-                  "muted": true,
-                  "loop": true
-                }
-              }
-            ]
+            "type": "action.state.patch",
+            "path": "composer.posting",
+            "value": true
+          },
+          {
+            "type": "action.http",
+            "method": "POST",
+            "url": "/api/posts",
+            "body": {
+              "text": "{{state.composer.text}}"
+            }
+          },
+          {
+            "type": "action.state.patch",
+            "path": "composer.text",
+            "value": ""
+          },
+          {
+            "type": "action.state.patch",
+            "path": "composer.posting",
+            "value": false
+          },
+          {
+            "type": "action.overlay.close",
+            "overlayId": "composer"
+          },
+          {
+            "type": "action.snackbar.show",
+            "message": "Post criado com sucesso!",
+            "duration": 3000
           }
         ]
       }
@@ -422,7 +76,7 @@
   },
   "overlays": {
     "composer": {
-      "type": "overlay.modal",
+      "type": "modal",
       "presentation": "bottomSheet",
       "dismissible": true,
       "child": {
@@ -445,38 +99,9 @@
               {
                 "type": "button.filled",
                 "label": "Postar",
-                "enabled": "{{state.composer.text.length > 0 && state.composer.text.length <= 280}}",
-                "loading": "{{state.composer.posting}}",
+                "disabled": "{{state.composer.text.length === 0}}",
                 "onPress": {
-                  "type": "intent.post.create",
-                  "content": {
-                    "text": "{{state.composer.text}}",
-                    "media": "{{state.composer.media}}"
-                  },
-                  "onSuccess": [
-                    {
-                      "type": "action.overlay.close",
-                      "overlayId": "composer"
-                    },
-                    {
-                      "type": "action.collection.refresh",
-                      "collectionId": "feed_posts"
-                    },
-                    {
-                      "type": "action.snackbar.show",
-                      "message": "Post criado com sucesso!",
-                      "duration": 3000
-                    }
-                  ],
-                  "onError": {
-                    "type": "action.snackbar.show",
-                    "message": "Erro ao criar post. Tente novamente.",
-                    "duration": 5000,
-                    "action": {
-                      "label": "Tentar novamente",
-                      "onPress": "{{retry}}"
-                    }
-                  }
+                  "intent": "composer.post"
                 }
               }
             ]
@@ -493,8 +118,8 @@
               },
               {
                 "type": "layout.column",
-                "flex": 1,
-                "spacing": 12,
+                "spacing": 8,
+                "style": { "flex": "1" },
                 "children": [
                   {
                     "type": "input.text",
@@ -505,75 +130,16 @@
                     "maxLength": 280,
                     "autofocus": true,
                     "value": "{{state.composer.text}}",
-                    "onChanged": {
-                      "type": "action.state.patch",
-                      "path": "state.composer.text",
-                      "value": "{{value}}"
+                    "onChange": {
+                      "intent": "composer.updateText",
+                      "text": "{{event.value}}"
                     }
                   },
                   {
-                    "type": "pattern.mediaPreview",
-                    "props": {
-                      "media": "{{state.composer.media}}"
-                    },
-                    "visible": "{{state.composer.media != null}}"
-                  },
-                  {
-                    "type": "layout.row",
-                    "mainAxisAlignment": "spaceBetween",
-                    "children": [
-                      {
-                        "type": "layout.row",
-                        "spacing": 8,
-                        "children": [
-                          {
-                            "type": "button.icon",
-                            "icon": "image",
-                            "color": "primary",
-                            "onPress": {
-                              "type": "action.media.pick",
-                              "mediaType": "image",
-                              "multiple": true,
-                              "maxFiles": 4,
-                              "onSelected": {
-                                "type": "action.state.patch",
-                                "path": "state.composer.media",
-                                "value": "{{files}}"
-                              }
-                            }
-                          },
-                          {
-                            "type": "button.icon",
-                            "icon": "videocam",
-                            "color": "primary",
-                            "onPress": {
-                              "type": "action.media.pick",
-                              "mediaType": "video",
-                              "maxFiles": 1,
-                              "onSelected": {
-                                "type": "action.state.patch",
-                                "path": "state.composer.media",
-                                "value": "{{files}}"
-                              }
-                            }
-                          },
-                          {
-                            "type": "button.icon",
-                            "icon": "public",
-                            "color": "primary",
-                            "onPress": {
-                              "type": "intent.composer.changeVisibility"
-                            }
-                          }
-                        ]
-                      },
-                      {
-                        "type": "text",
-                        "content": "{{state.composer.text.length}}/280",
-                        "style": "bodySmall",
-                        "color": "{{state.composer.text.length > 280 ? 'error' : 'onSurfaceVariant'}}"
-                      }
-                    ]
+                    "type": "text",
+                    "content": "{{state.composer.text.length}}/280",
+                    "style": "bodySmall",
+                    "color": "{{state.composer.text.length > 260 ? '#ba1a1a' : '#79747e'}}"
                   }
                 ]
               }
@@ -583,63 +149,238 @@
       }
     }
   },
-  "intents": {
-    "post.compose": {
-      "handler": {
-        "type": "action.overlay.open",
-        "overlayId": "composer"
-      }
-    },
-    "post.like": {
-      "handler": {
-        "type": "action.http",
-        "method": "POST",
-        "url": "/api/posts/{{postId}}/like",
-        "telemetry": {
-          "event": "post.liked",
-          "properties": {
-            "postId": "{{postId}}"
-          }
-        }
-      }
-    },
-    "post.view": {
-      "handler": {
-        "type": "action.navigation.push",
-        "screen": "post_detail",
-        "params": {
-          "postId": "{{postId}}"
-        },
-        "telemetry": {
-          "event": "post.viewed",
-          "properties": {
-            "postId": "{{postId}}"
-          }
-        }
-      }
-    },
-    "profile.view": {
-      "handler": {
-        "type": "action.navigation.push",
-        "screen": "user_profile",
-        "params": {
-          "userId": "{{userId}}"
-        },
-        "telemetry": {
-          "event": "profile.viewed",
-          "properties": {
-            "userId": "{{userId}}"
-          }
+  "components": {
+    "component.postCard": {
+      "definition": {
+        "type": "card",
+        "elevation": 0,
+        "padding": 16,
+        "child": {
+          "type": "layout.column",
+          "spacing": 12,
+          "children": [
+            {
+              "type": "layout.row",
+              "spacing": 12,
+              "crossAxisAlignment": "start",
+              "children": [
+                {
+                  "type": "avatar",
+                  "src": "{{props.post.author.avatar}}",
+                  "size": 48
+                },
+                {
+                  "type": "layout.column",
+                  "spacing": 4,
+                  "style": { "flex": "1" },
+                  "children": [
+                    {
+                      "type": "layout.row",
+                      "spacing": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "content": "{{props.post.author.displayName}}",
+                          "style": "titleSmall",
+                          "fontWeight": "bold"
+                        },
+                        {
+                          "type": "text",
+                          "content": "@{{props.post.author.username}}",
+                          "style": "bodySmall",
+                          "color": "#79747e"
+                        },
+                        {
+                          "type": "text",
+                          "content": "· {{props.post.createdAt | timeAgo}}",
+                          "style": "bodySmall",
+                          "color": "#79747e"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "content": "{{props.post.content.text}}",
+                      "style": "bodyMedium"
+                    },
+                    {
+                      "type": "conditionalRender",
+                      "conditions": [
+                        {
+                          "when": "{{props.post.media != null}}",
+                          "render": {
+                            "type": "image",
+                            "src": "{{props.post.media[0].url}}",
+                            "borderRadius": 12,
+                            "aspectRatio": 1.78,
+                            "style": { "width": "100%", "marginTop": "8px" }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "layout.row",
+                      "spacing": 24,
+                      "style": { "marginTop": "4px" },
+                      "children": [
+                        {
+                          "type": "button.icon",
+                          "icon": "💬",
+                          "label": "{{props.post.metrics.comments}}",
+                          "onPress": {
+                            "type": "action.snackbar.show",
+                            "message": "Comentários em breve!"
+                          }
+                        },
+                        {
+                          "type": "button.icon",
+                          "icon": "{{props.post.userActions.liked ? '❤️' : '🤍'}}",
+                          "label": "{{props.post.metrics.likes}}",
+                          "color": "{{props.post.userActions.liked ? 'error' : 'onSurfaceVariant'}}",
+                          "onPress": {
+                            "intent": "post.like",
+                            "postId": "{{props.post.id}}"
+                          }
+                        },
+                        {
+                          "type": "button.icon",
+                          "icon": "↗️",
+                          "onPress": {
+                            "type": "action.snackbar.show",
+                            "message": "Compartilhar em breve!"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       }
     }
   },
-  "telemetry": {
-    "screenView": {
-      "event": "screen.viewed",
-      "properties": {
-        "screenId": "home_feed",
-        "timestamp": "{{now}}"
+  "screen": {
+    "type": "layout.scaffold",
+    "appBar": {
+      "title": "Home",
+      "actions": [
+        {
+          "type": "button.icon",
+          "icon": "🔍",
+          "onPress": {
+            "type": "action.snackbar.show",
+            "message": "Busca em breve!"
+          }
+        }
+      ]
+    },
+    "body": {
+      "type": "layout.column",
+      "children": [
+        {
+          "type": "collection",
+          "layout": "list",
+          "itemSpacing": 0,
+          "data": {
+            "type": "action.http",
+            "method": "GET",
+            "url": "/api/feed"
+          },
+          "itemTemplate": {
+            "type": "component.postCard",
+            "props": {
+              "post": "{{item}}"
+            }
+          },
+          "loadingState": {
+            "type": "layout.column",
+            "padding": 32,
+            "crossAxisAlignment": "center",
+            "children": [
+              {
+                "type": "text",
+                "content": "Carregando feed...",
+                "style": "bodyMedium",
+                "color": "#79747e"
+              }
+            ]
+          },
+          "emptyState": {
+            "type": "layout.column",
+            "mainAxisAlignment": "center",
+            "crossAxisAlignment": "center",
+            "padding": 32,
+            "spacing": 16,
+            "children": [
+              {
+                "type": "text",
+                "content": "😶",
+                "style": "headlineLarge",
+                "align": "center"
+              },
+              {
+                "type": "text",
+                "content": "Seu feed está vazio",
+                "style": "headlineSmall",
+                "align": "center",
+                "color": "#49454f"
+              },
+              {
+                "type": "text",
+                "content": "Siga pessoas para ver posts aqui",
+                "style": "bodyMedium",
+                "align": "center",
+                "color": "#79747e"
+              }
+            ]
+          },
+          "errorState": {
+            "type": "layout.column",
+            "mainAxisAlignment": "center",
+            "crossAxisAlignment": "center",
+            "padding": 32,
+            "spacing": 16,
+            "children": [
+              {
+                "type": "text",
+                "content": "Erro ao carregar feed",
+                "style": "titleMedium",
+                "color": "#ba1a1a"
+              },
+              {
+                "type": "button.text",
+                "label": "Tentar novamente",
+                "onPress": {
+                  "type": "action.snackbar.show",
+                  "message": "Recarregando..."
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "floatingActionButton": {
+      "icon": "✏️",
+      "onPress": {
+        "intent": "post.compose"
+      }
+    },
+    "bottomNav": {
+      "items": [
+        { "label": "Home", "icon": "🏠", "tab": "home" },
+        { "label": "Buscar", "icon": "🔍", "tab": "search" },
+        { "label": "Notificações", "icon": "🔔", "tab": "notifications" },
+        { "label": "Mensagens", "icon": "✉️", "tab": "messages" },
+        { "label": "Perfil", "icon": "👤", "tab": "profile" }
+      ],
+      "activeTab": "{{state.activeTab}}",
+      "onTabChange": {
+        "type": "action.state.patch",
+        "path": "activeTab",
+        "value": "{{tab}}"
       }
     }
   }

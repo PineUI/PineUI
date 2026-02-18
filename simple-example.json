@@ -1,5 +1,8 @@
 {
   "schemaVersion": "1.0.0",
+  "state": {
+    "testInput": ""
+  },
   "screen": {
     "type": "layout.scaffold",
     "body": {
@@ -32,10 +35,10 @@
           "type": "input.text",
           "placeholder": "Digite algo aqui...",
           "multiline": false,
-          "onChanged": {
+          "onChange": {
             "type": "action.state.patch",
-            "path": "state.testInput",
-            "value": "{{value}}"
+            "path": "testInput",
+            "value": "{{event.value}}"
           }
         },
         {
