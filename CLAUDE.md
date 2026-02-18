@@ -163,6 +163,9 @@ presentation: "fullscreen"  ← 95vw × 95vh (funciona em runtime, CSS existe)
 
 **SEMPRE execute todos os passos abaixo antes de dizer que algo está pronto:**
 
+> ⚠️ **Minificação desabilitada** — `vite.config.standalone.ts` está com `minify: false`.
+> Só reabilitar (`minify: 'esbuild'`) quando o usuário declarar explicitamente que a versão é **"stable"**.
+
 ```bash
 # 1. Build do pacote (do root do projeto)
 cd packages/react && npm run build
