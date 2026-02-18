@@ -30,8 +30,11 @@ function resolveString(str: string, context: any): any {
   if (isFullBinding) {
     const expr = str.slice(2, -2).trim();
 
-    // Keep binding unresolved if it references context vars not yet available
-    if ((expr === 'item' || expr.startsWith('item.')) && (!('item' in context) || context.item === undefined)) {
+    // Keep binding unresolved if it references context vars not yet available.
+    // Use word-boundary check so expressions like {{state.tasks.map(t => t.id === item.id ? {...})}}
+    // are preserved as strings when item isn't in context, instead of silently returning undefined.
+    const hasItemRef = expr === 'item' || expr.startsWith('item.') || /\bitem\b/.test(expr);
+    if (hasItemRef && (!('item' in context) || context.item === undefined)) {
       return str;
     }
     if ((expr === 'props' || expr.startsWith('props.')) && (!('props' in context) || context.props === undefined)) {

@@ -6991,7 +6991,8 @@
     const isFullBinding = str.startsWith("{{") && str.endsWith("}}") && firstClose === str.length - 2;
     if (isFullBinding) {
       const expr = str.slice(2, -2).trim();
-      if ((expr === "item" || expr.startsWith("item.")) && (!("item" in context) || context.item === void 0)) {
+      const hasItemRef = expr === "item" || expr.startsWith("item.") || /\bitem\b/.test(expr);
+      if (hasItemRef && (!("item" in context) || context.item === void 0)) {
         return str;
       }
       if ((expr === "props" || expr.startsWith("props.")) && (!("props" in context) || context.props === void 0)) {
@@ -8374,7 +8375,7 @@
       render
     };
   }
-  console.log("%c🍍 PineUI v0.1.5%c — Server-Driven UI for AI-Native Apps", "color:#6750A4;font-weight:700;font-size:14px", "color:#79747E;font-size:12px");
+  console.log("%c🍍 PineUI v0.1.6%c — Server-Driven UI for AI-Native Apps", "color:#6750A4;font-weight:700;font-size:14px", "color:#79747E;font-size:12px");
   exports2.PineUI = PineUI;
   exports2.render = render;
   Object.defineProperty(exports2, Symbol.toStringTag, { value: "Module" });
