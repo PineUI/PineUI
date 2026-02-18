@@ -78,11 +78,11 @@ export const Renderer: React.FC<RendererProps> = ({ node, context, parentData })
     ? Object.assign({}, context, { item: parentData })
     : context;
 
-  // IMPORTANT: For Collection component, don't resolve bindings in itemTemplate
-  // The Collection will handle item data directly
-  // collection.map DOES get resolved (data binding "{{state.xxx}}" needs to resolve),
-  // but {{item.*}} bindings in template are preserved by the item guard in resolveString
-  const shouldResolveBindings = node.type !== 'collection';
+  // IMPORTANT: For Collection and CollectionMap, don't resolve bindings here.
+  // - Collection handles item data directly
+  // - CollectionMap resolves its own `data` binding internally so that
+  //   `template` is passed raw and item.* expressions work correctly per-item.
+  const shouldResolveBindings = node.type !== 'collection' && node.type !== 'collection.map';
 
   const resolvedNode = shouldResolveBindings
     ? resolveBindings(node, bindingContext)

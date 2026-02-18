@@ -1,5 +1,6 @@
 import React from 'react';
 import { ComponentNode, RenderContext } from '../types';
+import { resolveBindings } from '../renderer/bindings';
 
 interface CollectionMapProps {
   data: any[] | string;
@@ -27,8 +28,12 @@ export const CollectionMap: React.FC<CollectionMapProps> = ({
   const nodeTemplate = template || itemTemplate;
   if (!nodeTemplate) return null;
 
-  // data should already be resolved by Renderer (since collection.map is not in the skip list)
-  const items: any[] = Array.isArray(data) ? data : [];
+  // Renderer skips binding resolution for collection.map so that item.* expressions
+  // in the template aren't evaluated prematurely. Resolve only the `data` field here.
+  const resolvedData = typeof data === 'string'
+    ? resolveBindings(data, context)
+    : data;
+  const items: any[] = Array.isArray(resolvedData) ? resolvedData : [];
 
   if (items.length === 0) return null;
 

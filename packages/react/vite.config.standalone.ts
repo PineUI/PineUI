@@ -24,6 +24,6 @@ export default defineConfig({
         globals: {},
       },
     },
-    minify: false, // Desabilitar até versão "stable" ser declarada
+    minify: 'esbuild',
   },
 });
