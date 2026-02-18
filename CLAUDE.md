@@ -193,6 +193,40 @@ cd docs && python3 -m http.server 8080
 - Testar interações (cliques, mudanças de estado, navegação)
 - Confirmar que os dados carregam corretamente
 
+### 🚀 Deploy para Produção (somente quando declarado "stable")
+
+Quando o usuário declarar que a versão está **"stable"**, executar **todos** os passos abaixo na ordem:
+
+```bash
+# 1. Reabilitar minificação
+# Em packages/react/vite.config.standalone.ts:
+#   minify: false  →  minify: 'esbuild'
+
+# 2. Build minificado
+cd packages/react && npm run build
+
+# 3. Copiar para docs (GitHub Pages)
+cp packages/react/dist/pineui.standalone.js docs/
+cp packages/react/dist/style.css docs/pineui.css
+
+# 4. Bump de versão (patch, minor ou major conforme o escopo)
+npm version patch   # ou minor / major
+# Isso atualiza o package.json automaticamente
+
+# 5. Publicar no npm (atualiza o unpkg.com automaticamente)
+npm publish --access public
+
+# 6. Commit e push (inclui o tag de versão)
+git add -A
+git commit -m "release: vX.Y.Z"
+git push origin main --tags
+```
+
+> O unpkg (`unpkg.com/@pineui/react@latest/dist/...`) serve direto do npm.
+> Só é atualizado após o `npm publish`. Sem publish, só o GitHub Pages é atualizado.
+
+Após o deploy, **desabilitar minificação novamente** (`minify: false`) para continuar o desenvolvimento.
+
 ---
 
 ## ⚠️ Regra Crítica: Consistência de Exemplos e Documentação
