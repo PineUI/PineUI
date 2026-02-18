@@ -1,7 +1,10 @@
 {
   "schemaVersion": "1.0.0",
   "state": {
-    "selectedCategory": "All"
+    "selectedCategory": "All",
+    "selectedCourseIndex": 0,
+    "modalOpen": false,
+    "courses": []
   },
   "intents": {
     "category.select": {
@@ -9,6 +12,44 @@
         "type": "action.state.patch",
         "path": "selectedCategory",
         "value": "{{category}}"
+      }
+    },
+    "course.open": {
+      "handler": {
+        "type": "action.sequence",
+        "actions": [
+          {
+            "type": "action.state.patch",
+            "path": "selectedCourseIndex",
+            "value": "{{courseIndex}}"
+          },
+          {
+            "type": "action.state.patch",
+            "path": "modalOpen",
+            "value": true
+          }
+        ]
+      }
+    },
+    "course.close": {
+      "handler": {
+        "type": "action.state.patch",
+        "path": "modalOpen",
+        "value": false
+      }
+    },
+    "course.next": {
+      "handler": {
+        "type": "action.state.patch",
+        "path": "selectedCourseIndex",
+        "value": "{{(state.selectedCourseIndex + 1) % state.courses.length}}"
+      }
+    },
+    "course.prev": {
+      "handler": {
+        "type": "action.state.patch",
+        "path": "selectedCourseIndex",
+        "value": "{{state.selectedCourseIndex === 0 ? state.courses.length - 1 : state.selectedCourseIndex - 1}}"
       }
     }
   },
@@ -83,17 +124,162 @@
           "data": {
             "type": "action.http",
             "method": "GET",
-            "url": "/api/gallery/courses?category={{state.selectedCategory}}"
+            "url": "/api/gallery/courses?category={{state.selectedCategory}}",
+            "onSuccess": {
+              "type": "action.state.patch",
+              "path": "courses",
+              "value": "{{response}}"
+            }
           },
           "itemTemplate": {
             "type": "component.courseCard",
             "props": {
-              "course": "{{item}}"
+              "course": "{{item}}",
+              "index": "{{index}}"
             }
           }
         }
       ]
-    }
+    },
+    "overlays": [
+      {
+        "id": "courseModal",
+        "type": "modal",
+        "visible": "{{state.modalOpen}}",
+        "fullScreen": true,
+        "onDismiss": {
+          "intent": "course.close"
+        },
+        "child": {
+          "type": "layout.column",
+          "children": [
+            {
+              "type": "layout.row",
+              "mainAxisAlignment": "spaceBetween",
+              "padding": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "content": "Course Details",
+                  "style": "titleLarge"
+                },
+                {
+                  "type": "button.text",
+                  "label": "✕",
+                  "onPress": {
+                    "intent": "course.close"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "layout.row",
+              "children": [
+                {
+                  "type": "layout.column",
+                  "flex": 2,
+                  "padding": 24,
+                  "mainAxisAlignment": "center",
+                  "children": [
+                    {
+                      "type": "layout.row",
+                      "mainAxisAlignment": "center",
+                      "crossAxisAlignment": "center",
+                      "children": [
+                        {
+                          "type": "button.text",
+                          "label": "←",
+                          "onPress": {
+                            "intent": "course.prev"
+                          }
+                        },
+                        {
+                          "type": "image",
+                          "src": "{{state.courses[state.selectedCourseIndex].image}}",
+                          "borderRadius": 12,
+                          "width": "100%",
+                          "maxWidth": 600
+                        },
+                        {
+                          "type": "button.text",
+                          "label": "→",
+                          "onPress": {
+                            "intent": "course.next"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "layout.column",
+                  "flex": 1,
+                  "padding": 24,
+                  "spacing": 16,
+                  "children": [
+                    {
+                      "type": "text",
+                      "content": "{{state.courses[state.selectedCourseIndex].title}}",
+                      "style": "headlineMedium",
+                      "fontWeight": "bold"
+                    },
+                    {
+                      "type": "badge",
+                      "label": "{{state.courses[state.selectedCourseIndex].category}}",
+                      "color": "primary"
+                    },
+                    {
+                      "type": "text",
+                      "content": "{{state.courses[state.selectedCourseIndex].instructor || 'Instructor name'}}",
+                      "style": "bodyLarge"
+                    },
+                    {
+                      "type": "text",
+                      "content": "{{state.courses[state.selectedCourseIndex].description || 'Course description goes here. This is a detailed explanation of what you will learn in this course.'}}",
+                      "style": "bodyMedium"
+                    },
+                    {
+                      "type": "conditionalRender",
+                      "conditions": [
+                        {
+                          "when": "{{state.courses[state.selectedCourseIndex].progress > 0}}",
+                          "render": {
+                            "type": "layout.column",
+                            "spacing": 8,
+                            "children": [
+                              {
+                                "type": "text",
+                                "content": "Your Progress",
+                                "style": "labelMedium"
+                              },
+                              {
+                                "type": "progress",
+                                "value": "{{state.courses[state.selectedCourseIndex].progress}}",
+                                "label": "{{state.courses[state.selectedCourseIndex].progress}}% complete",
+                                "color": "primary"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "button.filled",
+                      "label": "Continue Learning",
+                      "fullWidth": true,
+                      "onPress": {
+                        "type": "action.snackbar.show",
+                        "message": "Opening course..."
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
   },
   "components": {
     "component.courseCard": {
@@ -101,6 +287,10 @@
       "definition": {
         "type": "card",
         "elevation": 1,
+        "onPress": {
+          "intent": "course.open",
+          "courseIndex": "{{props.index}}"
+        },
         "child": {
           "type": "layout.column",
           "spacing": 0,
