@@ -420,7 +420,13 @@
         <a class="sidebar-item" data-section="input">Input</a>
         <a class="sidebar-item" data-section="image">Image</a>
         <a class="sidebar-item" data-section="avatar">Avatar</a>
+        <a class="sidebar-item" data-section="chip">Chip</a>
+        <a class="sidebar-item" data-section="badge">Badge</a>
+        <a class="sidebar-item" data-section="progress">Progress</a>
+        <a class="sidebar-item" data-section="tabs">Tabs</a>
+        <a class="sidebar-item" data-section="grid">Grid</a>
         <a class="sidebar-item" data-section="collection">Collection</a>
+        <a class="sidebar-item" data-section="collection-map">Collection Map</a>
         <a class="sidebar-item" data-section="conditional">Conditional Render</a>
       </div>
 
@@ -430,6 +436,7 @@
         <a class="sidebar-item" data-section="action-state">State Patch</a>
         <a class="sidebar-item" data-section="action-overlay">Overlay Control</a>
         <a class="sidebar-item" data-section="action-snackbar">Snackbar</a>
+        <a class="sidebar-item" data-section="action-sequence">Sequence</a>
         <a class="sidebar-item" data-section="action-delay">Delay</a>
       </div>
 
@@ -700,8 +707,11 @@
 }</pre>
 
         <h3>CDN (Standalone)</h3>
-        <pre>&lt;script src="https://unpkg.com/@pineui/react@latest/dist/pineui.standalone.js"&gt;&lt;/script&gt;
-&lt;link rel="stylesheet" href="https://unpkg.com/@pineui/react@latest/dist/style.css"&gt;</pre>
+        <pre>&lt;!-- CSS --&gt;
+&lt;link rel="stylesheet" href="https://pineui.github.io/PineUI/pineui.css"&gt;
+
+&lt;!-- JavaScript (includes React) --&gt;
+&lt;script src="https://pineui.github.io/PineUI/pineui.standalone.js"&gt;&lt;/script&gt;</pre>
       </section>
 
       <!-- Quick Start Section -->
@@ -802,1036 +812,32 @@
           </div>
         </div>
 
-        <details style="margin: 24px 0;">
-          <summary style="cursor: pointer; font-weight: 600; color: #6750A4; font-size: 16px; margin-bottom: 8px; user-select: none; list-style: none;">
+        <details style="margin: 24px 0;" id="prompt-md-details">
+          <summary style="cursor: pointer; font-weight: 600; color: #6750A4; font-size: 16px; margin-bottom: 8px; user-select: none; list-style: none;"
+            onclick="loadPromptMd()">
             📖 View complete PROMPT.md guide
           </summary>
-          <div style="background: #F7F2FA; padding: 16px; border-radius: 8px; border-left: 4px solid #6750A4; margin: 16px 0; max-height: 600px; overflow-y: auto;">
-            <pre style="white-space: pre-wrap; font-size: 13px; line-height: 1.6;">
-# PineUI - LLM Context Guide
-
-&gt; Use this guide as context when asking LLMs to build applications with PineUI
-
-## What is PineUI?
-
-PineUI is a Server-Driven UI framework for building dynamic, cross-platform interfaces from JSON schemas. It's designed to be AI-friendly - LLMs can generate complete, working UIs without specific training.
-
-## CDN Links
-
-```html
-&lt;!-- CSS --&gt;
-&lt;link rel="stylesheet" href="https://unpkg.com/@pineui/react@latest/dist/style.css"&gt;
-
-&lt;!-- JavaScript (Standalone - includes React) --&gt;
-&lt;script src="https://unpkg.com/@pineui/react@latest/dist/pineui.standalone.js"&gt;&lt;/script&gt;
-```
-
-## Basic Usage
-
-```html
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-  &lt;link rel="stylesheet" href="https://unpkg.com/@pineui/react@latest/dist/style.css"&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;div id="app"&gt;&lt;/div&gt;
-
-  &lt;script src="https://unpkg.com/@pineui/react@latest/dist/pineui.standalone.js"&gt;&lt;/script&gt;
-  &lt;script&gt;
-    PineUI.render({
-      target: '#app',
-      schema: {
-        // Your schema here
-      }
-    });
-  &lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-```
-
-## Schema Structure
-
-Every PineUI app is defined by a JSON schema:
-
-```json
-{
-  "schemaVersion": "1.0.0",
-  "state": {
-    // Initial state (optional)
-  },
-  "intents": {
-    // Named actions (optional)
-  },
-  "screen": {
-    // Root component (required)
-  }
-}
-```
-
-## State Management
-
-### Defining State
-
-```json
-{
-  "state": {
-    "counter": 0,
-    "selectedTab": "home",
-    "items": ["apple", "banana", "orange"],
-    "user": {
-      "name": "John",
-      "email": "john@example.com"
-    }
-  }
-}
-```
-
-### Data Bindings
-
-Use `{{expression}}` syntax to bind data:
-
-```json
-{
-  "type": "text",
-  "content": "Hello {{state.user.name}}!"
-}
-```
-
-**Supported expressions:**
-- State access: `{{state.counter}}`
-- Array access: `{{state.items[0]}}`
-- Object properties: `{{state.user.name}}`
-- Arithmetic: `{{state.price * 1.1}}`
-- Comparisons: `{{state.age &gt;= 18}}`
-- String concat: `{{state.firstName + ' ' + state.lastName}}`
-- Ternary: `{{state.isActive ? 'Active' : 'Inactive'}}`
-
-## Components
-
-### Layout Components
-
-#### layout.column
-Vertical stack of children
-
-```json
-{
-  "type": "layout.column",
-  "padding": 16,
-  "spacing": 8,
-  "mainAxisAlignment": "start",
-  "crossAxisAlignment": "stretch",
-  "children": [...]
-}
-```
-
-**Props:**
-- `padding`: number (all sides) or object `{top, bottom, left, right}`
-- `spacing`: number (gap between children)
-- `mainAxisAlignment`: "start" | "center" | "end" | "spaceBetween" | "spaceAround"
-- `crossAxisAlignment`: "start" | "center" | "end" | "stretch"
-- `width`, `height`: number | "100%"
-
-#### layout.row
-Horizontal stack of children
-
-```json
-{
-  "type": "layout.row",
-  "spacing": 12,
-  "mainAxisAlignment": "spaceBetween",
-  "children": [...]
-}
-```
-
-Same props as `layout.column`
-
-#### layout.grid
-Responsive grid layout
-
-```json
-{
-  "type": "layout.grid",
-  "columns": 3,
-  "spacing": 16,
-  "children": [...]
-}
-```
-
-**Props:**
-- `columns`: number (default: 3)
-- `spacing`: number
-- `responsive`: boolean (auto-adjusts columns on mobile)
-
-#### layout.scaffold
-App structure with app bar, bottom nav, and FAB
-
-```json
-{
-  "type": "layout.scaffold",
-  "appBar": {
-    "title": "My App",
-    "leading": {...},
-    "actions": [...]
-  },
-  "bottomNav": {...},
-  "floatingActionButton": {...},
-  "body": {...}
-}
-```
-
-### Text Components
-
-#### text
-Display text with Material Design styles
-
-```json
-{
-  "type": "text",
-  "content": "Hello World",
-  "style": "titleLarge",
-  "color": "#6750A4",
-  "align": "center"
-}
-```
-
-**Text Styles:**
-- `displayLarge`, `displayMedium`, `displaySmall`
-- `headlineLarge`, `headlineMedium`, `headlineSmall`
-- `titleLarge`, `titleMedium`, `titleSmall`
-- `bodyLarge`, `bodyMedium`, `bodySmall`
-- `labelLarge`, `labelMedium`, `labelSmall`
-
-### Button Components
-
-#### button.filled
-Primary action button
-
-```json
-{
-  "type": "button.filled",
-  "label": "Click Me",
-  "icon": "add",
-  "onPress": {
-    "type": "action.snackbar.show",
-    "message": "Clicked!"
-  }
-}
-```
-
-**Button Types:**
-- `button.filled` - Primary (filled background)
-- `button.outlined` - Secondary (outline only)
-- `button.text` - Tertiary (no background)
-- `button.elevated` - Raised with shadow
-- `button.tonal` - Filled with tonal color
-
-**Props:**
-- `label`: string (required)
-- `icon`: string (Material Icons name)
-- `iconPosition`: "start" | "end"
-- `disabled`: boolean
-- `fullWidth`: boolean
-- `onPress`: action object
-
-### Input Components
-
-#### input.text
-Text input field
-
-```json
-{
-  "type": "input.text",
-  "label": "Email",
-  "placeholder": "Enter your email",
-  "value": "{{state.email}}",
-  "onChange": {
-    "type": "action.state.patch",
-    "path": "email",
-    "value": "{{event.value}}"
-  }
-}
-```
-
-**Input Types:**
-- `input.text` - Single-line text
-- `input.email` - Email validation
-- `input.password` - Masked input
-- `input.number` - Numeric input
-- `input.textarea` - Multi-line text
-
-**Props:**
-- `label`: string
-- `placeholder`: string
-- `value`: string (with binding)
-- `required`: boolean
-- `disabled`: boolean
-- `error`: string (error message)
-- `helperText`: string
-- `onChange`: action object
-
-### Card Components
-
-#### card
-Material Design card
-
-```json
-{
-  "type": "card",
-  "variant": "elevated",
-  "padding": 16,
-  "onPress": {...},
-  "children": [...]
-}
-```
-
-**Variants:**
-- `elevated` - Raised with shadow
-- `filled` - Filled background
-- `outlined` - Border only
-
-### Image Components
-
-#### image
-Display images
-
-```json
-{
-  "type": "image",
-  "src": "https://picsum.photos/400/300",
-  "alt": "Description",
-  "fit": "cover",
-  "width": "100%",
-  "height": 200,
-  "borderRadius": 8
-}
-```
-
-**Fit options:**
-- `cover` - Fill container, crop if needed
-- `contain` - Fit inside container
-- `fill` - Stretch to fill
-
-#### avatar
-Circular user avatar
-
-```json
-{
-  "type": "avatar",
-  "src": "https://i.pravatar.cc/150",
-  "alt": "User name",
-  "size": 40,
-  "fallback": "JD"
-}
-```
-
-### Chip Components
-
-#### chip
-Compact selectable element
-
-```json
-{
-  "type": "chip",
-  "label": "Filter",
-  "variant": "outlined",
-  "selected": "{{state.category === 'design'}}",
-  "icon": "design_services",
-  "onPress": {...}
-}
-```
-
-**Variants:**
-- `outlined` - Border only
-- `filled` - Filled background
-
-### Badge Components
-
-#### badge
-Small status indicator
-
-```json
-{
-  "type": "badge",
-  "label": "New",
-  "color": "primary"
-}
-```
-
-**Colors:**
-- `primary`, `secondary`, `error`, `success`, `warning`, `info`
-
-### Collection Components
-
-#### collection.map
-Render array of items
-
-```json
-{
-  "type": "collection.map",
-  "data": "{{state.items}}",
-  "template": {
-    "type": "card",
-    "children": [
-      {
-        "type": "text",
-        "content": "{{item.title}}"
-      }
-    ]
-  }
-}
-```
-
-**Context variables:**
-- `{{item}}` - Current item
-- `{{index}}` - Current index
-
-### Conditional Components
-
-#### conditional.render
-Show/hide based on condition
-
-```json
-{
-  "type": "conditional.render",
-  "condition": "{{state.isLoggedIn}}",
-  "children": [
-    {
-      "type": "text",
-      "content": "Welcome back!"
-    }
-  ]
-}
-```
-
-### Modal Components
-
-#### modal
-Overlay dialog
-
-```json
-{
-  "type": "modal",
-  "id": "confirm-dialog",
-  "title": "Confirm Action",
-  "fullScreen": false,
-  "children": [...]
-}
-```
-
-### Icon Components
-
-#### icon
-Material Design icon
-
-```json
-{
-  "type": "icon",
-  "name": "favorite",
-  "size": 24,
-  "color": "#E91E63"
-}
-```
-
-Find icons at: https://fonts.google.com/icons
-
-### Progress Components
-
-#### progress.circular
-Circular loading indicator
-
-```json
-{
-  "type": "progress.circular",
-  "size": 40,
-  "color": "primary"
-}
-```
-
-#### progress.linear
-Linear progress bar
-
-```json
-{
-  "type": "progress.linear",
-  "value": 75,
-  "color": "primary"
-}
-```
-
-### Divider Component
-
-#### divider
-Visual separator
-
-```json
-{
-  "type": "divider",
-  "spacing": 16
-}
-```
-
-## Actions
-
-Actions define what happens when users interact with your app.
-
-### action.state.patch
-Update state values
-
-```json
-{
-  "type": "action.state.patch",
-  "path": "counter",
-  "value": "{{state.counter + 1}}"
-}
-```
-
-**Props:**
-- `path`: string (dot notation for nested: "user.name")
-- `value`: any (supports bindings)
-
-### action.http.request
-Make HTTP requests
-
-```json
-{
-  "type": "action.http.request",
-  "url": "https://api.example.com/data",
-  "method": "GET",
-  "onSuccess": {
-    "type": "action.state.patch",
-    "path": "data",
-    "value": "{{response.data}}"
-  },
-  "onError": {
-    "type": "action.snackbar.show",
-    "message": "Failed to load data"
-  }
-}
-```
-
-**Methods:** GET, POST, PUT, DELETE, PATCH
-
-**Context variables:**
-- `{{response}}` - Response data (in onSuccess)
-- `{{error}}` - Error object (in onError)
-
-### action.snackbar.show
-Show temporary message
-
-```json
-{
-  "type": "action.snackbar.show",
-  "message": "Item saved successfully!",
-  "duration": 3000,
-  "action": {
-    "label": "Undo",
-    "onPress": {...}
-  }
-}
-```
-
-### action.overlay.show
-Open modal/dialog
-
-```json
-{
-  "type": "action.overlay.show",
-  "overlayId": "settings-modal"
-}
-```
-
-### action.overlay.hide
-Close modal/dialog
-
-```json
-{
-  "type": "action.overlay.hide",
-  "overlayId": "settings-modal"
-}
-```
-
-### action.sequence
-Run multiple actions in order
-
-```json
-{
-  "type": "action.sequence",
-  "actions": [
-    {
-      "type": "action.state.patch",
-      "path": "loading",
-      "value": true
-    },
-    {
-      "type": "action.http.request",
-      "url": "https://api.example.com/save",
-      "method": "POST"
-    },
-    {
-      "type": "action.state.patch",
-      "path": "loading",
-      "value": false
-    }
-  ]
-}
-```
-
-### action.delay
-Wait before next action
-
-```json
-{
-  "type": "action.delay",
-  "duration": 1000,
-  "then": {
-    "type": "action.snackbar.show",
-    "message": "Delayed message"
-  }
-}
-```
-
-## Intents
-
-Intents are named, reusable actions:
-
-```json
-{
-  "intents": {
-    "incrementCounter": {
-      "handler": {
-        "type": "action.state.patch",
-        "path": "counter",
-        "value": "{{state.counter + 1}}"
-      }
-    },
-    "loadData": {
-      "handler": {
-        "type": "action.http.request",
-        "url": "https://api.example.com/data",
-        "method": "GET",
-        "onSuccess": {
-          "type": "action.state.patch",
-          "path": "items",
-          "value": "{{response}}"
-        }
-      }
-    }
-  },
-  "screen": {
-    "type": "button.filled",
-    "label": "Load",
-    "onPress": {
-      "type": "intent",
-      "name": "loadData"
-    }
-  }
-}
-```
-
-## Design System
-
-### Colors
-
-Material Design 3 color tokens:
-
-```javascript
-// Primary
---md-sys-color-primary: #6750A4
---md-sys-color-on-primary: #FFFFFF
-
-// Secondary
---md-sys-color-secondary: #625B71
---md-sys-color-on-secondary: #FFFFFF
-
-// Surface
---md-sys-color-surface: #FFFBFE
---md-sys-color-on-surface: #1D1B20
-```
-
-Use hex colors directly in components:
-```json
-{
-  "type": "text",
-  "color": "#6750A4"
-}
-```
-
-### Spacing
-
-Use 8-point grid: 8, 16, 24, 32, 40, 48...
-
-### Typography Scale
-
-- Display: Hero text (45-57px)
-- Headline: Section headers (24-32px)
-- Title: Card/list titles (14-22px)
-- Body: Paragraphs (12-16px)
-- Label: Buttons, chips (11-14px)
-
-## Complete Example: Course Gallery
-
-```json
-{
-  "schemaVersion": "1.0.0",
-  "state": {
-    "selectedCategory": "All",
-    "courses": [
-      {
-        "id": 1,
-        "title": "UI/UX Design Masterclass",
-        "category": "Design",
-        "instructor": "Sarah Johnson",
-        "rating": 4.8,
-        "price": "$49.99",
-        "image": "https://picsum.photos/seed/course1/400/225"
-      },
-      {
-        "id": 2,
-        "title": "React Development",
-        "category": "Development",
-        "instructor": "Mike Chen",
-        "rating": 4.9,
-        "price": "$59.99",
-        "image": "https://picsum.photos/seed/course2/400/225"
-      }
-    ]
-  },
-  "screen": {
-    "type": "layout.scaffold",
-    "appBar": {
-      "title": "Course Gallery"
-    },
-    "body": {
-      "type": "layout.column",
-      "padding": 16,
-      "spacing": 24,
-      "children": [
-        {
-          "type": "layout.row",
-          "spacing": 8,
-          "children": [
-            {
-              "type": "chip",
-              "label": "All",
-              "variant": "{{state.selectedCategory === 'All' ? 'filled' : 'outlined'}}",
-              "onPress": {
-                "type": "action.state.patch",
-                "path": "selectedCategory",
-                "value": "All"
-              }
-            },
-            {
-              "type": "chip",
-              "label": "Design",
-              "variant": "{{state.selectedCategory === 'Design' ? 'filled' : 'outlined'}}",
-              "onPress": {
-                "type": "action.state.patch",
-                "path": "selectedCategory",
-                "value": "Design"
-              }
-            }
-          ]
-        },
-        {
-          "type": "layout.grid",
-          "columns": 3,
-          "spacing": 16,
-          "children": [
-            {
-              "type": "collection.map",
-              "data": "{{state.courses.filter(c =&gt; state.selectedCategory === 'All' || c.category === state.selectedCategory)}}",
-              "template": {
-                "type": "card",
-                "variant": "elevated",
-                "children": [
-                  {
-                    "type": "image",
-                    "src": "{{item.image}}",
-                    "height": 160,
-                    "fit": "cover"
-                  },
-                  {
-                    "type": "layout.column",
-                    "padding": 16,
-                    "spacing": 8,
-                    "children": [
-                      {
-                        "type": "badge",
-                        "label": "{{item.category}}",
-                        "color": "primary"
-                      },
-                      {
-                        "type": "text",
-                        "content": "{{item.title}}",
-                        "style": "titleMedium"
-                      },
-                      {
-                        "type": "text",
-                        "content": "{{item.instructor}}",
-                        "style": "bodySmall",
-                        "color": "#79747E"
-                      },
-                      {
-                        "type": "layout.row",
-                        "mainAxisAlignment": "spaceBetween",
-                        "children": [
-                          {
-                            "type": "text",
-                            "content": "⭐ {{item.rating}}",
-                            "style": "bodySmall"
-                          },
-                          {
-                            "type": "text",
-                            "content": "{{item.price}}",
-                            "style": "titleMedium",
-                            "color": "#6750A4"
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    }
-  }
-}
-```
-
-## Best Practices
-
-### 1. Use Meaningful State Keys
-```json
-// Good
-"state": {
-  "selectedCategory": "All",
-  "isLoading": false,
-  "userProfile": {...}
-}
-
-// Avoid
-"state": {
-  "cat": "All",
-  "loading": false,
-  "profile": {...}
-}
-```
-
-### 2. Leverage Intents for Reusability
-```json
-"intents": {
-  "selectCategory": {
-    "handler": {
-      "type": "action.sequence",
-      "actions": [
-        {
-          "type": "action.state.patch",
-          "path": "selectedCategory",
-          "value": "{{event.category}}"
-        },
-        {
-          "type": "action.state.patch",
-          "path": "currentPage",
-          "value": 1
-        }
-      ]
-    }
-  }
-}
-```
-
-### 3. Use Conditional Rendering for Dynamic UIs
-```json
-{
-  "type": "conditional.render",
-  "condition": "{{state.items.length === 0}}",
-  "children": [
-    {
-      "type": "text",
-      "content": "No items found",
-      "style": "bodyLarge",
-      "color": "#79747E"
-    }
-  ]
-}
-```
-
-### 4. Proper Error Handling
-```json
-{
-  "type": "action.http.request",
-  "url": "{{state.apiUrl}}",
-  "onError": {
-    "type": "action.sequence",
-    "actions": [
-      {
-        "type": "action.state.patch",
-        "path": "error",
-        "value": "{{error.message}}"
-      },
-      {
-        "type": "action.snackbar.show",
-        "message": "Failed to load data. Please try again."
-      }
-    ]
-  }
-}
-```
-
-### 5. Responsive Layouts
-```json
-{
-  "type": "layout.grid",
-  "columns": 3,
-  "responsive": true,
-  "spacing": 16,
-  "children": [...]
-}
-```
-
-## Common Patterns
-
-### Loading State
-```json
-{
-  "state": {
-    "isLoading": false
-  },
-  "screen": {
-    "type": "conditional.render",
-    "condition": "{{state.isLoading}}",
-    "children": [
-      {
-        "type": "layout.column",
-        "mainAxisAlignment": "center",
-        "crossAxisAlignment": "center",
-        "padding": 48,
-        "children": [
-          {
-            "type": "progress.circular"
-          }
-        ]
-      }
-    ],
-    "fallback": [
-      {
-        "type": "text",
-        "content": "Content loaded!"
-      }
-    ]
-  }
-}
-```
-
-### Form Validation
-```json
-{
-  "state": {
-    "email": "",
-    "emailError": ""
-  },
-  "intents": {
-    "validateEmail": {
-      "handler": {
-        "type": "action.state.patch",
-        "path": "emailError",
-        "value": "{{state.email.includes('@') ? '' : 'Invalid email'}}"
-      }
-    }
-  },
-  "screen": {
-    "type": "input.email",
-    "label": "Email",
-    "value": "{{state.email}}",
-    "error": "{{state.emailError}}",
-    "onChange": {
-      "type": "action.sequence",
-      "actions": [
-        {
-          "type": "action.state.patch",
-          "path": "email",
-          "value": "{{event.value}}"
-        },
-        {
-          "type": "intent",
-          "name": "validateEmail"
-        }
-      ]
-    }
-  }
-}
-```
-
-### Pagination
-```json
-{
-  "state": {
-    "currentPage": 1,
-    "itemsPerPage": 10,
-    "totalItems": 100
-  },
-  "screen": {
-    "type": "layout.row",
-    "spacing": 8,
-    "children": [
-      {
-        "type": "button.outlined",
-        "label": "Previous",
-        "disabled": "{{state.currentPage &lt;= 1}}",
-        "onPress": {
-          "type": "action.state.patch",
-          "path": "currentPage",
-          "value": "{{state.currentPage - 1}}"
-        }
-      },
-      {
-        "type": "text",
-        "content": "Page {{state.currentPage}}"
-      },
-      {
-        "type": "button.outlined",
-        "label": "Next",
-        "disabled": "{{state.currentPage * state.itemsPerPage &gt;= state.totalItems}}",
-        "onPress": {
-          "type": "action.state.patch",
-          "path": "currentPage",
-          "value": "{{state.currentPage + 1}}"
-        }
-      }
-    ]
-  }
-}
-```
-
-## Tips for LLM Integration
-
-1. **Be Specific**: Describe exact components, layouts, and interactions
-2. **Reference This Guide**: Paste relevant sections as context
-3. **Provide CDN Links**: Always include the unpkg links
-4. **Use Examples**: Reference the course gallery or other examples
-5. **Iterate**: Ask the LLM to refine or add features incrementally
-
-## Resources
-
-- **Documentation**: https://pineui.github.io/PineUI/documentation.html
-- **NPM Package**: https://www.npmjs.com/package/@pineui/react
-- **GitHub**: https://github.com/PineUI/PineUI
-- **Material Icons**: https://fonts.google.com/icons
-
----
-
-**Created by David Ruiz (wupsbr)** - CPTO at Ingresse
-</pre>
-            <div style="margin-top: 16px; padding: 12px; background: white; border-radius: 4px; border: 1px solid #E7E0EC; font-size: 13px;">
-              💾 <a href="./PROMPT.md" download style="color: #6750A4; font-weight: 500; text-decoration: underline;">Download PROMPT.md</a> | 
-              🔗 <a href="https://github.com/PineUI/PineUI/blob/main/PROMPT.md" target="_blank" style="color: #6750A4; font-weight: 500; text-decoration: underline;">View on GitHub</a>
-            </div>
+          <div id="prompt-md-container" style="background: #F7F2FA; padding: 16px; border-radius: 8px; border-left: 4px solid #6750A4; margin: 16px 0; max-height: 600px; overflow-y: auto;">
+            <p style="color: #79747E; font-size: 14px;">Click to load the guide...</p>
           </div>
         </details>
+        <script>
+          let promptMdLoaded = false;
+          function loadPromptMd() {
+            if (promptMdLoaded) return;
+            const container = document.getElementById('prompt-md-container');
+            container.innerHTML = '<p style="color: #79747E; font-size: 14px;">Loading...</p>';
+            fetch('./PROMPT.md')
+              .then(r => r.text())
+              .then(text => {
+                container.innerHTML = '<pre style="white-space: pre-wrap; font-size: 13px; line-height: 1.6;">' + text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</pre>';
+                promptMdLoaded = true;
+              })
+              .catch(() => {
+                container.innerHTML = '<p>Could not load PROMPT.md. <a href="./PROMPT.md" download style="color:#6750A4">Download it here</a>.</p>';
+              });
+          }
+        </script>
         <h3>Quick Example Prompt</h3>
         <p>Copy and paste this prompt into ChatGPT, Claude, or any LLM:</p>
 
@@ -1840,8 +846,8 @@ Use 8-point grid: 8, 16, 24, 32, 40, 48...
 
 <strong>Requirements:</strong>
 1. Use PineUI from CDN:
-   - JS: https://unpkg.com/@pineui/react@latest/dist/pineui.standalone.js
-   - CSS: https://unpkg.com/@pineui/react@latest/dist/style.css
+   - JS: https://pineui.github.io/PineUI/pineui.standalone.js
+   - CSS: https://pineui.github.io/PineUI/pineui.css
 
 2. The app should have:
    - Header with app bar showing "Course Gallery" title
@@ -1879,7 +885,7 @@ Use PineUI.render() to mount the application to a div with id="app".</pre>
         <h3>Tips for Better Results</h3>
         <ul>
           <li><strong>Be specific</strong> - Describe exact components and layouts you want</li>
-          <li><strong>Reference CDN</strong> - Always provide the unpkg links for PineUI</li>
+          <li><strong>Reference CDN</strong> - Always provide the GitHub Pages CDN links for PineUI</li>
           <li><strong>Mention state</strong> - If you need interactivity, specify state variables and actions</li>
           <li><strong>Include examples</strong> - Reference component types like "button.filled", "layout.column", etc.</li>
           <li><strong>Ask for variations</strong> - Request the LLM to iterate or add features</li>
@@ -2038,8 +1044,10 @@ Use PineUI.render() to mount the application to a div with id="app".</pre>
         "type": "action.http",
         "method": "GET",
         "url": "https://api.example.com/users",
-        "responseMapping": {
-          "users": "{{response.data}}"
+        "onSuccess": {
+          "type": "action.state.patch",
+          "path": "users",
+          "value": "{{response}}"
         }
       }
     },
@@ -3109,6 +2117,143 @@ Use PineUI.render() to mount the application to a div with id="app".</pre>
         </div>
       </section>
 
+      <!-- Chip Component Section -->
+      <section class="doc-section" id="chip">
+        <h2>Chip Component</h2>
+        <p>Chips are compact elements used for filtering, selection, and toggling. They show selected state visually.</p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><span class="property-name">type</span> <span class="badge badge-required">required</span></td><td><span class="property-type">"chip"</span></td><td>Component type</td></tr>
+            <tr><td><span class="property-name">label</span> <span class="badge badge-required">required</span></td><td><span class="property-type">string</span></td><td>Text displayed on the chip</td></tr>
+            <tr><td><span class="property-name">selected</span></td><td><span class="property-type">boolean</span></td><td>Whether the chip is active/selected. Supports bindings: <code>"{{state.filter == 'Design'}}"</code></td></tr>
+            <tr><td><span class="property-name">onPress</span></td><td><span class="property-type">Action</span></td><td>Action triggered when chip is clicked</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Example</h3>
+        <pre>{
+  "type": "chip",
+  "label": "Design",
+  "selected": "{{state.filter == 'Design'}}",
+  "onPress": {
+    "type": "action.state.patch",
+    "path": "filter",
+    "value": "Design"
+  }
+}</pre>
+      </section>
+
+      <!-- Badge Component Section -->
+      <section class="doc-section" id="badge">
+        <h2>Badge Component</h2>
+        <p>Small colored labels used for status, categories, or counts.</p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><span class="property-name">type</span> <span class="badge badge-required">required</span></td><td><span class="property-type">"badge"</span></td><td>Component type</td></tr>
+            <tr><td><span class="property-name">label</span> <span class="badge badge-required">required</span></td><td><span class="property-type">string</span></td><td>Badge text</td></tr>
+            <tr><td><span class="property-name">color</span></td><td><span class="property-type">string</span></td><td><code>"default"</code> | <code>"success"</code> | <code>"warning"</code> | <code>"error"</code> | <code>"info"</code></td></tr>
+          </tbody>
+        </table>
+
+        <h3>Example</h3>
+        <pre>{ "type": "badge", "label": "New", "color": "success" }
+{ "type": "badge", "label": "Error", "color": "error" }
+{ "type": "badge", "label": "{{item.status}}", "color": "info" }</pre>
+      </section>
+
+      <!-- Progress Component Section -->
+      <section class="doc-section" id="progress">
+        <h2>Progress Component</h2>
+        <p>Linear progress bar. Note: <code>progress.circular</code> and <code>progress.linear</code> do NOT exist — use <code>progress</code>.</p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><span class="property-name">type</span> <span class="badge badge-required">required</span></td><td><span class="property-type">"progress"</span></td><td>Component type</td></tr>
+            <tr><td><span class="property-name">value</span></td><td><span class="property-type">number</span></td><td>0–100 (percentage)</td></tr>
+            <tr><td><span class="property-name">label</span></td><td><span class="property-type">string</span></td><td>Optional text shown next to bar</td></tr>
+            <tr><td><span class="property-name">color</span></td><td><span class="property-type">string</span></td><td><code>"primary"</code> | <code>"success"</code> | <code>"error"</code></td></tr>
+          </tbody>
+        </table>
+
+        <h3>Example</h3>
+        <pre>{
+  "type": "progress",
+  "value": "{{item.completionPercent}}",
+  "label": "{{item.completionPercent}}% complete",
+  "color": "primary"
+}</pre>
+      </section>
+
+      <!-- Tabs Component Section -->
+      <section class="doc-section" id="tabs">
+        <h2>Tabs Component</h2>
+        <p>Horizontal tab bar that switches between content panels. Bind <code>activeTab</code> to state for control.</p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><span class="property-name">type</span> <span class="badge badge-required">required</span></td><td><span class="property-type">"tabs"</span></td><td>Component type</td></tr>
+            <tr><td><span class="property-name">tabs</span> <span class="badge badge-required">required</span></td><td><span class="property-type">array</span></td><td>Array of <code>{ id, label, content }</code></td></tr>
+            <tr><td><span class="property-name">activeTab</span></td><td><span class="property-type">string</span></td><td>ID of the currently active tab. Use binding: <code>"{{state.tab}}"</code></td></tr>
+            <tr><td><span class="property-name">onTabChange</span></td><td><span class="property-type">Action</span></td><td>Action triggered when a tab is clicked. Use <code>{{tab}}</code> for the clicked tab's id</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Example</h3>
+        <pre>{
+  "type": "tabs",
+  "activeTab": "{{state.tab}}",
+  "onTabChange": {
+    "type": "action.state.patch",
+    "path": "tab",
+    "value": "{{tab}}"
+  },
+  "tabs": [
+    { "id": "home", "label": "Home", "content": { "type": "text", "content": "Home" } },
+    { "id": "settings", "label": "Settings", "content": { "type": "text", "content": "Settings" } }
+  ]
+}</pre>
+      </section>
+
+      <!-- Grid Component Section -->
+      <section class="doc-section" id="grid">
+        <h2>Grid Component</h2>
+        <p>Static grid with fixed children. For API-driven grids, use <code>collection</code> with <code>layout: "grid"</code>.</p>
+        <p>Note: <code>layout.grid</code> does NOT exist — use <code>grid</code>.</p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><span class="property-name">type</span> <span class="badge badge-required">required</span></td><td><span class="property-type">"grid"</span></td><td>Component type</td></tr>
+            <tr><td><span class="property-name">columns</span></td><td><span class="property-type">number</span></td><td>Number of columns (default 3)</td></tr>
+            <tr><td><span class="property-name">spacing</span></td><td><span class="property-type">number</span></td><td>Gap between items (px)</td></tr>
+            <tr><td><span class="property-name">children</span></td><td><span class="property-type">array</span></td><td>Child components</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Example</h3>
+        <pre>{
+  "type": "grid",
+  "columns": 3,
+  "spacing": 16,
+  "children": [
+    { "type": "card", "child": { "type": "text", "content": "Item 1" } },
+    { "type": "card", "child": { "type": "text", "content": "Item 2" } },
+    { "type": "card", "child": { "type": "text", "content": "Item 3" } }
+  ]
+}</pre>
+      </section>
+
       <!-- Collection Component Section -->
       <section class="doc-section" id="collection">
         <h2>Collection Component</h2>
@@ -3331,6 +2476,67 @@ Use PineUI.render() to mount the application to a div with id="app".</pre>
         </div>
       </section>
 
+      <!-- Collection Map Section -->
+      <section class="doc-section" id="collection-map">
+        <h2>Collection Map Component</h2>
+        <p>Renders an array already in state — no HTTP call needed. Use when data is already loaded.</p>
+        <p>Use <code>collection</code> when data comes from an API, use <code>collection.map</code> when data is already in state.</p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><span class="property-name">type</span> <span class="badge badge-required">required</span></td><td><span class="property-type">"collection.map"</span></td><td>Component type</td></tr>
+            <tr><td><span class="property-name">data</span> <span class="badge badge-required">required</span></td><td><span class="property-type">string (binding)</span></td><td>Array expression. Full JS supported: <code>"{{state.items.filter(...)}}"</code></td></tr>
+            <tr><td><span class="property-name">template</span> or <span class="property-name">itemTemplate</span></td><td><span class="property-type">Component</span></td><td>Template rendered for each item. <code>{{item}}</code> and <code>{{index}}</code> available</td></tr>
+            <tr><td><span class="property-name">layout</span></td><td><span class="property-type">string</span></td><td><code>"list"</code> (default) | <code>"grid"</code></td></tr>
+            <tr><td><span class="property-name">columns</span></td><td><span class="property-type">number</span></td><td>Grid columns (default 3)</td></tr>
+            <tr><td><span class="property-name">spacing</span></td><td><span class="property-type">number</span></td><td>Gap between items (px)</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Filtering &amp; Sorting</h3>
+        <p>The <code>data</code> expression re-evaluates on every state change. Put all filtering/sorting inline in the expression:</p>
+        <pre>"data": "{{state.items.filter(i => i.active)}}"
+"data": "{{state.filter == 'all' ? state.items : state.items.filter(i => i.type == state.filter)}}"
+"data": "{{state.items.sort((a, b) => a.name.localeCompare(b.name))}}"
+"data": "{{state.items.slice(0, state.limit)}}"</pre>
+
+        <div class="example-box">
+          <h4>⚠️ Common Mistake</h4>
+          <p>If you patch <code>state.filter</code> and want the list to update, the filter <strong>must</strong> be in the <code>data</code> expression. Simply patching state won't re-filter a static <code>data</code> array.</p>
+        </div>
+
+        <h3>Example</h3>
+        <pre>{
+  "state": { "filter": "all", "items": [...] },
+  "screen": {
+    "type": "layout.column",
+    "children": [
+      {
+        "type": "layout.row",
+        "spacing": 8,
+        "children": [
+          { "type": "chip", "label": "All", "selected": "{{state.filter == 'all'}}",
+            "onPress": { "type": "action.state.patch", "path": "filter", "value": "all" } },
+          { "type": "chip", "label": "Active", "selected": "{{state.filter == 'active'}}",
+            "onPress": { "type": "action.state.patch", "path": "filter", "value": "active" } }
+        ]
+      },
+      {
+        "type": "collection.map",
+        "data": "{{state.filter == 'all' ? state.items : state.items.filter(i => i.status == state.filter)}}",
+        "spacing": 8,
+        "template": {
+          "type": "card",
+          "child": { "type": "text", "content": "{{item.title}}" }
+        }
+      }
+    ]
+  }
+}</pre>
+      </section>
+
       <!-- Conditional Render Section -->
       <section class="doc-section" id="conditional">
         <h2>Conditional Render</h2>
@@ -3525,14 +2731,9 @@ Use PineUI.render() to mount the application to a div with id="app".</pre>
               <td>Request body (for POST, PUT, PATCH). Supports {{bindings}}</td>
             </tr>
             <tr>
-              <td><span class="property-name">responseMapping</span></td>
-              <td><span class="property-type">object</span></td>
-              <td>Map response data to state. Keys are state paths, values are {{response.path}}</td>
-            </tr>
-            <tr>
               <td><span class="property-name">onSuccess</span></td>
-              <td><span class="property-type">Action | Action[]</span></td>
-              <td>Actions to execute on successful response (2xx status)</td>
+              <td><span class="property-type">Action</span></td>
+              <td>Action executed after a successful response. Use <code>{{response}}</code> to access the full response body</td>
             </tr>
             <tr>
               <td><span class="property-name">onError</span></td>
@@ -3549,14 +2750,10 @@ Use PineUI.render() to mount the application to a div with id="app".</pre>
   "type": "action.http",
   "method": "GET",
   "url": "https://api.example.com/users",
-  "responseMapping": {
-    "users": "{{response.data}}",
-    "loading": false
-  },
-  "onError": {
+  "onSuccess": {
     "type": "action.state.patch",
-    "path": "error",
-    "value": "Failed to load users"
+    "path": "users",
+    "value": "{{response}}"
   }
 }</pre>
 
@@ -3603,7 +2800,7 @@ Use PineUI.render() to mount the application to a div with id="app".</pre>
   }
 }</pre>
 
-        <h4>PUT Request with Response Mapping</h4>
+        <h4>PUT Request with onSuccess</h4>
         <pre>{
   "type": "action.http",
   "method": "PUT",
@@ -3612,13 +2809,12 @@ Use PineUI.render() to mount the application to a div with id="app".</pre>
     "name": "{{state.profile.name}}",
     "bio": "{{state.profile.bio}}"
   },
-  "responseMapping": {
-    "profile": "{{response.user}}",
-    "lastUpdated": "{{response.timestamp}}"
-  },
   "onSuccess": {
-    "type": "action.snackbar.show",
-    "message": "Profile updated!"
+    "type": "action.sequence",
+    "actions": [
+      { "type": "action.state.patch", "path": "profile", "value": "{{response}}" },
+      { "type": "action.snackbar.show", "message": "Profile updated!" }
+    ]
   }
 }</pre>
 
@@ -3627,15 +2823,16 @@ Use PineUI.render() to mount the application to a div with id="app".</pre>
   "type": "action.http",
   "method": "GET",
   "url": "https://api.example.com/search?q={{state.searchQuery}}&limit=20",
-  "responseMapping": {
-    "searchResults": "{{response.results}}",
-    "totalCount": "{{response.total}}"
+  "onSuccess": {
+    "type": "action.state.patch",
+    "path": "searchResults",
+    "value": "{{response}}"
   }
 }</pre>
 
         <div class="example-box">
-          <h4>💡 Response Mapping</h4>
-          <p>Use <code>responseMapping</code> to automatically update state with API response data. The response is available as <code>{{response}}</code>.</p>
+          <h4>💡 onSuccess &amp; {{response}}</h4>
+          <p>Use <code>onSuccess</code> to handle the API response. <code>{{response}}</code> is the full response body and is <strong>only available inside onSuccess</strong>.</p>
         </div>
 
         <div class="example-box">
@@ -3732,7 +2929,7 @@ Use PineUI.render() to mount the application to a div with id="app".</pre>
   {
     "type": "action.state.patch",
     "path": "data",
-    "value": "{{response.data}}"
+    "value": "{{response}}"
   }
 ]</pre>
 
@@ -4034,6 +3231,34 @@ Use PineUI.render() to mount the application to a div with id="app".</pre>
         </div>
       </section>
 
+      <!-- Sequence Action Section -->
+      <section class="doc-section" id="action-sequence">
+        <h2>Sequence Action</h2>
+        <p>Run multiple actions in order, one after another. Each action awaits completion before the next runs. Essential for multi-step workflows.</p>
+
+        <h3>Properties</h3>
+        <table class="property-table">
+          <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><span class="property-name">type</span> <span class="badge badge-required">required</span></td><td><span class="property-type">"action.sequence"</span></td><td>Action type</td></tr>
+            <tr><td><span class="property-name">actions</span> <span class="badge badge-required">required</span></td><td><span class="property-type">Action[]</span></td><td>Array of actions to run in order</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Example</h3>
+        <pre>{
+  "type": "action.sequence",
+  "actions": [
+    { "type": "action.state.patch", "path": "loading", "value": true },
+    { "type": "action.http", "method": "POST", "url": "/api/save",
+      "body": { "text": "{{state.text}}" } },
+    { "type": "action.state.patch", "path": "loading", "value": false },
+    { "type": "action.overlay.close", "overlayId": "editModal" },
+    { "type": "action.snackbar.show", "message": "Saved!" }
+  ]
+}</pre>
+      </section>
+
       <!-- Delay Action Section -->
       <section class="doc-section" id="action-delay">
         <h2>Delay Action</h2>
@@ -4146,107 +3371,80 @@ Use PineUI.render() to mount the application to a div with id="app".</pre>
         </p>
 
         <h3>Defining Custom Components</h3>
-        <p>Custom components are defined in the schema's <code>components</code> section:</p>
+        <p>Custom components are defined in the schema's <code>components</code> section. The key must start with <code>component.</code> and the structure uses <code>"definition"</code>:</p>
         <pre>{
   "components": {
-    "userCard": {
-      "props": ["name", "email", "avatar"],
-      "template": {
-        "type": "card",
-        "padding": 16,
-        "child": {
-          "type": "layout.row",
-          "spacing": 12,
-          "crossAxisAlignment": "center",
-          "children": [
-            {
-              "type": "avatar",
-              "url": "{{props.avatar}}",
-              "size": 48
-            },
-            {
-              "type": "layout.column",
-              "spacing": 4,
-              "children": [
-                {
-                  "type": "text",
-                  "content": "{{props.name}}",
-                  "style": "titleMedium"
-                },
-                {
-                  "type": "text",
-                  "content": "{{props.email}}",
-                  "style": "bodySmall"
-                }
-              ]
-            }
-          ]
-        }
+    "component.userRow": {
+      "definition": {
+        "type": "layout.row",
+        "spacing": 12,
+        "children": [
+          {
+            "type": "avatar",
+            "src": "{{props.user.avatar}}",
+            "size": 40
+          },
+          {
+            "type": "layout.column",
+            "spacing": 2,
+            "children": [
+              { "type": "text", "content": "{{props.user.name}}", "style": "titleSmall" },
+              { "type": "text", "content": "{{props.user.email}}", "style": "bodySmall" }
+            ]
+          }
+        ]
       }
     }
   }
 }</pre>
 
         <h3>Using Custom Components</h3>
+        <p>Use the component name as the <code>type</code>, and pass data via <code>props</code>:</p>
         <pre>{
-  "type": "custom.userCard",
+  "type": "component.userRow",
   "props": {
-    "name": "John Doe",
-    "email": "john@example.com",
-    "avatar": "https://example.com/avatar.jpg"
+    "user": "{{item}}"
   }
 }</pre>
+
+        <div class="example-box">
+          <h4>⚠️ Important Rules</h4>
+          <ul>
+            <li>Component names <strong>must</strong> start with <code>component.</code> (e.g. <code>component.postCard</code>)</li>
+            <li>The structure key is <code>"definition"</code>, not <code>"template"</code></li>
+            <li>Inside the definition, access passed props via <code>{{props.fieldName}}</code></li>
+            <li>Props can be nested: <code>{{props.user.name}}</code></li>
+          </ul>
+        </div>
 
         <h3>Examples</h3>
 
         <h4>Product Card Component</h4>
         <pre>{
   "components": {
-    "productCard": {
-      "props": ["name", "price", "image", "onBuy"],
-      "template": {
+    "component.productCard": {
+      "definition": {
         "type": "card",
-        "elevation": 2,
+        "elevation": 1,
+        "padding": 0,
+        "onPress": { "intent": "product.open", "productId": "{{item.id}}" },
         "child": {
           "type": "layout.column",
-          "spacing": 12,
+          "spacing": 0,
           "children": [
             {
               "type": "image",
-              "url": "{{props.image}}",
-              "width": "100%",
-              "height": 200,
-              "fit": "cover"
+              "src": "{{props.product.image}}",
+              "aspectRatio": 1.5,
+              "borderRadius": 12
             },
             {
               "type": "layout.column",
-              "padding": 16,
-              "spacing": 12,
+              "padding": 12,
+              "spacing": 4,
               "children": [
-                {
-                  "type": "text",
-                  "content": "{{props.name}}",
-                  "style": "titleMedium"
-                },
-                {
-                  "type": "layout.row",
-                  "mainAxisAlignment": "spaceBetween",
-                  "crossAxisAlignment": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "content": "${{props.price}}",
-                      "style": "titleLarge",
-                      "fontWeight": "bold",
-                      "color": "#6750A4"
-                    },
-                    {
-                      "type": "button.filled",
-                      "label": "Buy",
-                      "onPress": "{{props.onBuy}}"
-                    }
-                  ]
-                }
+                { "type": "text", "content": "{{props.product.name}}", "style": "titleSmall" },
+                { "type": "text", "content": "${{props.product.price}}", "style": "bodyMedium", "color": "#6750A4" }
               ]
             }
           ]
@@ -4256,66 +3454,15 @@ Use PineUI.render() to mount the application to a div with id="app".</pre>
   }
 }</pre>
 
-        <h4>Using Product Card</h4>
+        <h4>Using Product Card in a Collection</h4>
         <pre>{
   "type": "collection",
-  "data": "products",
-  "spacing": 16,
-  "template": {
-    "type": "custom.productCard",
-    "props": {
-      "name": "{{item.name}}",
-      "price": "{{item.price}}",
-      "image": "{{item.imageUrl}}",
-      "onBuy": {
-        "intent": "addToCart",
-        "props": {
-          "productId": "{{item.id}}"
-        }
-      }
-    }
-  }
-}</pre>
-
-        <h4>Stat Card Component</h4>
-        <pre>{
-  "components": {
-    "statCard": {
-      "props": ["label", "value", "icon", "color"],
-      "template": {
-        "type": "card",
-        "padding": 20,
-        "backgroundColor": "{{props.color || '#F7F2FA'}}",
-        "child": {
-          "type": "layout.column",
-          "spacing": 8,
-          "children": [
-            {
-              "type": "layout.row",
-              "mainAxisAlignment": "spaceBetween",
-              "crossAxisAlignment": "center",
-              "children": [
-                {
-                  "type": "text",
-                  "content": "{{props.label}}",
-                  "style": "bodyMedium"
-                },
-                {
-                  "type": "button.icon",
-                  "icon": "{{props.icon}}"
-                }
-              ]
-            },
-            {
-              "type": "text",
-              "content": "{{props.value}}",
-              "style": "headlineSmall",
-              "fontWeight": "bold"
-            }
-          ]
-        }
-      }
-    }
+  "layout": "grid",
+  "columns": 3,
+  "data": { "type": "action.http", "method": "GET", "url": "/api/products" },
+  "itemTemplate": {
+    "type": "component.productCard",
+    "props": { "product": "{{item}}" }
   }
 }</pre>
 
@@ -4925,7 +4072,7 @@ Use PineUI.render() to mount the application to a div with id="app".</pre>
           <li><code>{{props.propertyName}}</code> - Access component/overlay props</li>
           <li><code>{{item.propertyName}}</code> - Access collection item data</li>
           <li><code>{{index}}</code> - Access collection item index</li>
-          <li><code>{{response.propertyName}}</code> - Access HTTP response data</li>
+          <li><code>{{response}}</code> - Access HTTP response (only available inside <code>collection.data.onSuccess</code>)</li>
         </ul>
 
         <h3>State Bindings</h3>
@@ -4957,26 +4104,25 @@ Use PineUI.render() to mount the application to a div with id="app".</pre>
 }</pre>
 
         <h3>Props Bindings</h3>
-        <p>In custom components or overlays:</p>
+        <p>In custom components (prefix must be <code>component.</code>):</p>
         <pre>{
-  "type": "custom.userCard",
+  "type": "component.userCard",
   "props": {
-    "name": "Alice",
-    "role": "Admin"
+    "user": "{{item}}"
   }
 }
 
-// Inside component template:
+// Inside component definition:
 {
   "type": "text",
-  "content": "{{props.name}} - {{props.role}}"
+  "content": "{{props.user.name}} - {{props.user.role}}"
 }</pre>
 
         <h3>Collection Item Bindings</h3>
         <pre>{
   "type": "collection",
-  "data": "products",
-  "template": {
+  "data": { "type": "action.http", "method": "GET", "url": "/api/products" },
+  "itemTemplate": {
     "type": "card",
     "child": {
       "type": "layout.column",
