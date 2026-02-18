@@ -440,18 +440,14 @@ Renders an array already in state (no HTTP call).
 }
 ```
 
-**Filtering with state:** the `data` expression is re-evaluated on every state change, so you can inline `.filter()` to react to state:
+**The `data` expression re-evaluates on every state change.** Any filtering, sorting, or transformation must live inside the binding itself — full JS array methods are supported:
 
 ```json
-{
-  "type": "collection.map",
-  "data": "{{state.selectedCategory == 'All' ? state.tasks : state.tasks.filter(t => t.category == state.selectedCategory)}}",
-  "template": { ... }
-}
+"data": "{{state.items.filter(i => i.active)}}"
+"data": "{{state.filter == 'all' ? state.items : state.items.filter(i => i.type == state.filter)}}"
+"data": "{{state.items.slice(0, state.limit)}}"
+"data": "{{state.items.sort((a, b) => a.name.localeCompare(b.name))}}"
 ```
-
-> ⚠️ `"data": "{{state.tasks}}"` always returns ALL items — it ignores any filter state.
-> The filter **must** be part of the `data` expression itself.
 
 | | `collection` | `collection.map` |
 |---|---|---|
