@@ -49,3 +49,6 @@ if (typeof window !== 'undefined') {
     render,
   };
 }
+
+// Version banner
+console.log('%c🍍 PineUI v0.1.5%c — Server-Driven UI for AI-Native Apps', 'color:#6750A4;font-weight:700;font-size:14px', 'color:#79747E;font-size:12px');
