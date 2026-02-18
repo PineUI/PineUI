@@ -853,6 +853,47 @@ Tabela de dados com ordenação.
 }
 ```
 
+### Conditional Render
+
+Dois componentes para renderização condicional:
+
+**`conditionalRender`** — múltiplos cases com `conditions` array:
+
+```json
+{
+  "type": "conditionalRender",
+  "conditions": [
+    {
+      "when": "{{state.tab == 'profile'}}",
+      "render": { "type": "text", "content": "Profile" }
+    },
+    {
+      "when": "{{state.tab == 'settings'}}",
+      "render": { "type": "text", "content": "Settings" }
+    }
+  ]
+}
+```
+
+**`conditional.render`** — condição simples com `child` ou `children`:
+
+```json
+{
+  "type": "conditional.render",
+  "condition": "{{state.isLoading}}",
+  "child": {
+    "type": "text",
+    "content": "Carregando..."
+  }
+}
+```
+
+| | `conditionalRender` | `conditional.render` |
+|---|---|---|
+| Múltiplos cases | Sim | Não |
+| API | `conditions: [{ when, render }]` | `condition` + `child`/`children` |
+| Use quando | if/else if/else | Condição simples |
+
 ---
 
 ## 🎨 Custom Components
@@ -2113,9 +2154,10 @@ Sistema de modals/dialogs configurável.
 
 ### Presentation Modes
 
-- `modal` - Full screen modal (default)
+- `modal` - Modal centralizado (default)
 - `bottomSheet` - Slide up from bottom
-- `dialog` - Centered small dialog
+- `dialog` - Diálogo pequeno centralizado
+- `fullscreen` - Ocupa 95vw × 95vh, borda arredondada, sem scroll externo
 
 ```json
 {
@@ -2928,6 +2970,40 @@ Renderiza componente apenas se condição for verdadeira.
 ```
 
 **Pattern:** Verifica existência antes de renderizar (evita erros).
+
+**Alternativa simplificada: `conditional.render`**
+
+Use `conditional.render` quando só precisa de uma condição simples (sem array de cases):
+
+```json
+{
+  "type": "conditional.render",
+  "condition": "{{state.isLoggedIn}}",
+  "child": {
+    "type": "text",
+    "content": "Bem-vindo!"
+  }
+}
+```
+
+Também suporta múltiplos filhos via `children`:
+
+```json
+{
+  "type": "conditional.render",
+  "condition": "{{state.hasItems}}",
+  "children": [
+    { "type": "text", "content": "Item 1" },
+    { "type": "text", "content": "Item 2" }
+  ]
+}
+```
+
+| | `conditionalRender` | `conditional.render` |
+|---|---|---|
+| Sintaxe | `conditions: [{ when, render }]` | `condition` + `child`/`children` |
+| Múltiplos cases (if/else if) | Sim | Não |
+| Uso | Lógica complexa | Condição simples |
 
 ---
 
